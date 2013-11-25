@@ -15,23 +15,17 @@ addLoc <- function(from, to, ses=NULL){
 		to <- eval(parse(text=paste0(substitute(ses), '$', to)))
 	}
 	argtdr <- match("tdr", c(class(from), class(to)) %wo% "data.frame", nomatch=0)
-	any(grepl("Dive.id", from))  || stop("'From' dataset must contain 'Dive.id' variable (Primary key).")
-	any(grepl("Dive.id", to))  || stop("'From' dataset must contain 'Dive.id' variable (Primary key).")
-	any(grepl("Lat", from))  || stop("'From' dataset must contain 'Lat' variable.")
-	any(grepl("Lon", from))  || stop("'From' dataset must contain 'Lat' variable.")
+	any(grepl("Dive.id", names(from))) || stop("'From' dataset must contain 'Dive.id' variable (Primary key).")
+	any(grepl("Dive.id", names(to))) || stop("'From' dataset must contain 'Dive.id' variable (Primary key).")
+	any(grepl("Lat", names(from))) || stop("'From' dataset must contain 'Lat' variable.")
+	any(grepl("Lon", names(from))) || stop("'From' dataset must contain 'Lat' variable.")
 	if (argtdr == 1){
 		to <- merge(to, unique(from[ , c("Dive.id", "Lat", "Lon")]), by="Dive.id")
 		class(to) <- c("statdives", "data.frame")
 	} else if (argtdr == 2){
-		dives <- seqs(to$Dive.id) ; dives <- dives[dives$value != 0, ]
-		coords <- data.frame(Lat=rep(0, nrow-from), Lon=rep(0, nrow(to)))
-		tmpfun <- function(st, ed, val) {
-			coords$Lat[st:ed] <- from$Lat[which(from$Dive.id == val)]
-			coords$Lon[st:ed] <- from$Lon[which(from$Dive.id == val)]
-		}
-		coords <- Map(tmpfun,  dives$start, dives$end, dives$value)
-		to <- cbind(to, coords)
-		class(to) <- c("tdr", "data.frame")
+	  dvs <- seqs(to$Dive.id)
+	  dvs$value[dvs$value != 0] <- from$Lat ; to$Lat <- rep(dvs$value, dvs$length)
+	  dvs$value[dvs$value != 0] <- from$Lon ; to$Lon <- rep(dvs$value, dvs$length)
 	}else{
 		stop("Input object must be of class 'tdr', and 'statdives'.")
 	}
