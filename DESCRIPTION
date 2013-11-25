@@ -21,3 +21,5 @@ Collate:
     'seqs.r'
     'SESname.r'
     'replaceMissing.r'
+    'importSEAPOpred.r'
+    'sunPosition.R'
