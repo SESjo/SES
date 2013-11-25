@@ -1,0 +1,22 @@
+Package: SES
+Title: Tools to manipulate SES data with R
+Description: Personal functions for efficient SES manipulation.
+Version: 0.1
+Author: Yves Le Bras <yveslebras.fr@gmail.com>
+Maintainer: Yves Le Bras <yveslebras.fr@gmail.com>
+Depends:
+    R (>= 2.15.1)
+Imports:
+    R.matlab,
+    ncdf,
+    fields,
+    R.utils
+License: MIT
+LazyData: true
+Collate:
+    'SES-package.r'
+    'SESutils.r'
+    'addLoc.r'
+    'importSES.r'
+    'seqs.r'
+    'SESname.r'

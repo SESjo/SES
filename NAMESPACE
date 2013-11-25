@@ -1,0 +1,4 @@
+export(SESname)
+export(addLoc)
+export(importSES)
+export(seqs)
