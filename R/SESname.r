@@ -5,7 +5,7 @@
 #' @author Yves
 #' @export
 #' @examples 
-#' SESname("Path/to/seal/file/2011-12_dummmy_ses_file.txt")
+#' SESname("Path/to/seal/file/2011-12_some_ses_file.txt")
 SESname <- function(text){
 	regmatches(text, regexpr('20+[0-9]{2}-[0-9]{2}', text))
 }

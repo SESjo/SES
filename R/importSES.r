@@ -7,6 +7,10 @@
 #' @seealso SESformat (df) to edit output format (column and class of columns)
 #' @author Yves
 #' @export
+#' @example
+#' path <- system.file("data", package="SES")
+#' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
+#' ses <- importSES(pathname)
 importSES <- function (matfile, type="both"){
   
   old.opt <- options("warn") ; options(warn=-1)
@@ -40,7 +44,7 @@ importSES <- function (matfile, type="both"){
     res$tdr <- res$tdr[, match(SESformat$tdrkeep, names(res$tdr), nomatch=0)]
     res$tdr$Time <- as.POSIXct((res$tdr$Time - 719529)*24*3600, tz="UTC", origin="1970-01-01")
     res$tdr[, grep("is.", names(res$tdr))] <- as.logical(res$tdr[, grep("is.", names(res$tdr))])
-    res$tdr[] <- lapply(res$tdr, ReplaceMissing) # Replace matlab's NaN by NA
+    res$tdr[] <- lapply(res$tdr, replaceMissing) # Replace matlab's NaN by NA
   }
   class(res$tdr) <- c("tdr", "data.frame")
   if (type == "tdr") return(res)
@@ -60,7 +64,7 @@ importSES <- function (matfile, type="both"){
     }
     res$stat <- res$stat[, match(SESformat$statkeep, names(res$stat), nomatch=0)]
     res$stat$Time <- as.POSIXct((res$stat$Time - 719529)*24*3600, tz="UTC", origin="1970-01-01")
-    res$stat[] <- lapply(res$stat, ReplaceMissing) # Replace matlab's NaN by NA
+    res$stat[] <- lapply(res$stat, replaceMissing) # Replace matlab's NaN by NA
   }
   class(res$stat) <- c("statdives", "data.frame")
   if (type == "stat") return(res)

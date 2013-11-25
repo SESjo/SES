@@ -2,7 +2,7 @@
 \alias{importSES}
 \title{ImportSES}
 \usage{
-  importSES(matfile, type = c("both", "tdr", "stat"))
+  importSES(matfile, type = "both")
 }
 \arguments{
   \item{matfile}{Path to .mat file.}
