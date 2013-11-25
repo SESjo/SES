@@ -4,11 +4,12 @@
 #' @param matfile Path to .mat file. 
 #' @param type Type of data to import: "tdr" only TDR data, "stat" Only Statdives data. "Bot" both.
 #' @return An object of class "ses". Includes: ID of the SES - TDR and or Stats of dive as requested with 'type' argument.
-#' @seealso SESformat (df) to edit output format (column and class of columns)
+#' @details The .mat file must be of of version v7 or less (last MATLAB version v7.3).
+#' @seealso Edit 'SESformat' in the source code to modify the output format (type of columns)
 #' @author Yves
 #' @export
-#' @example
-#' path <- system.file("data", package="SES")
+#' @examples
+#' path <- system.file("extdata", package="SES")
 #' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 #' ses <- importSES(pathname)
 importSES <- function (matfile, type="both"){
