@@ -1,5 +1,4 @@
 #' seqs
-#' 
 #' @description Identify the homogenious sequences along an atomic vector.
 #' @param vec The atomic vector to examine.
 #' @return A data frame with indexing sequences with start and end index. Value and length of the sequences are also given
@@ -9,7 +8,6 @@
 #' x <- unname(unlist(mapply(rep, letters[1:10], 10:1)))
 #' x
 #' seqs(x)
-#' 
 seqs <- function(vec) {
 	vec.org <- vec
 	if(is.logical(vec)){vec <- as.numeric(vec)

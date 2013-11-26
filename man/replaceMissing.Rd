@@ -2,7 +2,7 @@
 \alias{replaceMissing}
 \title{replaceMissing}
 \usage{
-  replaceMissing(x, na.0 = "NaN", na.1 = NA)
+  replaceMissing(x, na.0 = NaN, na.1 = NA)
 }
 \arguments{
   \item{x}{The atomic vector}

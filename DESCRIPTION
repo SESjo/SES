@@ -23,3 +23,5 @@ Collate:
     'replaceMissing.r'
     'importSEAPOpred.r'
     'sunPosition.R'
+    'addVar.r'
+    'pixels.r'

@@ -3,3 +3,4 @@
 SES-draft.r
 /test/*
 .RHistory
+.gitignore

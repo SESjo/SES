@@ -15,7 +15,7 @@
   contains it.
 }
 \examples{
-SESname("Path/to/seal/file/2011-12_dummmy_ses_file.txt")
+SESname("Path/to/seal/file/2011-12_some_ses_file.txt")
 }
 \author{
   Yves
