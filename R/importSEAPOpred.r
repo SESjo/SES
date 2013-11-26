@@ -2,6 +2,7 @@
 #' @description Load a NetCDF file matching with a date and a directory.
 #' @param data The date (class POSIXct) to load.
 #' @param dir The directory to look into.
+#' @param ncfile Alternatively to previous arguments, a NetCDF file can be given directlty.
 #' @return Retuns a data frame with latitude, longitude and biomass of the six functional groups.
 #' @author Yves
 #' @export
@@ -24,11 +25,9 @@ importSEAPOpred <- function(date, dir, ncfile=NULL) {
 		stop(paste0("On" , date, ", none or several NetCDF files. \n", paste0(basename(ncfile), collapse="\n")))
 	} else {
 		con <- open.ncdf(ncfile)
-		lat <- con$dim$latitude$vals
-		lon <- con$dim$longitude$vals
 		grps <- names(con$var)
 		headers <- c("epi_mnk_pb"="Epi.b", "meso_mnk_pb"="Meso.b", "mmeso_mnk_pb"="mMeso.b", "bathy_mnk_pb"="Bathy.b", "mbathy_mnk_pb"="mBathy.b", "hmbathy_mnk_pb"="hmBathy.b")
-		grid <- expand.grid(lon, lat)
+		grid <- ncgrid(ncfile, connection=con)
 		grid <- cbind(grid, replicate(length(grps), rep(0, nrow(grid))))
 		names(grid) <- c("Lon", "Lat", headers[grps])
 		for (grp in grps){

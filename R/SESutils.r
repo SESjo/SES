@@ -12,3 +12,4 @@ text2posx <- function(text){
     stop('Several expression matched.')
   }
 }
+  
