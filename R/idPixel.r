@@ -1,4 +1,4 @@
-#' pixels
+#' idPixel
 #' @description Attribute to dives the pixel number they belong to.
 #' @param grid The grid to look pixel into.
 #' @param stat A statdives object.
@@ -16,7 +16,7 @@
 #' ses <- importSES(pathname)
 #' ses$stat <- pixels(expl[ , 1:2], ses$stat)
 #' # ses$tdr <- addVar("Pixel.id", from="stat", to="tdr", ses=ses)
-pixels <- function(grid, stat, ses=NULL, append=TRUE) {
+idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 	if (!is.null(ses)) {
 		stat == "stat" ||  stop("'stat' must be set to 'stat' or left blank when 'ses' is given.")
 		stat <- eval(parse(text=paste0(substitute(ses), '$stat')))

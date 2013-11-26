@@ -10,6 +10,7 @@
 #' @param lat
 #' @param lon
 #' @details Algorithm taken from: http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-Day-latitude-and-longitude. Update: the Jan 6 '12 at 21:40 by "Josh O'Brien"
+#' @seealso \code{\link{isDay}}
 #' @author Yves
 #' @export
 #' @examples

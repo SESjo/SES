@@ -10,13 +10,18 @@ biomgrid <- ncgrid(list.files(ncdir, "*.nc", full.names=TRUE)[1])
 
 for (infile in matfiles) {
   
+  # Import a seal dataset
   cat("Processing ", SESname(infile), " ...\n")
   ses <- importSES(infile)
-  ses$tdr <- addLoc(from=ses$stat, to=ses$tdr)
-  ses$stat$is.Day <- dayNight(ses$stat$Time, ses$stat[ , c("Lat", "Lon")])
-  ses$stat <- pixels(biomgrid, ses$stat)
-  ses$tdr <- addVar("Pixel.id", from="stat", to="tdr", ses=ses)
-  ses$tdr <- addVar("is.Day", from="stat", to="tdr", ses=ses)
+  
+  # Compute new variables associated with dives
+  ses$stat$is.Day <- isDay(ses$stat)
+  ses$stat <- idPixel(biomgrid, ses$stat)
+  
+  # Add these variable to tdr data
+  vars <- c("Lat", "Lon", "Pixel.id", "is.Day")
+  ses$tdr[ , vars] <- lapply(vars, addVar, from="stat", to="tdr", ses=ses, append=FALSE)
+
 }
 
 # SESformat 	correct

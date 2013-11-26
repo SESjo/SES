@@ -9,9 +9,12 @@
 #' pathname <- file.path(path, "ker_0083x1d_catsat_vgpm_20111101_MTLPB.nc")
 #' expl <- ncgrid(ncfile=pathname)
 ncgrid <- function(ncfile, connection){
-  require("ncdf", quietly=TRUE)
-  if (missing(connection)) {con <- open.ncdf(ncfile) ; new.con <- TRUE}
-  else {con <- connection}
+  if (missing(connection)) {
+  	require("ncdf", quietly=TRUE)
+  	con <- open.ncdf(ncfile)
+  } else {
+  	con <- connection
+  }
   lat <- con$dim$latitude$vals
   lon <- con$dim$longitude$vals
   if (missing(connection)) close.ncdf(con)
