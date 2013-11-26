@@ -16,7 +16,7 @@ for (infile in matfiles) {
   ses$stat$is.Day <- dayNight(ses$stat$Time, ses$stat[ , c("Lat", "Lon")])
   ses$stat <- pixels(biomgrid, ses$stat)
   ses$tdr <- addVar("Pixel.id", from="stat", to="tdr", ses=ses)
-  
+  ses$tdr <- addVar("is.Day", from="stat", to="tdr", ses=ses)
 }
 
 # SESformat 	correct
