@@ -13,10 +13,6 @@
 \description{
   Convert a POSIX object to a data frame.
 }
-\examples{
-posx2ymd(as.POSIXct("2011-11-01 01:02:03"))
-posx2ymd(as.POSIXct("2011-11-01 01:02:03"), 3)
-}
 \author{
   Yves
 }

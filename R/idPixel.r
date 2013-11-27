@@ -1,7 +1,7 @@
 #' idPixel
 #' @description Attribute to dives the pixel number they belong to.
-#' @param grid The grid to look pixel into.
 #' @param stat A statdives object.
+#' @param grid The grid to look pixel into.
 #' @param ses A ses object. 'stat' is ignored when given.
 #' @param append Should the entire statdives object be returned.
 #' @param append.grid Should the variable 'Pixel.id' added to grid
@@ -14,7 +14,7 @@
 #' expl <- importSEAPOpred(ncfile=pathname)
 #' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 #' ses <- importSES(pathname)
-#' ses$stat <- pixels(expl[ , 1:2], ses$stat)
+#' ses$stat <- idPixel(ses$stat, expl[ , 1:2])
 #' # ses$tdr <- addVar("Pixel.id", from="stat", to="tdr", ses=ses)
 idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 	if (!is.null(ses)) {

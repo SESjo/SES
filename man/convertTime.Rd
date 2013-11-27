@@ -32,6 +32,6 @@ convertTime(tm, to="text")          # "20111101", width = 3 when 'text' is invol
   Yves
 }
 \seealso{
-  \code{\link(importSEAPOpred)}
+  \code{\link{importSEAPOpred}}
 }
 

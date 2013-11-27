@@ -4,7 +4,7 @@
 #' @param to The output format. Choose in 'posx', 'ymd', 'text'.
 #' @param width The desired number of columns desired in the data frame.
 #' @details Width = 3 when 'text' format is involved.
-#' @seealso \code{\link(importSEAPOpred)}
+#' @seealso \code{\link{importSEAPOpred}}
 #' @author Yves
 #' @export
 #' @examples
@@ -30,9 +30,6 @@ convertTime <- function(x, to, width=6){
 #' @param posx The POSIX object to convert
 #' @param width The desired number of columns desired in the data frame.
 #' @author Yves
-#' @examples
-#' posx2ymd(as.POSIXct("2011-11-01 01:02:03"))
-#' posx2ymd(as.POSIXct("2011-11-01 01:02:03"), 3)
 posx2ymd = function(posx, width=6){
   fmt <- c(Year="%Y", Month="%m", Day="%d", Hour="%H", Minute="%M", Second="%S")
   if (width != 6) fmt <- fmt[1:width]

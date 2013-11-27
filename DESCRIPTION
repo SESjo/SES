@@ -21,7 +21,6 @@ Collate:
     'SESname.r'
     'replaceMissing.r'
     'importSEAPOpred.r'
-    'sunPosition.R'
     'addVar.r'
     'idPixel.r'
     'isDay.r'
@@ -29,3 +28,4 @@ Collate:
     'per.r'
     'time-utils.r'
     'Zeu.r'
+    'sunPosition.r'

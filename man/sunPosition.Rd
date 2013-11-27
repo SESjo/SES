@@ -5,33 +5,8 @@
   sunPosition(Year, Month, Day, Hour = 12, Minute = 0,
     Second = 0, time = NULL, lat = 46.5, long = 6.5,
     loc = NULL)
-
-  sunPosition(Year, Month, Day, Hour = 12, Minute = 0,
-    Second = 0, time = NULL, lat = 46.5, long = 6.5,
-    loc = NULL)
 }
 \arguments{
-  \item{Year}{}
-
-  \item{Month}{}
-
-  \item{Day}{}
-
-  \item{Hour}{}
-
-  \item{Minute}{}
-
-  \item{Second}{}
-
-  \item{time}{An object with date and time information,
-  thus previous arguments are ignored. Can be of POSIXct or
-  data.frame classes. If data frame order of columns must
-  be from Year to Second (6 columns).}
-
-  \item{lat}{}
-
-  \item{lon}{}
-
   \item{Year}{}
 
   \item{Month}{}
@@ -56,15 +31,8 @@
 \description{
   Compute sun azimuth and elevation given a location and a
   date/time.
-
-  Compute sun azimuth and elevation given a location and a
-  date/time.
 }
 \details{
-  Algorithm taken from:
-  http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-Day-latitude-and-longitude.
-  Update: the Jan 6 '12 at 21:40 by "Josh O'Brien"
-
   Algorithm taken from:
   http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-Day-latitude-and-longitude.
   Update: the Jan 6 '12 at 21:40 by "Josh O'Brien"
@@ -81,26 +49,11 @@ sunPos <- sunPosition(Year = 2012, Month = 12, Day = 22,
                       lat = testPts$lat, long = testPts$long)
 # Comparison
 cbind(testPts, NOAA, sunPos)
-testPts <- data.frame(lat = c(-41,-3,3, 41),
-long = c(0, 0, 0, 0))
-# Sun's position as returned by the NOAA Solar Calculator,
-NOAA <- data.frame(elevNOAA = c(72.44, 69.57, 63.57, 25.6),
-                   azNOAA = c(359.09, 180.79, 180.62, 180.3))
-# Sun's position as returned by sunPosition()
-sunPos <- sunPosition(Year = 2012, Month = 12, Day = 22,
-                      Hour = 12, Minute = 0, Second = 0,
-                      lat = testPts$lat, long = testPts$long)
-# Comparison
-cbind(testPts, NOAA, sunPos)
 }
 \author{
   Yves
-
-  Yves
 }
 \seealso{
-  \code{\link{isDay}}
-
   \code{\link{isDay}}
 }
 

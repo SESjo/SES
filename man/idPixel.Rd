@@ -5,9 +5,9 @@
   idPixel(stat, grid, ses = NULL, append = TRUE)
 }
 \arguments{
-  \item{grid}{The grid to look pixel into.}
-
   \item{stat}{A statdives object.}
+
+  \item{grid}{The grid to look pixel into.}
 
   \item{ses}{A ses object. 'stat' is ignored when given.}
 
@@ -29,7 +29,7 @@ pathname <- file.path(path, "ker_0083x1d_catsat_vgpm_20111101_MTLPB.nc")
 expl <- importSEAPOpred(ncfile=pathname)
 pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 ses <- importSES(pathname)
-ses$stat <- pixels(expl[ , 1:2], ses$stat)
+ses$stat <- idPixel(ses$stat, expl[ , 1:2])
 # ses$tdr <- addVar("Pixel.id", from="stat", to="tdr", ses=ses)
 }
 \seealso{
