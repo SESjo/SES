@@ -24,6 +24,7 @@ isDay <- function(time, loc, stat=NULL, elevlim=c(-18, 18), append=TRUE) {
 		sunAngle[!locNA] <- sunPosition(time=time[!locNA], loc=loc[!locNA, ])$el
 	}
 	else {
+	  locNA <- rep(FALSE, length(time))
 		sunAngle <- sunPosition(time=time, loc=loc)$el
 	}
 	is.Day <- rep(NA, length(time))

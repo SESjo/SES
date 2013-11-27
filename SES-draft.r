@@ -15,11 +15,15 @@ for (infile in matfiles) {
   ses <- importSES(infile)
   
   # Compute new variables associated with dives
-  ses$stat$is.Day <- isDay(ses$stat)
-  ses$stat <- idPixel(biomgrid, ses$stat)
+  ses$stat <- isDay(stat=ses$stat)
+  ses$stat <- na.omit(ses$stat)
+  ses$stat <- idPixel(ses$stat, biomgrid) # to speed up ++
+  ses$stat$Date <- convertTime(ses$stat$Time, to="posx", width=3)
   
+  biom <- importSEAPOpred(date, ncdir)
+
   # Add these variable to tdr data
-  vars <- c("Lat", "Lon", "Pixel.id", "is.Day")
+  vars <- c("Date", "Lat", "Lon", "Pixel.id", "is.Day")
   ses$tdr[ , vars] <- lapply(vars, addVar, from="stat", to="tdr", ses=ses, append=FALSE)
 
 }
@@ -31,3 +35,29 @@ for (infile in matfiles) {
 # as.SES / is.SES
 # as.tdr / is.tdr
 # as.statdive / is.statdive
+
+grp2layer <- function(stat, biom) {
+  
+  df <- expand.grid(Dive.id=stat$Dive.id, Layer=c("Epi", "Meso", "Bathy"))
+  df <- df[order(df$Dive.id), ]
+  
+  tab <- apply(biom[1:3, 3:8], 1, layerBiom)
+  
+  
+  
+  biom <- importSEAPOpred(date, ncdir)
+  
+  
+}
+
+layerBiom <- function(grp, all.col=FALSE){
+  # Compute the biomass in each layer during the day and night periods
+  # grp = c(epi, meso, mmeso, bathy, mbathy, hmbathy)
+  # all(lay.biom(1:6)$Biom == c(4, 10, 7, 15, 1, 5)) # Checking, must be TRUE
+  tab <- expand.grid(Layer=c("Bathy", "Epi", "Meso"), is.Day=c(FALSE, TRUE))
+  tab$Biom <- rep(NA, nrow(tab))
+  tab$Biom[tab$is.Day] <- c(sum(grp[4:6]), grp[1], sum(grp[2:3]))
+  tab$Biom[!tab$is.Day] <- c(grp[4], sum(grp[c(1,3,6)]), sum(grp[c(2,5)]))
+  if (all.col) return(tab)
+  else return(tab$Biom)
+}
