@@ -8,6 +8,9 @@
   \item{data}{The date (class POSIXct) to load.}
 
   \item{dir}{The directory to look into.}
+
+  \item{ncfile}{Alternatively to previous arguments, a
+  NetCDF file can be given directlty.}
 }
 \value{
   Retuns a data frame with latitude, longitude and biomass

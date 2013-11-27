@@ -8,7 +8,6 @@
 #' @details SEAPODYm criteria elevlim=c(-18, 18). Transition periods filled with NAs.
 #' @seealso \code{\link{sunPosition}}
 #' @author Yves
-#' @examples
 isDay <- function(time, loc, stat=NULL, elevlim=c(-18, 18), append=TRUE) {
 	if (!is.null(stat)){
 		any(grepl("Time", names(stat))) || stop("A 'Time' variable must be provided in 'stat'")

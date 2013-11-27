@@ -29,7 +29,7 @@ addVar <- function(var, from, to, ses=NULL, append=TRUE){
 			warning("Missing values (NAs) opasted as zeros")
 			from[ , var] <- replaceMissing(from[ , var], na.0=NA, na.1=0)
 		}
-		dvs <- seqs(to$Dive.id)
+		dvs <- per(to$Dive.id)
 		dvs$value[dvs$value != 0] <- from[ , var] 
 		if (!append) return(rep(dvs$value, dvs$length))
 		to[ , var] <- rep(dvs$value, dvs$length)
