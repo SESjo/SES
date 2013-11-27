@@ -5,7 +5,7 @@
   importSEAPOpred(date, dir, ncfile = NULL)
 }
 \arguments{
-  \item{data}{The date (class POSIXct) to load.}
+  \item{date}{The date (class POSIXct) to load.}
 
   \item{dir}{The directory to look into.}
 

@@ -1,6 +1,6 @@
 #' importSEAPOpred
 #' @description Load a NetCDF file matching with a date and a directory.
-#' @param data The date (class POSIXct) to load.
+#' @param date The date (class POSIXct) to load.
 #' @param dir The directory to look into.
 #' @param ncfile Alternatively to previous arguments, a NetCDF file can be given directlty.
 #' @return Retuns a data frame with latitude, longitude and biomass of the six functional groups.
@@ -15,14 +15,15 @@
 #' image.plot(as.image(expl$Meso.b, x=expl[, 1:2], nx=750, ny=250), breaks=brk, nlevel=30, zlim=brk[c(1,30)])
 importSEAPOpred <- function(date, dir, ncfile=NULL) {
 	
-	require("ncdf")
+	require("ncdf", quietly=TRUE)
 	if (is.null(ncfile)){
 		ncfiles <- list.files(dir, "*.nc", full.names=TRUE)
 		ncfile <- ncfiles[which(text2posx(ncfiles) == date)]
 	}
 	
 	if (length(ncfile) != 1) {
-		stop(paste0("On" , date, ", none or several NetCDF files. \n", paste0(basename(ncfile), collapse="\n")))
+		stop(paste0("On " , date, ", none or several NetCDF files. \n", paste0(basename(ncfile), collapse="\n")))
+		return(NA)
 	} else {
 		con <- open.ncdf(ncfile)
 		grps <- names(con$var)

@@ -23,8 +23,8 @@
 (x <- rep(LETTERS[1:10], 10:1))
 (y <- per(x))
 # 'per()' is the reverse of 'rep()'
-# identical(rep(y$value, y$length), z)   # TRUE
-# Characters are not converted to factors
+# identical(rep(y$value, y$length), x)   # TRUE
+# Because characters are not converted to factors
 # inherits(y$value, class(x))            # TRUE
 }
 \author{
