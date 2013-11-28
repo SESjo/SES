@@ -36,30 +36,27 @@ replaceMissing <- function(x, na.0=NaN, na.1=NA) {
 }
 
 
-#' existVar
+#' findVars
 #' @description Assign to given variable names the value of matching columns in an object. If no matching throw an error. If partial matching print a warning.
 #' @param vars The list of variable to search and create in the current environment.
 #' @param obj The object in which to search and grab the values.
+#' @param ... Arguments to be passed to \code{\link{assign}}.
 #' @seealso \code{\link{existsVars}}
 #' @author Yves
 #' @export
 #' @examples
-#' x <- data.frame(A=1:3, B=letters[1:3])
-#' fun <- function(x){
-#'    # Check that variables 'A' and 'b' exists in object 'x'.
-#'    # Print a warning for 'b' instead of 'B'.
-#'    findVars(c("A", "b"), x)
-#'    # These variable are created in the current environment
-#'    cat("A: ", A, "\nB: ", B)
-#'    # 'C' does not exist in 'x'. Interupt execution.
-#'    findVars("C", x)
-#'  }
-#'  fun(x)
-findVars <- function(vars, obj){
-  idx <- existsVars(vars, obj)
-  for (k in seq_along(idx)){
-    assign(vars[k], obj[ ,idx[k]], envir=sys.frame(-1))
-  }
+#' x <- data.frame(A=1:3, B=letters[1:3], c=c(TRUE, FALSE, TRUE))
+#' fun <- function(x) {
+#' 	vars <- c("A", "b", "C")
+#' 	findVars(vars, x)
+#' 	for (k in vars) print(get(k))
+#' }
+#' fun(x) # Check the warnings
+findVars <- function(vars, obj, ...){
+	idx <- existsVars(vars, obj)
+	for (k in seq_along(idx)){
+		assign(vars[k], obj[ , idx[k]], envir=sys.frame(-1), ...)
+	}
 }
 
 #' existVar
@@ -69,6 +66,7 @@ findVars <- function(vars, obj){
 #' @param idx Should the indexes of matching columns be returned ?
 #' @seealso \code{\link{findVars}}
 #' @author Yves
+#' @export
 existsVars <- function(vars, obj, idx=TRUE) {
   col.idx <- rep(NA, length(vars))
   col <- sapply(vars, grepl, x=names(obj))
@@ -79,13 +77,13 @@ existsVars <- function(vars, obj, idx=TRUE) {
       if (any(jlower)) {
         col.idx[j] <- ifelse(sum(jlower) == 1, which(jlower), NA)
         warning(paste(vars[j], "assumed to be",
-                      names(obj)[col.idx[j]], "in", obj.name, "\n \t"))
+                      names(obj)[col.idx[j]], "in", obj.name))
       } else {
         jupper <- grepl(toupper(vars[j]), toupper(names(obj)))
         if (any(jupper)) {
           col.idx[j] <- ifelse(sum(jupper) == 1, which(jupper), NA)
           warning(paste(vars[j], "assumed to be",
-                        names(obj)[col.idx[j]], "in", obj.name, "\n \t"))
+                        names(obj)[col.idx[j]], "in", obj.name))
         } else {
           col.idx[j] <- NA
         }
@@ -95,7 +93,7 @@ existsVars <- function(vars, obj, idx=TRUE) {
     }
   }
   if (any(is.na(col.idx))){
-    stop(paste(vars[is.na(col.idx)], "not found in", obj.name, "\n \t"))
+    stop(paste(vars[is.na(col.idx)], "not found in", obj.name))
   }
   idx && return(col.idx)
 }
