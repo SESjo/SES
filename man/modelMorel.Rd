@@ -2,10 +2,10 @@
 \alias{modelMorel}
 \title{modelMorel}
 \usage{
-  modelMorel(chl, stat = NULL, append = TRUE)
+  modelMorel(Chl, stat = NULL, append = TRUE)
 }
 \arguments{
-  \item{chl}{}
+  \item{Chl}{}
 
   \item{stat}{A statdives object. 'chl' argument is
   ignored. The values are taken from this statdive object.}

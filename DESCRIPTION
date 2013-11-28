@@ -18,8 +18,6 @@ Collate:
     'SESutils.r'
     'addLoc.r'
     'importSES.r'
-    'SESname.r'
-    'replaceMissing.r'
     'importSEAPOpred.r'
     'addVar.r'
     'idPixel.r'
@@ -29,3 +27,4 @@ Collate:
     'time-utils.r'
     'Zeu.r'
     'sunPosition.r'
+    'extractBiom.r'

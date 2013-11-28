@@ -7,13 +7,9 @@
 #' @export
 extractBiom <- function(stat, tdr, biomdir, append=TRUE) {
   
-  any(grepl("Lat", names(stat))) || stop("'stat' dataset must contain a 'Lat' variable.")
-  any(grepl("Lon", names(stat))) || stop("'stat' dataset must contain a 'Lon' variable.")
-  any(grepl("Date", names(stat))) || stop("'stat' dataset must contain a 'Date' variable.")
-  any(grepl("Pixel.id", names(tdr))) || stop("'stat' dataset must contain a 'Pixel.id' variable.")  
-  any(grepl("Layer", names(tdr))) || stop("'tdr' dataset must contain a 'Layer' variable.")  
-  any(grepl("Pixel.id", names(tdr))) || stop("'tdr' dataset must contain a 'Pixel.id' variable.")  
-  
+  existsVars(c("Lat", "Lon", "Date", "Pixel.id"), stat)
+  existsVars(c("Layer", "Pixel.id"), tdr)
+
   biom <- rep(NA, nrow(tdr))
   
   for (date in unique(stat$Date)){
