@@ -21,10 +21,9 @@ idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 		stat == "stat" ||  stop("'stat' must be set to 'stat' or left blank when 'ses' is given.")
 		stat <- eval(parse(text=paste0(substitute(ses), '$stat')))
 	}
-	any(grepl("Dive.id", names(stat))) || stop("'From' dataset must contain 'Dive.id' variable (Primary key).")
-	any(grepl("Lat", names(stat))) && any(grepl("Lat", names(grid))) || stop("'stat'/'grid' dataset must contain a 'Lat' variable.")
-	any(grepl("Lon", names(stat))) && any(grepl("Lon", names(grid))) || stop("'stat'/'grid' dataset must contain a 'Lon' variable.")
-	
+  existsVars(c("Dive.id", "Lat", "Lon"), stat)
+	existsVars(c("Lat", "Lon"), grid)
+
 	pix <- function(lat, lon, grid) {
     if (is.na(lat) || is.na(lon)) return(NA)
 		d.lat <- grid$Lat - lat ; d.lat[d.lat > 0] <- -Inf

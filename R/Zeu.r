@@ -14,23 +14,19 @@ mZeu2layer <- function(mZeu){
 
 #' modelMorel
 #' @description Predict euphotic depth (m) from the surface chlorophyll concentration
-#' @param chl
+#' @param Chl
 #' @param stat A statdives object. 'chl' argument is ignored. The values are taken from this statdive object.
 #' @param append Should the variable be returned with the entire statdives object ?
 #' @references Morel and Berthon (1989)
 #' @author Yves
 #' @export
-modelMorel <- function(chl, stat=NULL, append=TRUE){
-  
-  if (!is.null(stat)){
-    any(grepl("Chl", names(stat))) || stop("'stat' dataset must contain a 'Chl' variable.")
-    chl <- stat$Chl
-  }
-  Zeu <- rep(NA, length(chl))
-  cond <- !is.na(chl) ; chl <- chl[cond]
-  chl.tot.strat <- 38*chl^(0.425)
-  chl.tot.strat[chl > 1] <- 40.2*chl[chl > 1]^(0.507)
-  Zeu[cond] <- 200*chl.tot.strat^(-0.293)
+modelMorel <- function(Chl, stat=NULL, append=TRUE){
+  if (!is.null(stat)) {findVars("Chl", stat)}
+  Zeu <- rep(NA, length(Chl))
+  cond <- !is.na(Chl) ; Chl <- Chl[cond]
+  Chl.tot.strat <- 38*Chl^(0.425)
+  Chl.tot.strat[Chl > 1] <- 40.2*Chl[Chl > 1]^(0.507)
+  Zeu[cond] <- 200*Chl.tot.strat^(-0.293)
   if (!is.null(stat) && append){
     stat$Zeu <- Zeu
     return(stat)
@@ -46,21 +42,15 @@ modelMorel <- function(chl, stat=NULL, append=TRUE){
 #' @author Yves
 #' @export
 extractChl <- function(stat, chldir, append=TRUE) {
-  
-  any(grepl("Lat", names(stat))) || stop("'stat' dataset must contain a 'Lat' variable.")
-  any(grepl("Lon", names(stat))) || stop("'stat' dataset must contain a 'Lon' variable.")
-  any(grepl("Date", names(stat))) || stop("'stat' dataset must contain a 'Date' variable.")
-  
+  existsVars(c("Lat", "Lon", "Date"), stat)
   chl <- rep(NA, nrow(stat))
   chlgrid <- ncgrid(list.files(chldir, "*.nc", full.names=TRUE)[1])
   chlPix <- idPixel(stat, chlgrid, append=FALSE)
-  
   for (date in unique(stat$Date)){
     chlDate <- importChl(date, chldir)
     if (all(is.na(chlDate))) next
     chl[stat$Date == date] <- chlDate$Chl[stat$Pixel.id[stat$Date == date]]
   }
-  
   return(chl)
 }
 
@@ -74,7 +64,6 @@ extractChl <- function(stat, chldir, append=TRUE) {
 #' @author Yves
 #' @export
 importChl <- function(date, dir, ncfile=NULL){
-  
   require("ncdf", quietly=TRUE)
   if (is.null(ncfile)){
     ncfiles <- list.files(dir, "*.nc", full.names=TRUE)
@@ -84,7 +73,6 @@ importChl <- function(date, dir, ncfile=NULL){
       return(NA)
     }
   }
-  
   if (length(ncfile) != 1) {
     warning(paste0("On " , date, ", several NetCDF files. \n", paste0(basename(ncfile), collapse="\n")))
     return(NA)
@@ -95,5 +83,4 @@ importChl <- function(date, dir, ncfile=NULL){
     close.ncdf(con)
   }
   return(grid)
-  
 }

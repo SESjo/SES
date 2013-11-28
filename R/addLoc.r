@@ -19,9 +19,8 @@ addLoc <- function(from, to, ses=NULL, append=TRUE){
 		from <- eval(parse(text=paste0(substitute(ses), '$', from)))
 		to <- eval(parse(text=paste0(substitute(ses), '$', to)))
 	}
-	any(grepl("Lat", names(from))) || stop("'From' dataset must contain a 'Lat' variable.")
-	any(grepl("Lon", names(from))) || stop("'From' dataset must contain a 'Lon' variable.")
-	
+  existsVars(c("Lat", "Lon"), from)
+  
 	if (!append) return(lapply(c("Lat", "Lon"), addVar, from, to, append=FALSE))
 	to[ , c("Lat", "Lon")] <- lapply(c("Lat", "Lon"), addVar, from, to, append=FALSE)
 	return(to)

@@ -18,8 +18,6 @@ Collate:
     'SESutils.r'
     'addLoc.r'
     'importSES.r'
-    'SESname.r'
-    'replaceMissing.r'
     'importSEAPOpred.r'
     'addVar.r'
     'idPixel.r'

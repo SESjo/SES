@@ -17,9 +17,9 @@ addVar <- function(var, from, to, ses=NULL, append=TRUE){
 		to <- eval(parse(text=paste0(substitute(ses), '$', to)))
 	}
 	argtdr <- match("tdr", c(class(from), class(to)) %wo% "data.frame", nomatch=0)
-	any(grepl("Dive.id", names(from))) || stop("'From' dataset must contain 'Dive.id' variable (Primary key).")
-	any(grepl("Dive.id", names(to))) || stop("'From' dataset must contain 'Dive.id' variable (Primary key).")
-	
+  existsVars("Dive.id", from)
+	existsVars("Dive.id", to)
+  
 	if (argtdr == 1){
 		to <- merge(to, unique(from[ , c("Dive.id",  var)]), by="Dive.id")
 		if (!append) return(to[, var])
