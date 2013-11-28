@@ -31,6 +31,7 @@ path <- system.file("extdata", package="SES")
 pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 ses <- importSES(pathname)
 ses$tdr <- addLoc(ses$stat, ses$tdr)
+head(ses$tdr)
 }
 \author{
   Yves

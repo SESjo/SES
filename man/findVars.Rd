@@ -1,8 +1,8 @@
 \name{findVars}
 \alias{findVars}
-\title{existVar}
+\title{findVars}
 \usage{
-  findVars(vars, obj)
+  findVars(vars, obj, ...)
 }
 \arguments{
   \item{vars}{The list of variable to search and create in
@@ -10,6 +10,9 @@
 
   \item{obj}{The object in which to search and grab the
   values.}
+
+  \item{...}{Arguments to be passed to
+  \code{\link{assign}}.}
 }
 \description{
   Assign to given variable names the value of matching
@@ -17,17 +20,13 @@
   partial matching print a warning.
 }
 \examples{
-x <- data.frame(A=1:3, B=letters[1:3])
-fun <- function(x){
-   # Check that variables 'A' and 'b' exists in object 'x'.
-   # Print a warning for 'b' instead of 'B'.
-   findVars(c("A", "b"), x)
-   # These variable are created in the current environment
-   cat("A: ", A, "\\nB: ", B)
-   # 'C' does not exist in 'x'. Interupt execution.
-   findVars("C", x)
- }
- fun(x)
+x <- data.frame(A=1:3, B=letters[1:3], c=c(TRUE, FALSE, TRUE))
+fun <- function(x) {
+	vars <- c("A", "b", "C")
+	findVars(vars, x)
+	for (k in vars) print(get(k))
+}
+fun(x) # Check the warnings
 }
 \author{
   Yves

@@ -25,11 +25,11 @@ convertTime <- function(x, to, width=6){
   else message("Requested conversion is not implemented")
 }
 
-#' posx2ymd
-#' @description Convert a POSIX object to a data frame.
-#' @param posx The POSIX object to convert
-#' @param width The desired number of columns desired in the data frame.
-#' @author Yves
+# posx2ymd
+# @description Convert a POSIX object to a data frame.
+# @param posx The POSIX object to convert
+# @param width The desired number of columns desired in the data frame.
+# @author Yves
 posx2ymd = function(posx, width=6){
   fmt <- c(Year="%Y", Month="%m", Day="%d", Hour="%H", Minute="%M", Second="%S")
   if (width != 6) fmt <- fmt[1:width]

@@ -35,7 +35,7 @@
   Yves
 }
 \seealso{
-  \code{\link{addLoc}} \code{\link{importSES}}
+  \code{\link{addLoc}}
 }
 \keyword{Lat}
 \keyword{Lon}

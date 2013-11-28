@@ -1,6 +1,7 @@
 export(addLoc)
 export(addVar)
 export(convertTime)
+export(existsVars)
 export(extractBiom)
 export(extractChl)
 export(findVars)

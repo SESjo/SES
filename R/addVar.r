@@ -8,7 +8,7 @@
 #' @param append logical. If TRUE, the function returns the entire object 'to' with the added column. if FALSE it returns the column.
 #' @return Object given at the 'to' argument, updated with location information.
 #' @details Missing values (NAs) of the choosen variable are transformed in zeros when pasted to a 'tdr' object.
-#' @seealso \code{\link{addLoc}} \code{\link{importSES}}
+#' @seealso \code{\link{addLoc}}
 #' @author Yves
 #' @export
 addVar <- function(var, from, to, ses=NULL, append=TRUE){

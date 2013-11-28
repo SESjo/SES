@@ -1,7 +1,8 @@
 .Rhistory
 *-Ex.R
 .Rproj.user/*
-.Rproj.user/*
 SES.Rproj
 *.RData
+*.tar.gz
+*.html
 .Rproj.user

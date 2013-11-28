@@ -5,3 +5,5 @@ SES-draft.r
 .RHistory
 .gitignore
 SES_0.1.tar.gz
+.Rdata
+.Rproj
