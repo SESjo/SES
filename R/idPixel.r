@@ -26,6 +26,7 @@ idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 	any(grepl("Lon", names(stat))) && any(grepl("Lon", names(grid))) || stop("'stat'/'grid' dataset must contain a 'Lon' variable.")
 	
 	pix <- function(lat, lon, grid) {
+    if (is.na(lat) || is.na(lon)) return(NA)
 		d.lat <- grid$Lat - lat ; d.lat[d.lat > 0] <- -Inf
 		latSupLim <- grid$Lat[which.max(d.lat)]
 		d.lon <- grid$Lon - lon ; d.lon[d.lon > 0] <- -Inf

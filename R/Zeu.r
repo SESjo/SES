@@ -26,9 +26,11 @@ modelMorel <- function(chl, stat=NULL, append=TRUE){
     any(grepl("Chl", names(stat))) || stop("'stat' dataset must contain a 'Chl' variable.")
     chl <- stat$Chl
   }
+  Zeu <- rep(NA, length(chl))
+  cond <- !is.na(chl) ; chl <- chl[cond]
   chl.tot.strat <- 38*chl^(0.425)
   chl.tot.strat[chl > 1] <- 40.2*chl[chl > 1]^(0.507)
-  Zeu <- 200*chl.tot.strat^(-0.293)
+  Zeu[cond] <- 200*chl.tot.strat^(-0.293)
   if (!is.null(stat) && append){
     stat$Zeu <- Zeu
     return(stat)

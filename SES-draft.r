@@ -1,12 +1,9 @@
-library(devtools)
-
 # Set up workspace and data directories ####
 setwd("C:/Users/stationcalcul/Desktop/Yves/R/SES")
 rm(list=ls())
-# mkdirs("./output_CPUEvsBiomass")
-# install.package("./SES_1.0.tar.gz", repos=NULL, type="source")
-# library(SES)
-load_all("../SES/")
+mkdirs("./output_CPUEvsBiomass")
+install.package("./SES_1.0.tar.gz", repos=NULL, type="source")
+library(SES)
 
 # SES data - 22 individuals
 matfiles <- list.files("../../Data/acc", pattern="*accelero.mat", full.names=TRUE, recursive=TRUE)
@@ -38,14 +35,13 @@ for (infile in matfiles) {
   # Add these variable to TDR data
   vars <- c("Date", "Lat", "Lon", "Pixel.id", "is.Day", "Zeu")
   ses$tdr[ , vars] <- lapply(vars, addVar, from="stat", to="tdr", ses=ses, append=FALSE)
-  ses$tdr$Layer <- mZeu2layer(ses$tdr$Depth / ses$tdr$Zeu)
   
   # Add Layer and micronekton biomass
-  # biom <- importSEAPOpred(date, ncdir)
-  
-  
+  ses$tdr$Layer <- mZeu2layer(ses$tdr$Depth / ses$tdr$Zeu)
+  ses$tdr$Biomass <- extractBiom(ses$stat, ses$tdr, biomdir)
+    
   # Remove unusable data from TDR
-  cond <- with(ses$tdr, Date!=0 & Dive.id!=0 & Lat!=0 & Pixel.id!=0 & Layer!="0")
+  cond <- with(ses$tdr, Date!=0 & Dive.id!=0 & Lat!=0 & Pixel.id!=0 & Zeu!=0)
   ses$tdr <- ses$tdr[cond, ]
   
   # Compute new variables
@@ -58,7 +54,7 @@ for (infile in matfiles) {
   data <- merge(merge(Catch.numb, Time.spent), Biomass)
   names(data) <- c("Date", "Pixel.id", "is.Day", "Layer", "Catch.numb", "Time.spent", "Biomass")
   data$Ind.id <- rep(SESname(infile), nrow(data))
-  data$CPUE <- data$Catch.numb / data$Time.spent
+  data$CPUE <- data$Catch.numb / data$Time.spent *60 # (Catch / min)
   save(data, paste0("./output_CPUEvsBiomass/", SESname(infile), ".RData"))
   rm(c("ses", "Catch.numb", "Time.spent", "Biomass")) ; gc(verbose=FALSE)
   
@@ -75,31 +71,12 @@ for (infile in sesfiles) {
 
 
 # Analysis ####
+plot(CPUE ~ Biomass, data=df)
+mod <- lm(CPUE ~ Biomass, data=df)
+abline(mod)
+summary(mod)
 
+image.plot(as.image(resid(mod), x=biomgrid[df$Pixel.id, ], nx=10, ny=10))
+map(add=TRUE, fill=TRUE, col="gray")
 # Draft area ####
 
-grp2layer <- function(stat, biom) {
-  
-  df <- expand.grid(Dive.id=stat$Dive.id, Layer=c("Epi", "Meso", "Bathy"))
-  df <- df[order(df$Dive.id), ]
-  
-  tab <- apply(biom[1:3, 3:8], 1, layerBiom)
-  
-  
-  
-  biom <- importSEAPOpred(date, ncdir)
-  
-  
-}
-
-layerBiom <- function(grp, all.col=FALSE){
-  # Compute the biomass in each layer during the day and night periods
-  # grp = c(epi, meso, mmeso, bathy, mbathy, hmbathy)
-  # all(lay.biom(1:6)$Biom == c(4, 10, 7, 15, 1, 5)) # Checking, must be TRUE
-  tab <- expand.grid(Layer=c("Bathy", "Epi", "Meso"), is.Day=c(FALSE, TRUE))
-  tab$Biom <- rep(NA, nrow(tab))
-  tab$Biom[tab$is.Day] <- c(sum(grp[4:6]), grp[1], sum(grp[2:3]))
-  tab$Biom[!tab$is.Day] <- c(grp[4], sum(grp[c(1,3,6)]), sum(grp[c(2,5)]))
-  if (all.col) return(tab)
-  else return(tab$Biom)
-}
