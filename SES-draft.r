@@ -6,14 +6,14 @@ install.package("./SES_1.0.tar.gz", repos=NULL, type="source")
 library(SES)
 
 # SES data - 22 individuals
-matfiles <- list.files("../../Data/acc", pattern="*accelero.mat", full.names=TRUE, recursive=TRUE)
+matfiles <- list.files("../../Data/seals_accelero/", pattern="*accelero.mat", full.names=TRUE, recursive=TRUE)
 matfiles <- matfiles[grep("/20[0-9]{2}-[0-9]{2}/", matfiles)]
 
 # SEAPODYM predictions of micronekton biomass
-biomdir <- "C:/Users/stationcalcul/Desktop/Yves/Data/biom_137"
+biomdir <- "C:/Users/stationcalcul/Desktop/Yves/Data/SEAPODYM_micronekton_biomass/"
 
 # CATSAT Surface [Chl] data
-chldir <- "C:/Users/stationcalcul/Desktop/Yves/Data/chl_ker/"
+chldir <- "C:/Users/stationcalcul/Desktop/Yves/Data/CATSAT_surface_chl/"
 
 
 
