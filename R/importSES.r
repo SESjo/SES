@@ -59,7 +59,11 @@ importSES <- function (matfile, type="both"){
     }
     res$stat <- as.data.frame(matdata2$statdives)
     headers <- unlist(matdata2$statdivestxt)
-    names(res$stat) <- unname(SESformat$statfmt[headers])
+    newHeaders <- unname(SESformat$statfmt[headers])
+    if (ncol(res$stat) != length(newHeaders)){
+      warning("The number of variables differs between 'statdives' and 'statdivestxt'. The nth first variable names are assumed to be the good ones.")
+    }
+    names(res$stat) <- newHeaders[1:ncol(res$stat)]
     if (any(match(SESformat$statkeep, names(res$stat), nomatch=0) == 0)){warning(paste0("The desired variable(s) ", 
                    paste(SESformat$statkeep[is.na(match(SESformat$statkeep, names(res$stat)))], collapse=" & "), 
                    " is(are) not available in statdives."))
