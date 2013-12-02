@@ -2,7 +2,7 @@
 \alias{isDay}
 \title{isDay}
 \usage{
-  isDay(time, loc, stat = NULL, elevlim = c(-18, 18),
+  isDay(Time, loc, stat = NULL, elevlim = c(-18, 18),
     append = TRUE)
 }
 \arguments{
