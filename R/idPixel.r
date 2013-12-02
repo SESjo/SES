@@ -23,21 +23,24 @@ idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 	}
   existsVars(c("Dive.id", "Lat", "Lon"), stat)
 	existsVars(c("Lat", "Lon"), grid)
-
-	pix <- function(lat, lon, grid) {
+  
+  # Find nearest superior values of grid
+  nearestBins <- function(col){
+    gridcol <- grid[ , col] ; datacol <- stat[ , col]
+    delta <- outer(unique(gridcol), datacol, `-`) ; delta[delta > 0] <- -Inf
+    res <- median(diff(unique(gridcol), 1)) ; ok <- abs(apply(delta, 2, max)) <= abs(res)
+    delta <- unique(gridcol)[apply(delta, 2, which.max)] ; delta[!ok] <- NA
+    delta
+  }
+	vals <- list()
+  vals[c("Lat", "Lon")] <- lapply(c("Lat", "Lon"), FUN=nearestBins)
+  
+  # Identify the corresponding pixel number and return results
+	findPix <- function(lat, lon, grid) {
     if (is.na(lat) || is.na(lon)) return(NA)
-		d.lat <- grid$Lat - lat ; d.lat[d.lat > 0] <- -Inf
-		latSupLim <- grid$Lat[which.max(d.lat)]
-		d.lon <- grid$Lon - lon ; d.lon[d.lon > 0] <- -Inf
-		lonSupLim <- grid$Lon[which.max(d.lon)]
-		if (abs(max(d.lat)) <= median(diff(unique(grid$Lat), 1)) || abs(max(d.lon)) <= median(diff(grid$Lon, 1))){
-			return(as.integer(which(grid$Lat == latSupLim & grid$Lon == lonSupLim)))
-		} else {
-			return(NA)
-		}
+	  return(as.integer(which(grid$Lat == lat & grid$Lon == lon)))
 	}
-		
-	if (!append) return(mapply(pix, stat$Lat, stat$Lon, MoreArgs=list(grid=grid)))
-	stat$Pixel.id <- mapply(pix, stat$Lat, stat$Lon, MoreArgs=list(grid=grid))
+	if (!append) return(mapply(findPix, vals$Lat, vals$Lon, MoreArgs=list(grid=grid)))
+	stat$Pixel.id <- mapply(findPix, vals$Lat, vals$Lon, MoreArgs=list(grid=grid))
 	return(stat)
 }
