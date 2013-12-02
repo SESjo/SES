@@ -46,7 +46,7 @@ NOAA <- data.frame(elevNOAA = c(72.44, 69.57, 63.57, 25.6),
 # Sun's position as returned by sunPosition()
 sunPos <- sunPosition(Year = 2012, Month = 12, Day = 22,
                       Hour = 12, Minute = 0, Second = 0,
-                      Lat = testPts$Lat, Lon = testPts$Lon))
+                      Lat = testPts$Lat, Lon = testPts$Lon)
 # Comparison
 cbind(testPts, NOAA, sunPos)
 # Another syntax

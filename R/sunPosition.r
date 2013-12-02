@@ -22,7 +22,7 @@
 #' # Sun's position as returned by sunPosition()
 #' sunPos <- sunPosition(Year = 2012, Month = 12, Day = 22,
 #'                       Hour = 12, Minute = 0, Second = 0,
-#'                       Lat = testPts$Lat, Lon = testPts$Lon))
+#'                       Lat = testPts$Lat, Lon = testPts$Lon)
 #' # Comparison
 #' cbind(testPts, NOAA, sunPos)
 #' # Another syntax
