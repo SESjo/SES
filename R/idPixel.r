@@ -27,7 +27,7 @@ idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
   # Find nearest superior values of grid
   nearestBins <- function(col){
     gridcol <- grid[ , col] ; datacol <- stat[ , col]
-    delta <- outer(unique(gridcol), datacol, `-`) ; delta[delta > 0] <- -Inf
+    delta <- outer(unique(gridcol), datacol, `-`) ; delta[delta > 0] <- -Inf ; delta[is.na(delta)] <- - Inf
     res <- median(diff(unique(gridcol), 1)) ; ok <- abs(apply(delta, 2, max)) <= abs(res)
     delta <- unique(gridcol)[apply(delta, 2, which.max)] ; delta[!ok] <- NA
     delta
