@@ -27,7 +27,7 @@ isDay <- function(Time, loc, stat=NULL, elevlim=c(-18, 18), append=TRUE) {
 		locNA <- apply(is.na(loc), 1, sum) != 0
 		sunAngle <- try(rep(NA, nrow(Time)), silent=TRUE)
     if (is.error(sunAngle)) sunAngle <- rep(NA, length(Time))
-		sunAngle[!locNA] <- sunPosition(Time=Time[!locNA], loc=loc[!locNA, ])$el
+		sunAngle[!locNA] <- sunPosition(time=Time[!locNA], loc=loc[!locNA, ])$el
 	}
 	else {
 	  locNA <- try(rep(FALSE, nrow(Time)), silent=TRUE)
