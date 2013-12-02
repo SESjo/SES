@@ -22,7 +22,7 @@ importSEAPOpred <- function(date, dir, ncfile=NULL) {
 	}
 	
 	if (length(ncfile) != 1) {
-		stop(paste0("On " , date, ", none or several NetCDF files. \n", paste0(basename(ncfile), collapse="\n")))
+		stop(paste0("On '" , as.character(date), "', none or several NetCDF files. \n", paste0(basename(ncfile), collapse="\n")))
 		return(NA)
 	} else {
 		con <- open.ncdf(ncfile)

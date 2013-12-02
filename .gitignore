@@ -6,3 +6,4 @@ SES.Rproj
 *.tar.gz
 *.html
 .Rproj.user
+*draft*

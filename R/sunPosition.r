@@ -14,24 +14,26 @@
 #' @author Yves
 #' @export
 #' @examples
-#' testPts <- data.frame(lat = c(-41,-3,3, 41), 
-#' long = c(0, 0, 0, 0))
+#' testPts <- data.frame(Lat = c(-41,-3,3, 41), 
+#'                      Lon = c(0, 0, 0, 0))
 #' # Sun's position as returned by the NOAA Solar Calculator,
 #' NOAA <- data.frame(elevNOAA = c(72.44, 69.57, 63.57, 25.6),
 #'                    azNOAA = c(359.09, 180.79, 180.62, 180.3))
 #' # Sun's position as returned by sunPosition()
 #' sunPos <- sunPosition(Year = 2012, Month = 12, Day = 22,
 #'                       Hour = 12, Minute = 0, Second = 0,
-#'                       lat = testPts$lat, long = testPts$long)
+#'                       Lat = testPts$Lat, Lon = testPts$Lon)
 #' # Comparison
 #' cbind(testPts, NOAA, sunPos)
+#' # Another syntax
+#' time <- data.frame(Year=rep(2012, 4), Month=rep(12, 4), Day=rep(22, 4),
+#'                    Hour=10:13, Minute=rep(0, 4), Second=rep(0,4))
+#' sunPosition(time=time, loc=testPts)
 sunPosition <- function(Year, Month, Day, Hour=12, Minute=0, Second=0, time=NULL,
-                        lat=46.5, long=6.5, loc=NULL) {
+                        Lat=46.5, Lon=6.5, loc=NULL) {
   
   if (!is.null(loc)) {
-    if (sum(grepl("Lat", names(loc))) != 1 || sum(grepl("Lon", names(loc))) != 1) stop("Coordinates must be named 'Lat' and 'Lon'.")
-    lat <- loc[ , grep("Lat", names(loc))]
-    long <- loc[ , grep("Lon", names(loc))]
+    findVars(c("Lat", "Lon"), loc)
   }
   if (!is.null(time)) {
     if (inherits(time, "POSIXt")) {
@@ -41,9 +43,9 @@ sunPosition <- function(Year, Month, Day, Hour=12, Minute=0, Second=0, time=NULL
       ymd <- replaceMissing(time, na.0=NA, 0)
       names(ymd) <- c("Year", "Month", "Day", "Hour", "Minute", "Second")
     }
-    return(with(ymd, .sunPosition(Year, Month, Day, Hour, Minute, Second, lat, long)))
+    return(with(ymd, .sunPosition(Year, Month, Day, Hour, Minute, Second, Lat, Lon)))
   }
-  .sunPosition(Year, Month, Day, Hour, Minute, Second, lat, long)
+  .sunPosition(Year, Month, Day, Hour, Minute, Second, Lat, Lon)
 }
 
 

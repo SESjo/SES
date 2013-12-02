@@ -74,7 +74,7 @@ importChl <- function(date, dir, ncfile=NULL){
     }
   }
   if (length(ncfile) != 1) {
-    warning(paste0("On " , date, ", several NetCDF files. \n", paste0(basename(ncfile), collapse="\n")))
+    warning(paste0("On '" , as.character(date), "', several NetCDF files. \n", paste0(basename(ncfile), collapse="\n")))
     return(NA)
   } else {
     con <- open.ncdf(ncfile)

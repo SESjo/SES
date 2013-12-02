@@ -27,6 +27,14 @@
   SEAPODYm criteria elevlim=c(-18, 18). Transition periods
   filled with NAs.
 }
+\examples{
+testPts <- data.frame(Lat = c(-41,-3,3, 41),
+                     Lon = c(0, 0, 0, 0))
+time <- data.frame(Year=rep(2012, 4), Month=rep(12, 4), Day=rep(22, 4),
+                   Hour=10:13, Minute=rep(0, 4), Second=rep(0,4))
+isDay(time, testPts)
+isDay(convertTime(time, to="posx"), testPts)
+}
 \author{
   Yves
 }

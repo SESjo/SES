@@ -9,7 +9,14 @@
 #' @seealso \code{\link{sunPosition}}
 #' @author Yves
 #' @export
-isDay <- function(time, loc, stat=NULL, elevlim=c(-18, 18), append=TRUE) {
+#' @examples
+#' testPts <- data.frame(Lat = c(-41,-3,3, 41), 
+#'                      Lon = c(0, 0, 0, 0))
+#' time <- data.frame(Year=rep(2012, 4), Month=rep(12, 4), Day=rep(22, 4),
+#'                    Hour=10:13, Minute=rep(0, 4), Second=rep(0,4))
+#' isDay(time, testPts)
+#' isDay(convertTime(time, to="posx"), testPts)
+isDay <- function(Time, loc, stat=NULL, elevlim=c(-18, 18), append=TRUE) {
 	if (!is.null(stat)){
     findVars(c("Time", "Lat", "Lon"), stat)
 		loc <- data.frame(Lat=Lat, Lon=Lon)
@@ -18,16 +25,17 @@ isDay <- function(time, loc, stat=NULL, elevlim=c(-18, 18), append=TRUE) {
 	if (any(is.na(Time))) stop("NA not allowed in 'Time' argument")
 	if (any(is.na(loc))) {
 		locNA <- apply(is.na(loc), 1, sum) != 0
-		sunAngle <- rep(NA, length(Time))
+		sunAngle <- try(rep(NA, nrow(Time)), silent=TRUE)
+    if (is.error(sunAngle)) sunAngle <- rep(NA, length(Time))
 		sunAngle[!locNA] <- sunPosition(Time=Time[!locNA], loc=loc[!locNA, ])$el
 	}
 	else {
-	  locNA <- rep(FALSE, length(Time))
-		sunAngle <- sunPosition(Time=Time, loc=loc)$el
+	  locNA <- try(rep(FALSE, nrow(Time)), silent=TRUE)
+	  if (is.error(locNA)) locNA <- rep(FALSE, length(Time))
+		sunAngle <- sunPosition(time=Time, loc=loc)$el
 	}
-	is.Day <- rep(NA, length(Time))
+	is.Day <- rep(NA, length(locNA))
 	is.Day[!locNA & sunAngle > elevlim[2]] <- TRUE
-	is.Day[!locNA & sunAngle < elevlim[1]] <- FALSE
 	if (!is.null(stat) & append) {stat$is.Day <- is.Day ; return(stat)}
 	else {return(is.Day)}
 }
