@@ -55,7 +55,8 @@ replaceMissing <- function(x, na.0=NaN, na.1=NA) {
 findVars <- function(vars, obj, ...){
 	idx <- existsVars(vars, obj)
 	for (k in seq_along(idx)){
-		assign(vars[k], obj[ , idx[k]], envir=sys.frame(-1), ...)
+		if (is.data.frame(obj)) {assign(vars[k], obj[ , idx[k]], envir=sys.frame(-1), ...)}
+		else if (is.list(obj)) {assign(vars[k], obj[[idx[k]]], envir=sys.frame(-1), ...)}
 	}
 }
 
