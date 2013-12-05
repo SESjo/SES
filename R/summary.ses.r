@@ -21,9 +21,7 @@ summary.ses <- function(ses){
 #' @param ... Other parameters to be passed to \code{plot()} or \code{par()}.
 #' @details Bathymetry taken from \url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}. Isobaths from -200 to -4400 meters by 200 m.
 #' @author Yves
-#' @rdname plot.ses
-#' @import maptools fields
-#' @method plot ses
+#' @import maptools fields maps
 #' @export
 #' @examples 
 #' path <- system.file("extdata", package="SES")
@@ -45,7 +43,6 @@ plot.ses <- function(ses, pch=19, cex=1, fill=TRUE, m.col="gray", isobath=NULL, 
 	title(main=paste(Ind.id, ": ", nrow(stat), "dives"), line=2)
 	mtext(text=paste(range(Time), collapse="  -->  "), side=3, line=.75)
 	points(Lat ~ Lon, data=stat[1, ], col="deeppink3", pch="*", cex=4)
-	require(maps)
 	map(add=TRUE, fill=fill, col=m.col)
 	if (!is.null(isobath)){
 		bath <- readShapeSpatial(file.path(system.file("extdata", package="SES"), "bath.shp"))

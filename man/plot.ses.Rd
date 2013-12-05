@@ -2,7 +2,7 @@
 \alias{plot.ses}
 \title{plot.ses}
 \usage{
-  \method{plot}{ses} (ses, pch = 19, cex = 1, fill = TRUE,
+  plot.ses(ses, pch = 19, cex = 1, fill = TRUE,
     m.col = "gray", isobath = NULL, Z = NULL, ...)
 }
 \arguments{

@@ -34,7 +34,4 @@ ses <- importSES(pathname)
   Edit 'SESformat' in the source code to modify the output
   format (type of columns)
 }
-\keyword{.mat}
-\keyword{Import}
-\keyword{SES}
 

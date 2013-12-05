@@ -4,6 +4,14 @@ where <- function(x, f) vapply(x, f, logical(1))
 "%wo%" <- function(x, y) x[!x %in% y] # x without y, asymetric
 "%wi%" <- function(x, y) x[x %in% y] # x within y, equivalent to intersect, symetric
 
+#' datenum2posx
+#' @description Utility to convert Matlab numeric detes to R's POSIXct format
+#' @param x The atomic vector of matlab dates.
+#' @author Yves
+#' @export
+datenum2posx <- function(x){as.POSIXct((x - 719529)*24*3600, tz="UTC", origin="1970-01-01")}
+
+
 #' SESname
 #' @description Extract the ID of an individual from a string that contains it.
 #' @param text Text containing the seal ID.
@@ -41,6 +49,7 @@ replaceMissing <- function(x, na.0=NaN, na.1=NA) {
 #' @description Assign to given variable names the value of matching columns in an object. If no matching throw an error. If partial matching print a warning.
 #' @param vars The list of variable to search and create in the current environment.
 #' @param obj The object in which to search and grab the values.
+#' @param varnames Optional. The names to give to the variables found if different from \code{vars}.
 #' @param ... Arguments to be passed to \code{\link{assign}}.
 #' @seealso \code{\link{existsVars}}
 #' @author Yves
@@ -54,11 +63,12 @@ replaceMissing <- function(x, na.0=NaN, na.1=NA) {
 #' 	for (k in vars) print(get(k))
 #' }
 #' fun(x) # Check the warnings
-findVars <- function(vars, obj, ...){
+findVars <- function(vars, obj, varnames=NULL, ...){
 	idx <- existsVars(vars, obj)
+	if (is.null(varnames)){varnames <- vars}
 	for (k in seq_along(idx)){
-		if (is.data.frame(obj)) {assign(vars[k], obj[ , idx[k]], envir=sys.frame(-1), ...)}
-		else if (is.list(obj)) {assign(vars[k], obj[[idx[k]]], envir=sys.frame(-1), ...)}
+		if (is.data.frame(obj)) {assign(varnames[k], obj[ , idx[k]], envir=sys.frame(-1), ...)}
+		else if (is.list(obj)) {assign(varnames[k], obj[[idx[k]]], envir=sys.frame(-1), ...)}
 	}
 }
 

@@ -2,7 +2,7 @@
 \alias{findVars}
 \title{findVars}
 \usage{
-  findVars(vars, obj, ...)
+  findVars(vars, obj, varnames = NULL, ...)
 }
 \arguments{
   \item{vars}{The list of variable to search and create in
@@ -10,6 +10,9 @@
 
   \item{obj}{The object in which to search and grab the
   values.}
+
+  \item{varnames}{Optional. The names to give to the
+  variables found if different from \code{vars}.}
 
   \item{...}{Arguments to be passed to
   \code{\link{assign}}.}
