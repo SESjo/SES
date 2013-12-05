@@ -23,4 +23,5 @@
 \seealso{
   \code{\link{findVars}}
 }
+\keyword{internal}
 

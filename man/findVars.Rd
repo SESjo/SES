@@ -34,4 +34,5 @@ fun(x) # Check the warnings
 \seealso{
   \code{\link{existsVars}}
 }
+\keyword{internal}
 

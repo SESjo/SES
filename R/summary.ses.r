@@ -23,6 +23,7 @@ summary.ses <- function(ses){
 #' @author Yves
 #' @rdname plot.ses
 #' @import maptools fields
+#' @method plot ses
 #' @export
 #' @examples 
 #' path <- system.file("extdata", package="SES")

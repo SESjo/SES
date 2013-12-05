@@ -24,6 +24,7 @@ SESname <- function(text){
 #' @param na.1 The replacement. Default is NA.
 #' @author Yves
 #' @export
+#' @keywords internal
 #' @examples
 #' x <- sample(c(1:3,NaN), 20, replace=TRUE)
 #' x 
@@ -44,6 +45,7 @@ replaceMissing <- function(x, na.0=NaN, na.1=NA) {
 #' @seealso \code{\link{existsVars}}
 #' @author Yves
 #' @export
+#' @keywords internal
 #' @examples
 #' x <- data.frame(A=1:3, B=letters[1:3], c=c(TRUE, FALSE, TRUE))
 #' fun <- function(x) {
@@ -67,6 +69,7 @@ findVars <- function(vars, obj, ...){
 #' @param idx Should the indexes of matching columns be returned ?
 #' @seealso \code{\link{findVars}}
 #' @author Yves
+#' @keywords internal
 #' @export
 existsVars <- function(vars, obj, idx=TRUE) {
   col.idx <- rep(NA, length(vars))
