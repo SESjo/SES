@@ -57,3 +57,4 @@ plot.ses <- function(ses, pch=19, cex=1, fill=TRUE,
 		lines(bath, lty=2)
 	}
 }
+
