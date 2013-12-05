@@ -18,17 +18,23 @@ summary.ses <- function(ses){
 #' @param m.col The color to use in order to fill the terrestrial area.
 #' @param isobath Isobaths to draw. Default is NULL (none). Isobath at -1000 m corresponds approximatively to the Kerguelen shell boarder. Slow down the function (shapefile loading).
 #' @param Z A 'statdives' variable to plot along the trajectory.
+#' @param Z.col Colors for Z values.
 #' @param ... Other parameters to be passed to \code{plot()} or \code{par()}.
 #' @details Bathymetry taken from \url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}. Isobaths from -200 to -4400 meters by 200 m.
 #' @author Yves
-#' @import maptools fields maps
+#' @import maptools fields
 #' @export
 #' @examples 
 #' path <- system.file("extdata", package="SES")
 #' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 #' ses <- importSES(pathname)
 #' plot(ses, isobath=-1000, Z=ses$stat$Catch.numb)
-plot.ses <- function(ses, pch=19, cex=1, fill=TRUE, m.col="gray", isobath=NULL, Z=NULL, ...){
+#' library("RColorBrewer")
+#' mycol <- brewer.pal(n=10, name="BrBG")
+#' plot(ses, Z=ses$stat$Dive.dur, Z.col=mycol)
+plot.ses <- function(ses, pch=19, cex=1, fill=TRUE,
+					 m.col="gray", isobath=NULL, 
+					 Z=NULL, Z.col=tim.colors(64), ...){
 	
 	old.par <- par("mar") ; on.exit(par(old.par))
 	par(mar=c(4,4,3.5,6))
@@ -37,12 +43,13 @@ plot.ses <- function(ses, pch=19, cex=1, fill=TRUE, m.col="gray", isobath=NULL, 
 	plot(Lat ~ Lon, pch=pch, cex=cex*0.3, type="n")
 	if (!is.null(Z)){
 		im <- as.image(Z, x=data.frame(Lon, Lat))
-		image.plot(im, add=TRUE)
+		image.plot(im, add=TRUE, col=Z.col)
 	}
 	points(Lat ~ Lon, pch=pch, cex=cex*0.3, ...)
 	title(main=paste(Ind.id, ": ", nrow(stat), "dives"), line=2)
 	mtext(text=paste(range(Time), collapse="  -->  "), side=3, line=.75)
 	points(Lat ~ Lon, data=stat[1, ], col="deeppink3", pch="*", cex=4)
+	require(maps)
 	map(add=TRUE, fill=fill, col=m.col)
 	if (!is.null(isobath)){
 		bath <- readShapeSpatial(file.path(system.file("extdata", package="SES"), "bath.shp"))

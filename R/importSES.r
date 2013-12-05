@@ -59,6 +59,8 @@ importSES <- function (matfile, type="both"){
 #' @param type The type of dataset
 #' @param obj The object to process.
 #' @param objtxt The original names. tdrcortxt or statdivestxt in the .mat file.
+#' @export
+#' @keywords internal
 #' @author Yves
 renames <- function(type=c("tdr", "stat"), obj, objtxt){
 	findVars(type, formatSES, varnames="fmt")
