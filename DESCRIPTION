@@ -32,3 +32,4 @@ Collate:
     'extractBiom.r'
     'summary.ses.r'
     'formatSES.r'
+    'SESplot.r'

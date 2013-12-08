@@ -2,7 +2,8 @@
 \alias{renames}
 \title{renames}
 \usage{
-  renames(type = c("tdr", "stat"), obj, objtxt)
+  renames(type = c("tdr", "stat", "stat3D", "tdr3D"), obj,
+    objtxt)
 }
 \arguments{
   \item{type}{The type of dataset}
