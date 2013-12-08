@@ -16,41 +16,78 @@ importSES <- function (matfile, type="both"){
 	
 	old.opt <- options("warn") ; options(warn=-1)
 	
-	matdata <- readMat(matfile) ; options(old.opt)
-	res <- list(Ind.id=SESname(matfile), 
-				tdr=data.frame(), stat=data.frame())
-	
-	if (type != "stat"){
-		if (any(grepl("tdrcor2", names(matdata)))){
-			matdata2 <- matdata
-		}else{
-			matdata2 <- matdata[[grep("tdrcor2", lapply(matdata, names))]]
+	if (length(matfile) == 1){
+		matdata <- readMat(matfile) ; options(old.opt)
+		res <- list(Ind.id=SESname(matfile), 
+					tdr=data.frame(), stat=data.frame())
+		class(res) <- c("ses", "list")
+		
+		if (type != "stat"){
+			if (any(grepl("tdrcor2", names(matdata)))){
+				matdata2 <- matdata
+			}else{
+				matdata2 <- matdata[[grep("tdrcor2", lapply(matdata, names))]]
+			}
+			res$tdr <- as.data.frame(matdata2$tdrcor2)
+			res$tdr <- renames(type="tdr", obj=res$tdr, objtxt=matdata2$tdrcor2txt)
+			res$tdr$Time <- datenum2posx(res$tdr$Time)
+			res$tdr[, grep("is.", names(res$tdr))] <- as.logical(res$tdr[, grep("is.", names(res$tdr))])
+			res$tdr[] <- lapply(res$tdr, replaceMissing) # Replace matlab's NaN by NA
 		}
-		res$tdr <- as.data.frame(matdata2$tdrcor2)
-		res$tdr <- renames(type="tdr", obj=res$tdr, objtxt=matdata2$tdrcor2txt)
-		res$tdr$Time <- datenum2posx(res$tdr$Time)
-		res$tdr[, grep("is.", names(res$tdr))] <- as.logical(res$tdr[, grep("is.", names(res$tdr))])
-		res$tdr[] <- lapply(res$tdr, replaceMissing) # Replace matlab's NaN by NA
-	}
-	class(res$tdr) <- c("tdr", "data.frame")
-	if (type == "tdr") return(res)
-	
-	if (type != "tdr"){
-		if (any(grepl("statdives", names(matdata)))){
-			matdata2 <- matdata
-		}else{
-			matdata2 <- matdata[[grep("statdivestxt", lapply(matdata, names))]]
+		class(res$tdr) <- c("tdr", "data.frame")
+		if (type == "tdr") return(res)
+		
+		if (type != "tdr"){
+			if (any(grepl("statdives", names(matdata)))){
+				matdata2 <- matdata
+			}else{
+				matdata2 <- matdata[[grep("statdivestxt", lapply(matdata, names))]]
+			}
+			res$stat <- as.data.frame(matdata2$statdives)
+			res$stat <- renames(type="stat", obj=res$stat, objtxt=matdata2$statdivestxt)
+			res$stat$Time <- datenum2posx(res$stat$Time)
+			res$stat[] <- lapply(res$stat, replaceMissing) # Replace matlab's NaN by NA
 		}
-		res$stat <- as.data.frame(matdata2$statdives)
-		res$stat <- renames(type="stat", obj=res$stat, objtxt=matdata2$statdivestxt)
-		res$stat$Time <- datenum2posx(res$stat$Time)
-		res$stat[] <- lapply(res$stat, replaceMissing) # Replace matlab's NaN by NA
+		class(res$stat) <- c("statdives", "data.frame")
+		if (type == "stat") return(res)
+		
+		return(res)
+	}else{
+		res <- list(Ind.id=SESname(matfile[1]), 
+					tdr=data.frame(), stat=data.frame())
+		class(res) <- c("ses3D", "ses", "list")
+		matfile <-  matfile[order(file.info(matfile)$size)]
+		for(infile in matfile){
+			matdata <- readMat(infile) 
+			locs <- try(data.frame(Dive.id=matdata$dive.id.geor, 
+								   Lat.i=matdata$gps.geor[ , 1],
+								   Lon.i=matdata$gps.geor[ , 2],
+								   Lat.f=matdata$gps.geor[ , 3],
+								   lon.f=matdata$gps.geor[ , 4]))
+			if (is.error(locs)){next}
+			else{matfile <- matfile[-which(matfile == infile)] ; break}
+		}
+		if (is.error(locs)){stop("Multiple matfile input is reserved to 3D dives data.")}
+		for(infile in matfile){
+			matdata <- readMat(infile) 	
+			res$stat <- try(renames(type="stat3D", obj=as.data.frame(matdata$data), objtxt=matdata$titre.colonne))
+			if (is.error(res$stat)){next}
+			else{
+				res$stat$Dive.id <- seq_along(res$stat[ , 1])
+				res$stat <- merge(locs, res$stat, by="Dive.id", all.y=TRUE)
+				class(res$stat) <- c("statdives3D", "statdives", "data.frame")
+				if(type == "stat") return(res)
+				matfile <- matfile[-which(matfile == infile)] 
+				break
+			}
+		}
+		matdata <- readMat(matfile) 	
+		res$tdr <- renames("tdr3D", as.data.frame(Reduce(rbind, matdata$GeoRefLatLong[ ])), matdata$GeoRefLatLong.titles)
+		res$tdr$Dive.id <- rep(locs$Dive.id, sapply(matdata$GeoRefLatLong, nrow))
+		class(res$tdr) <- c("tdr3D", "tdr", "data.frame")
+		if (type == "tdr") res$stat <- NULL
+		return(res)
 	}
-	class(res$stat) <- c("statdives", "data.frame")
-	if (type == "stat") return(res)
-	
-	class(res) <- c("ses", "list")
-	return(res)
 }
 
 
@@ -62,7 +99,7 @@ importSES <- function (matfile, type="both"){
 #' @export
 #' @keywords internal
 #' @author Yves
-renames <- function(type=c("tdr", "stat"), obj, objtxt){
+renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt){
 	findVars(type, formatSES, varnames="fmt")
 	headers <- unlist(objtxt)
 	newHeaders <- unname(fmt[headers, "alias"])

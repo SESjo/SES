@@ -1,0 +1,12 @@
+"","alias","keep","stringAsFactors"
+"DateTime","Time",TRUE,FALSE
+"Distance","Distance",TRUE,FALSE
+"LatRad","Lat.rad",FALSE,FALSE
+"LongRad","Lon.rad",FALSE,FALSE
+"Latitude","Lat",TRUE,FALSE
+"Longitude","Lon",TRUE,FALSE
+"Depth","Depth",TRUE,FALSE
+"DRCalcSpd","var1",FALSE,FALSE
+"NewX","var2",FALSE,FALSE
+"NewY","var3",FALSE,FALSE
+"Bering","var4",FALSE,FALSE
