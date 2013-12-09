@@ -17,6 +17,11 @@
   Create Biomass variable by extracting relevant values
   from NetCDF files
 }
+\details{
+  When time resolution is > 1day, then the biomass is
+  extracted in the pixel where the averaged daily location
+  of seal belongs.
+}
 \author{
   Yves
 }

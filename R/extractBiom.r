@@ -3,6 +3,7 @@
 #' @param stat
 #' @param biomdir The directory where to find the NetCDF files with biomass values.
 #' @param append Should the variable be returned with the entire statdives object ?
+#' @details When time resolution is > 1day, then the biomass is extracted in the pixel where the averaged daily location of seal belongs.
 #' @author Yves
 #' @export
 extractBiom <- function(stat, tdr, biomdir, append=TRUE) {

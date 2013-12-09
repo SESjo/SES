@@ -1,29 +1,29 @@
-"","alias","keep","stringAsFactors"
-"diveduration","Dive.dur",TRUE,FALSE
-"desc_duration","Desc.dur",TRUE,FALSE
-"bot_duration","Bott.dur",TRUE,FALSE
-"asc_duration","Asc.dur",TRUE,FALSE
-"presurf_dur","Surfi.dur",TRUE,FALSE
-"postsurf_dur","Surff.dur",TRUE,FALSE
-"profmax","Depth.max",TRUE,FALSE
-"distance_horiz","Dist.h",TRUE,FALSE
-"angdrad","Angle.desc",TRUE,FALSE
-"angrrad","Angle.asc",TRUE,FALSE
-"tortuoh","Sinuosity.h",TRUE,FALSE
-"tortuop","Sinuosity.v",TRUE,FALSE
-"sum_ecartcaps","varinconnue1",TRUE,FALSE
-"moy_ecartcaps","varinconnue2",TRUE,FALSE
-"sum_ecartpit","varinconnue3",TRUE,FALSE
-"moy_ecartpit","varinconnnue4",TRUE,FALSE
-"effTOT_desc","Effort.desc",TRUE,FALSE
-"effTOT_bot","Effort.bott",TRUE,FALSE
-"effTOT_asc","Effort.asc",TRUE,FALSE
-"capturesbot","Catch.numb.bott",TRUE,FALSE
-"dir","Direction",TRUE,FALSE
-"spd","Speed",TRUE,FALSE
-"spd_courantmercator","Speed.currant",TRUE,FALSE
-"dir_courantmercator","Direction.currant",TRUE,FALSE
-"plongee_georef","is.diveGeoref",TRUE,FALSE
-"distance_gps","Dist.gps",TRUE,FALSE
-"distance_model3d","Dist.model",TRUE,FALSE
-"diff_distancereel-distancemodel","Dist.diff",TRUE,FALSE
+;alias;keep;description
+diveduration;Dive.dur;TRUE;Duration of dive (s)
+desc_duration;Desc.dur;TRUE;Duration of the descent step of the dive (s)
+bot_duration;Bott.dur;TRUE;Duration of the bottom step (s)
+asc_duration;Asc.dur;TRUE;Duration of the ascent step (s)
+presurf_dur;Surfi.dur;TRUE;Duration of the surface period just preceeding the dive (s)
+postsurf_dur;Surff.dur;TRUE;Duration of the surface period just following the dive (s)
+profmax;Depth.max;TRUE;Maximum depth reached in dive (m)
+distance_horiz;Dist.h;TRUE;Distance travelled while diving on the (latitude, longitude) plan (m?)
+angdrad;Angle.desc;TRUE;Descent angle (radian)
+angrrad;Angle.asc;TRUE;Ascent angle (radian)
+tortuoh;Sinuosity.h;TRUE;Horizontal tortuosity (ref. Benhamou 2004) (unit?)
+tortuop;Sinuosity.v;TRUE;Vertical tortuosity (ref. Benhamou 2004)  (unit?)
+sum_ecartcaps;varinconnue1;TRUE;???
+moy_ecartcaps;varinconnue2;TRUE;???
+sum_ecartpit;varinconnue3;TRUE;???
+moy_ecartpit;varinconnnue4;TRUE;???
+effTOT_desc;Effort.desc;TRUE;Swimming effort cumulated over the descent step of the dive (jerk)
+effTOT_bot;Effort.bott;TRUE;Swimming effort cumulated over the bottom step of the dive (jerk)
+effTOT_asc;Effort.asc;TRUE;Swimming effort cumulated over the ascent step of the dive (jerk)
+capturesbot;Catch.numb.bott;TRUE;Number of prey catch attempts in the bottom step
+dir;Direction;TRUE;Average direction of the seal in the dive ? (unit?)
+spd;Speed;TRUE;Average speed (horizontal) of the seal in the dive ? (unit?)
+spd_courantmercator;Speed.current;TRUE;Average speed (horizontal) of the current ? (unit?)
+dir_courantmercator;Direction.current;TRUE;Average direction of the current in the dive ? (unit?)
+plongee_georef;is.diveGeoref;TRUE;Is the dive associated with GPS locations in both of preceeding and following surface periods
+distance_gps;Dist.gps;TRUE;Distance travelled between GPS locations (units?)
+distance_model3d;Dist.model;TRUE;Distance travelled in the reconstructed dive (units?)
+diff_distancereel-distancemodel;Dist.diff;TRUE;Difference between these distance (model attempts to minimize it) (units?)

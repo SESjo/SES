@@ -103,6 +103,9 @@ existsVars <- function(vars, obj, idx=TRUE) {
         }
       }
     } else {
+      if (length(which(col[, j])) > 1) {
+        warning(paste0(paste("Several variables of", obj.name, "matched with", vars[j]), ": ", names(obj)[which(col[ , j])]))
+      }
       col.idx[j] <- which(col[ , j])
     }
   }
