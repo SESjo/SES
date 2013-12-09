@@ -4,10 +4,11 @@
 #' @format Two data frames, one for each of TDR and statdives datasets, storing the names to give to the initial matlab variable (alias) and whether or not they should be imported from the .mat file (keep).
 #' @export
 path <- system.file("extdata", package="SES")
-formatSES <- try(list(tdr=read.csv(file.path(path, "formatSES.tdr.csv")),
-					  stat=read.csv(file.path(path, "formatSES.stat.csv")),
-					  tdr3D=read.csv(file.path(path, "formatSES.tdr3D.csv")),
-					  stat3D=read.csv(file.path(path, "formatSES.stat3D.csv"))), silent=TRUE)
+formatSES <- try(list(tdr=read.csv(file.path(path, "formatSES.tdr.csv"), stringsAsFactors=FALSE, row.names="X"),
+					  stat=read.csv(file.path(path, "formatSES.stat.csv"), stringsAsFactors=FALSE, row.names="X"),
+					  tdr3D=read.csv(file.path(path, "formatSES.tdr3D.csv"), stringsAsFactors=FALSE, row.names="X"),
+					  stat3D=read.csv(file.path(path, "formatSES.stat3D.csv"), stringsAsFactors=FALSE, row.names="X")),
+                 silent=TRUE)
 if (is.error(formatSES)){
 	formatSES <- structure(list(tdr = structure(
 							list(alias = c("Time", "Depth", 

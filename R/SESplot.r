@@ -19,9 +19,11 @@
 #' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 #' ses <- importSES(pathname)
 #' SESplot(ses, isobath=-1000, Z=ses$stat$Catch.numb)
+#' \notrun{
 #' library("RColorBrewer")
 #' mycol <- brewer.pal(n=10, name="BrBG")
 #' SESplot(ses, Z=ses$stat$Dive.dur, Z.col=mycol)
+#' }
 SESplot <- function(ses, ...){
 	UseMethod("SESplot")
 }
@@ -41,7 +43,7 @@ SESplot <- function(ses, ...){
 #' @details Bathymetry taken from \url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}. Isobaths from -200 to -4400 meters by 200 m.
 #' @author Yves
 #' @import maptools fields
-#' @S3method ses SESplot
+#' @S3method SESplot ses
 SESplot.ses <- function(ses, pch=19, cex=1, fill=TRUE,
 						m.col="gray", isobath=NULL, 
 						Z=NULL, Z.col=tim.colors(64), ...){
@@ -78,8 +80,8 @@ SESplot.ses <- function(ses, pch=19, cex=1, fill=TRUE,
 #' @param Z.col Colors for Z values.
 #' @param ... Other parameters to be passed to \code{scatterplot3d()} or \code{par()}.
 #' @author Yves
-#' @import scatterplot3d
-#' @S3method tdr3D SESplot
+# @import scatterplot3d
+#' @S3method SESplot tdr3D
 SESplot.tdr3D <- function(ses, pch=19, cex=1,
 						  Z=NULL, Z.col=tim.colors(64), ...){
 	
