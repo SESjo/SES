@@ -22,7 +22,7 @@ importSEAPOpred <- function(date, dir, ncfile=NULL) {
     if (ncres == 1){
 		  ncfile <- ncfiles[which(text2posx(ncfiles) == date)]
 	  }else if (ncres == 7){
-	    ncfile <- ncfiles[which.min(abs(text2posx(ncfiles) - date))]
+	    ncfile <- ncfiles[which.min(abs(as.numeric(text2posx(ncfiles) - date)))]
 	  }else {warning(paste0("Unusual time resolution of NetCDF files:", ncres))}
 	}
 	
