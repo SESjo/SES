@@ -18,7 +18,12 @@ importSEAPOpred <- function(date, dir, ncfile=NULL) {
 	require("ncdf", quietly=TRUE)
 	if (is.null(ncfile)){
 		ncfiles <- list.files(dir, "*.nc", full.names=TRUE)
-		ncfile <- ncfiles[which(text2posx(ncfiles) == date)]
+		ncres <- median(diff(text2posx(ncfiles), lag=1, units="day"))
+    if (ncres == 1){
+		  ncfile <- ncfiles[which(text2posx(ncfiles) == date)]
+	  }else if (ncres == 7){
+	    ncfile <- ncfiles[which.min(abs(text2posx(ncfiles) - date))]
+	  }else {warning(paste0("Unusual time resolution of NetCDF files:", ncres))}
 	}
 	
 	if (length(ncfile) != 1) {
