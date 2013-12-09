@@ -19,7 +19,7 @@
 #' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 #' ses <- importSES(pathname)
 #' SESplot(ses, isobath=-1000, Z=ses$stat$Catch.numb)
-#' \notrun{
+#' \dontrun{
 #' library("RColorBrewer")
 #' mycol <- brewer.pal(n=10, name="BrBG")
 #' SESplot(ses, Z=ses$stat$Dive.dur, Z.col=mycol)

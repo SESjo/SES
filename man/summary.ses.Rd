@@ -2,7 +2,7 @@
 \alias{summary.ses}
 \title{summary.ses}
 \usage{
-  summary.ses(ses)
+  \method{summary}{ses} (object)
 }
 \arguments{
   \item{ses}{An ses object}
