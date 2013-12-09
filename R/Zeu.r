@@ -69,7 +69,7 @@ importChl <- function(date, dir, ncfile=NULL){
     ncfiles <- list.files(dir, "*.nc", full.names=TRUE)
     ncfile <- ncfiles[which(text2posx(ncfiles) == date)]
     if (length(ncfile) == 0){
-      warning(paste0("On " , date, ", no NetCDF files. \n"))
+      warning(paste0("On " , as.character(date), ", no NetCDF files. \n"))
       return(NA)
     }
   }
