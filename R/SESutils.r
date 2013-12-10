@@ -50,7 +50,7 @@ replaceMissing <- function(x, na.0=NaN, na.1=NA) {
 #' @param vars The list of variable to search and create in the current environment.
 #' @param obj The object in which to search and grab the values.
 #' @param varnames Optional. The names to give to the variables found if different from \code{vars}.
-#' @param ... Arguments to be passed to \code{\link{assign}}.
+#' @param ... Arguments to be passed to \code{existsVars}.
 #' @seealso \code{\link{existsVars}}
 #' @author Yves
 #' @export
@@ -64,11 +64,11 @@ replaceMissing <- function(x, na.0=NaN, na.1=NA) {
 #' }
 #' fun(x) # Check the warnings
 findVars <- function(vars, obj, varnames=NULL, ...){
-  idx <- existsVars(vars, obj)
+  idx <- existsVars(vars, obj, ...)
   if (is.null(varnames)){varnames <- vars}
   for (k in seq_along(idx)){
-    if (is.data.frame(obj)) {assign(varnames[k], obj[ , idx[k]], envir=sys.frame(-1), ...)}
-    else if (is.list(obj)) {assign(varnames[k], obj[[idx[k]]], envir=sys.frame(-1), ...)}
+    if (is.data.frame(obj)) {assign(varnames[k], obj[ , idx[k]], envir=sys.frame(-1))}
+    else if (is.list(obj)) {assign(varnames[k], obj[[idx[k]]], envir=sys.frame(-1))}
   }
 }
 

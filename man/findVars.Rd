@@ -14,8 +14,7 @@
   \item{varnames}{Optional. The names to give to the
   variables found if different from \code{vars}.}
 
-  \item{...}{Arguments to be passed to
-  \code{\link{assign}}.}
+  \item{...}{Arguments to be passed to \code{existsVars}.}
 }
 \description{
   Assign to given variable names the value of matching
