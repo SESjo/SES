@@ -1,5 +1,6 @@
 S3method(SESplot,ses)
 S3method(SESplot,tdr3D)
+S3method(print,fmtSES)
 export(SESname)
 export(SESplot)
 export(addLoc)

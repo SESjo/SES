@@ -70,3 +70,6 @@ if (is.error(formatSES)){
 							            "NewX", "NewY", "Bering"), class = "data.frame")), .Names = c("tdr", 
 							              "stat", "stat3D", "tdr3D"))
 }
+for (i in seq_along(formatSES)){
+  class(formatSES[[i]]) <- c("fmtSES", class(formatSES[[i]]))
+}
