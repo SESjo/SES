@@ -100,7 +100,7 @@ importSES <- function (matfile, type="both"){
 #' @keywords internal
 #' @author Yves
 renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt){
-	findVars(type, formatSES, varnames="fmt")
+	findVars(type, formatSES, varnames="fmt", substring=FALSE)
 	headers <- unlist(objtxt)
 	newHeaders <- unname(fmt[headers, "alias"])
 	if (ncol(obj) != length(newHeaders)){
