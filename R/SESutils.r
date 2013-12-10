@@ -98,16 +98,30 @@ existsVars <- function(vars, obj, idx=TRUE, substring=TRUE, ignore.case=TRUE, ..
   for (j in 1:ncol(col)){
     if (!any(col[, j]) & ignore.case){
       jlower <- grepl(tolower(vars[j]), tolower(names(obj)))
+      if (!substring) col[n != nchar(vars[j]), j] <- FALSE
       if (any(jlower)) {
         col.idx[j] <- ifelse(sum(jlower) == 1, which(jlower), NA)
-        warning(paste(vars[j], "assumed to be",
-                      names(obj)[col.idx[j]], "in", obj.name))
-      } else {
-        jupper <- grepl(toupper(vars[j]), toupper(names(obj)))
-        if (any(jupper)) {
-          col.idx[j] <- ifelse(sum(jupper) == 1, which(jupper), NA)
+        if (sum(jlower) == 1){
           warning(paste(vars[j], "assumed to be",
                         names(obj)[col.idx[j]], "in", obj.name))
+        }else if (sum(jlower) > 1){
+          warning(paste0(paste("Several variables of", obj.name, "matched with", vars[j], ": "),
+                         paste(names(obj)[which(jlower)], collapse=", "),
+                         ". Try with 'substring=FALSE'."))
+        }
+      } else {
+        jupper <- grepl(toupper(vars[j]), toupper(names(obj)))
+        if (!substring) col[n != nchar(vars[j]), j] <- FALSE
+        if (any(jupper)) {
+          col.idx[j] <- ifelse(sum(jupper) == 1, which(jupper), NA)
+          if (sum(jupper) == 1){
+            warning(paste(vars[j], "assumed to be",
+                          names(obj)[col.idx[j]], "in", obj.name))
+          }else if (sum(jupper) > 1){
+            warning(paste0(paste("Several variables of", obj.name, "matched with", vars[j], ": "),
+                           paste(names(obj)[which(jupper)], collapse=", "),
+                           ". Try with 'substring=FALSE'."))
+          }
         } else {
           col.idx[j] <- NA
         }
@@ -116,7 +130,7 @@ existsVars <- function(vars, obj, idx=TRUE, substring=TRUE, ignore.case=TRUE, ..
       if (length(which(col[, j])) > 1) {
         warning(paste0(paste("Several variables of", obj.name, "matched with", vars[j], ": "),
                        paste(names(obj)[which(col[ , j])], collapse=", "),
-                       "Try with 'substring=FALSE'."))
+                       ". Try with 'substring=FALSE'."))
         col.idx[j] <- NA
       }else if (length(which(col[, j])) == 0){
         col.idx[j] <- NA
