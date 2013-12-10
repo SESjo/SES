@@ -21,7 +21,7 @@ idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 		stat == "stat" ||  stop("'stat' must be set to 'stat' or left blank when 'ses' is given.")
 		stat <- eval(parse(text=paste0(substitute(ses), '$stat')))
 	}
-  existsVars(c("Dive.id", "Lat", "Lon"), stat)
+  existsVars(c("Lat", "Lon"), stat)
 	existsVars(c("Lat", "Lon"), grid)
   
   # Find nearest superior values of grid
