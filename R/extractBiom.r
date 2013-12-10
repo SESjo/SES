@@ -2,30 +2,41 @@
 #' @description Create Biomass variable by extracting relevant values from NetCDF files
 #' @param stat
 #' @param biomdir The directory where to find the NetCDF files with biomass values.
-#' @param append Should the variable be returned with the entire statdives object ?
-#' @details When time resolution is > 1day, then the biomass is extracted in the pixel where the averaged daily location of seal belongs.
+#' @details When the time resolution of the biomass NetCDF files is > 1day, then the biomass is extracted in the pixel where the averaged daily location of seal belongs (Beware, implies day/night same location).
 #' @author Yves
 #' @export
-extractBiom <- function(stat, tdr, biomdir, append=TRUE) {
+extractBiom <- function(stat, tdr, biomdir) {
   
-  existsVars(c("Lat", "Lon", "Date", "Pixel.id"), stat)
-  existsVars(c("Layer", "Pixel.id"), tdr)
+  findVars(c("Lat", "Lon", "Date", "Pixel.id"), stat)
+  findVars(c("Layer", "is.Day", "Pixel.id", "Date"), tdr, varnames=c("tdrLayer", "tdris.Day", "tdrPixel.id", "tdrDate"))
 
   biom <- rep(NA, nrow(tdr))
   
-  for (date in unique(stat$Date)){
+  ncfiles <- list.files(biomdir, "*.nc", full.names=TRUE)
+  ncres <- median(diff(text2posx(ncfiles), lag=1, units="day"))
+  message(paste("Time resolution of micronekton biomass input is", ncres, "day(s)"))
+  if (ncres == 7){
+    tmp <- aggregate(cbind(Lat, Lon), by=list(Date=Date), mean)
+    biomgrid <- ncgrid(ncfiles[1])
+    tmp <- idPixel(tmp, biomgrid)
+    pixelstot <- na.omit(unique(tmp))
+  }
+  
+  for (date in unique(Date)){
     biomDate <- importSEAPOpred(date, biomdir)
     if (all(is.na(biomDate))) next
-    pixels <- na.omit(unique(stat$Pixel.id[stat$Date == date]))
+    if (ncres == 1){pixels <- na.omit(unique(Pixel.id[Date == date]))}
+    else if (ncres == 7){pixels <- na.omit(unique(pixelstot$Pixel.id[pixelstot$Date == date]))}
     
     for (pix in pixels){
-      cond <-  tdr$Date == date & tdr$Pixel.id == pix
-      layers <- unique(tdr$Layer[cond])
-      is.day <- unique(tdr$is.Day[cond])
+      if (ncres == 1){cond <- tdrDate == date & tdrPixel.id == pix}
+      else if (ncres == 7){cond <- tdrDate == date} # Pixel.id is recomputed according to the daily averaged locations
+      layers <- unique(tdrLayer[cond])
+      is.day <- unique(tdris.Day[cond])
       for (layer in layers){
         for (day in is.day){
           val <- layerBiom(biomDate[pix, 3:8], layers=layer, is.day=day)
-          biom[cond & tdr$Layer==layer & tdr$is.Day==day] <- val
+          biom[cond & tdrLayer==layer & tdris.Day==day] <- val
         }
       } 
     }

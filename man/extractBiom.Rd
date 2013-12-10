@@ -2,16 +2,13 @@
 \alias{extractBiom}
 \title{extractBiom}
 \usage{
-  extractBiom(stat, tdr, biomdir, append = TRUE)
+  extractBiom(stat, tdr, biomdir)
 }
 \arguments{
   \item{stat}{}
 
   \item{biomdir}{The directory where to find the NetCDF
   files with biomass values.}
-
-  \item{append}{Should the variable be returned with the
-  entire statdives object ?}
 }
 \description{
   Create Biomass variable by extracting relevant values
@@ -20,7 +17,8 @@
 \details{
   When the time resolution of the biomass NetCDF files is >
   1day, then the biomass is extracted in the pixel where
-  the averaged daily location of seal belongs.
+  the averaged daily location of seal belongs (Beware,
+  implies day/night same location).
 }
 \author{
   Yves
