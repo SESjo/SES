@@ -116,7 +116,7 @@ existsVars <- function(vars, obj, idx=TRUE, substring=TRUE, ignore.case=TRUE, ..
       if (length(which(col[, j])) > 1) {
         warning(paste0(paste("Several variables of", obj.name, "matched with", vars[j], ": "),
                        paste(names(obj)[which(col[ , j])], collapse=", "),
-                       "Try with 'substring=FALSE'."))
+                       ". Try with 'substring=FALSE'."))
         col.idx[j] <- NA
       }else if (length(which(col[, j])) == 0){
         col.idx[j] <- NA
