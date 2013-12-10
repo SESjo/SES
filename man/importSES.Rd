@@ -5,22 +5,28 @@
   importSES(matfile, type = "both")
 }
 \arguments{
-  \item{matfile}{Path to .mat file.}
+  \item{matfile}{Path to .mat file(s). If \code{matfiles}
+  is an atomic vector, then the input is interpreted as a
+  request to load a '3D' ses. Use \code{lapply()} to import
+  several ses at once.}
 
-  \item{type}{Type of data to import: "tdr" only TDR data,
-  "stat" Only Statdives data. "Bot" both.}
+  \item{type}{To choose among \code{tdr} (only TDR data),
+  \code{stat} (only Statdives data) and \code{both} (for
+  both of them).}
 }
 \value{
-  An object of class "ses". Includes: ID of the SES - TDR
-  and or Stats of dive as requested with 'type' argument.
+  An object of class \code{ses}. Includes: ID of the
+  individual - TDR and/or dive statistics (according to the
+  \code{type} argument).
 }
 \description{
   Import an individual from a .mat file to R workspace is a
   standart way
 }
 \details{
-  The .mat file must be of of version v7 or less (last
-  MATLAB version v7.3).
+  The .mat file must be of version v7 or older (last MATLAB
+  version v7.3): \code{R.matlab} requirement. Edit
+  \code{formatSES} to modify the importation preferences
 }
 \examples{
 path <- system.file("extdata", package="SES")
@@ -31,7 +37,6 @@ ses <- importSES(pathname)
   Yves
 }
 \seealso{
-  Edit 'SESformat' in the source code to modify the output
-  format (type of columns)
+  \code{\link{formatSES}}
 }
 

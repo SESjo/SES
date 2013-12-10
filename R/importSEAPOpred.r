@@ -1,9 +1,10 @@
 #' importSEAPOpred
 #' @description Load a NetCDF file matching with a date and a directory.
-#' @param date The date (class POSIXct) to load.
+#' @param date The date (class \code{POSIXct}) to load.
 #' @param dir The directory to look into.
 #' @param ncfile Alternatively to previous arguments, a NetCDF file can be given directlty.
-#' @return Retuns a data frame with latitude, longitude and biomass of the six functional groups.
+#' @return Returns a data frame with latitude, longitude and biomass of the six functional groups.
+#' @details When the time resolution of the biomass NetCDF files is > 1day, then file whose date is the closest from \code{date} argument is loaded.
 #' @author Yves
 #' @export
 #' @examples

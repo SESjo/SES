@@ -1,10 +1,10 @@
 #' ImportSES
 #' @description Import an individual from a .mat file to R workspace is a standart way
-#' @param matfile Path to .mat file. 
-#' @param type Type of data to import: "tdr" only TDR data, "stat" Only Statdives data. "Bot" both.
-#' @return An object of class "ses". Includes: ID of the SES - TDR and or Stats of dive as requested with 'type' argument.
-#' @details The .mat file must be of of version v7 or less (last MATLAB version v7.3).
-#' @seealso Edit 'SESformat' in the source code to modify the output format (type of columns)
+#' @param matfile Path to .mat file(s). If \code{matfiles} is an atomic vector, then the input is interpreted as a request to load a '3D' ses. Use \code{lapply()} to import several ses at once. 
+#' @param type To choose among \code{tdr} (only TDR data), \code{stat} (only Statdives data) and \code{both} (for both of them).
+#' @return An object of class \code{ses}. Includes: ID of the individual - TDR and/or dive statistics (according to the \code{type} argument).
+#' @details The .mat file must be of version v7 or older (last MATLAB version v7.3): \code{R.matlab} requirement. Edit \code{formatSES} to modify the importation preferences
+#' @seealso \code{\link{formatSES}}
 #' @author Yves
 #' @export
 #' @import R.matlab
@@ -100,7 +100,7 @@ importSES <- function (matfile, type="both"){
 #' @keywords internal
 #' @author Yves
 renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt){
-	findVars(type, formatSES, varnames="fmt")
+	findVars(type, formatSES, varnames="fmt", substring=FALSE)
 	headers <- unlist(objtxt)
 	newHeaders <- unname(fmt[headers, "alias"])
 	if (ncol(obj) != length(newHeaders)){

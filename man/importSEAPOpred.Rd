@@ -5,7 +5,7 @@
   importSEAPOpred(date, dir, ncfile = NULL)
 }
 \arguments{
-  \item{date}{The date (class POSIXct) to load.}
+  \item{date}{The date (class \code{POSIXct}) to load.}
 
   \item{dir}{The directory to look into.}
 
@@ -13,11 +13,16 @@
   NetCDF file can be given directlty.}
 }
 \value{
-  Retuns a data frame with latitude, longitude and biomass
+  Returns a data frame with latitude, longitude and biomass
   of the six functional groups.
 }
 \description{
   Load a NetCDF file matching with a date and a directory.
+}
+\details{
+  When the time resolution of the biomass NetCDF files is >
+  1day, then file whose date is the closest from
+  \code{date} argument is loaded.
 }
 \examples{
 path <- system.file("extdata", package="SES")

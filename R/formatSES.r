@@ -1,7 +1,11 @@
-#' @title SES import preferences
+#' @title \code{importSES()}: User preferences
+#' @alias formatSES
 #' @name formatSES
-#' @description User preferences about SES importation.
-#' @format Two data frames, one for each of TDR and statdives datasets, storing the names to give to the initial matlab variable (alias) and whether or not they should be imported from the .mat file (keep).
+#' @description User preferences about SES formatting on import. To edit, simply type \code{formatSES} (or \code{formatSES$tdr} etc...) on console.
+#' @usage formatSES
+#' @format Four data frames, one for each of TDR and statdives datasets (classic or 3D), storing the names to give to the initial matlab variable (alias), whether or not they should be imported from the .mat file (keep) and a brief decription of them.
+#' @seealso \code{\link{importSES}}
+#' @author Yves
 #' @export
 path <- system.file("extdata", package="SES")
 formatSES <- try(list(tdr=read.csv(file.path(path, "formatSES.tdr.csv"), sep=";", stringsAsFactors=FALSE, row.names="X"),
