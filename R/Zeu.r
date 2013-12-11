@@ -8,6 +8,7 @@ mZeu2layer <- function(mZeu){
   # Find the layer to wich a depth expressed in mZeu belongs
   Layer <- rep(NA, length(mZeu))
   Layer[mZeu > 4.5] <- "Bathy" ; Layer[is.na(Layer) & mZeu > 1.5] <- "Meso" ; Layer[is.na(Layer)] <- "Epi"
+  Layer[mZeu == Inf] <- NA
   return(as.character(Layer))
 }
 
