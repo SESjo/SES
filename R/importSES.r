@@ -23,13 +23,8 @@ importSES <- function (matfile, type="both"){
 		class(res) <- c("ses", "list")
 		
 		if (type != "stat"){
-			if (any(grepl("tdrcor2", names(matdata)))){
-				matdata2 <- matdata
-			}else{
-				matdata2 <- matdata[[grep("tdrcor2", lapply(matdata, names))]]
-			}
-			res$tdr <- as.data.frame(matdata2$tdrcor2)
-			res$tdr <- renames(type="tdr", obj=res$tdr, objtxt=matdata2$tdrcor2txt)
+			res$tdr <- as.data.frame(findVarlist("tdrcor2", matdata, substring=FALSE))
+			res$tdr <- renames(type="tdr", obj=res$tdr, objtxt=findVarlist("tdrcor2txt", matdata))
 			res$tdr$Time <- datenum2posx(res$tdr$Time)
 			res$tdr[, grep("is.", names(res$tdr))] <- as.logical(res$tdr[, grep("is.", names(res$tdr))])
 			res$tdr[] <- lapply(res$tdr, replaceMissing) # Replace matlab's NaN by NA
@@ -38,13 +33,8 @@ importSES <- function (matfile, type="both"){
 		if (type == "tdr") return(res)
 		
 		if (type != "tdr"){
-			if (any(grepl("statdives", names(matdata)))){
-				matdata2 <- matdata
-			}else{
-				matdata2 <- matdata[[grep("statdivestxt", lapply(matdata, names))]]
-			}
-			res$stat <- as.data.frame(matdata2$statdives)
-			res$stat <- renames(type="stat", obj=res$stat, objtxt=matdata2$statdivestxt)
+			res$stat <- as.data.frame(findVarlist("statdives", matdata, substring=FALSE))
+			res$stat <- renames(type="stat", obj=res$stat, objtxt=findVarlist("statdivestxt", matdata))
 			res$stat$Time <- datenum2posx(res$stat$Time)
 			res$stat[] <- lapply(res$stat, replaceMissing) # Replace matlab's NaN by NA
 		}
