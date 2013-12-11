@@ -26,7 +26,7 @@ addVar <- function(var, from, to, ses=NULL, append=TRUE){
 		class(to) <- c("statdives", "data.frame")
 	} else if (argtdr == 2){
 		if (any(is.na(from[ , var]))) {
-			warning("Missing values (NAs) pasted as zeros")
+			message("Missing values (NAs) pasted as zeros")
 			from[ , var] <- replaceMissing(from[ , var], na.0=NA, na.1=0)
 		}
 		dvs <- per(to$Dive.id)
