@@ -14,8 +14,8 @@
   \item{idx}{Should the indexes of matching columns be
   returned ?}
 
-  \item{substring}{If \code{FALSE} then check that
-  \code{pattern} and matching variables have the same
+  \item{substring}{If \code{FALSE} then check that the
+  \code{pattern} and the matching variables have the same
   number of characters.}
 
   \item{ignore.case}{Should case variants of the pattern be

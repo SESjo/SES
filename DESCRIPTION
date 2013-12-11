@@ -34,3 +34,4 @@ Collate:
     'formatSES.r'
     'SESplot.r'
     'print.formatSES.r'
+    'extractVars.r'
