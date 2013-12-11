@@ -175,7 +175,7 @@ findVarlist <- function(var, object, substring=TRUE, ignore.case=TRUE, ...){
   
   # Check for ambiguities with deeper elements
   if (!is.null(match.names)){
-    nameList <- unique(gsub("[0-9]$", "", names(unlist(object))))
+    nameList <- unique(gsub("[0-9]$", "", names(c(object, recursive=TRUE))))
     if (any(grepl(paste0(var,'.+',var), nameList, ignore.case=TRUE))){
       stop(paste("Ambiguous matching with", var, "in", substitute(object),
                  ": several depth levels matching. Try 'ignore.case=FALSE'."))
