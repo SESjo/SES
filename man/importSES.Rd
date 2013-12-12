@@ -2,7 +2,7 @@
 \alias{importSES}
 \title{ImportSES}
 \usage{
-  importSES(matfile, type = "both")
+  importSES(matfile, type = c("both", "tdr", "stat"))
 }
 \arguments{
   \item{matfile}{Path to .mat file(s). If \code{matfiles}
@@ -37,6 +37,6 @@ ses <- importSES(pathname)
   Yves
 }
 \seealso{
-  \code{\link{formatSES}}
+  \code{\link{formatSES}}, \code{\link{renames}}
 }
 

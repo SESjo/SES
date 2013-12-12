@@ -1,32 +1,32 @@
-;alias;keep;description
-dive_numb;Dive.id;TRUE;Dive number
-start_ptime;Time;TRUE;Time when dive started (matlab numeric format)
-start_index;Start.idx;TRUE;Time when dive ended (matlab numeric format)
-dive_duration;Dive.dur;TRUE;Dive duration (s)
-max_depth;Depth.max;TRUE;Maximum depth reached in dive (m)
-time_spent_surface_after;Surff.dur;FALSE;Duration of the surface period just following the dive (s)
-desc_duration;Desc.dur;FALSE;Duration of the descent step of the dive (s)
-bottom_duration;Bottom.dur;FALSE;Duration of the bottom step of the dive (s)
-asc_duration;Asc.dur;FALSE;Duration of the ascent step of the dive (s)
-bottom_dur_res;BT.res;FALSE;Residual of the linear model Bottom time vs. Depth + Dive duration (ref. Bailleul PhD)
-desc_speed;Desc.spd;FALSE;Vertical speed during descent (m/s)
-asc_speed;Asc.spd;FALSE;Vertical speed during ascent (m/s)
-sinuosity;Sinuosity;TRUE;Sinuosity of vertical trajectory at bottom (deviation from straight lines between start/end of bottom and depth max)
-dive_class;Dive.type;FALSE;Result of dive classification (ref. Dragon PhD). 1 = Drift dives. Avoid using other categories.
-rem;Note;FALSE;Note about the dive
-no_capture;Catch.numb;TRUE;Prey catch attempt number (0 = not catch). One or several records with even number = 1 catch.
-no_bottom_capture;BCatch.numb;FALSE;Prey catch attempt number relatively to the bottom of this dive.
-temp_200m;T200m;FALSE;Temperature at 200 m (C deg.)
-light_150;Light150m;FALSE;Light intensity at 150 m (ref Thomas Jaud et al, 2012, Plos One)  (units?)
-lum_surface;IR0;FALSE;Light intensity at surface (ref Thomas Jaud et al, 2012, Plos One)  (units?)
-lat;Lat;TRUE;Latitude (deg.)
-lon;Lon;TRUE;Longitude (deg.)
-angle;Angle;FALSE;Angle (which one ???)  (units ?)
-jour/nuit;is.Day;FALSE;Is The dive occurring during daytrime (unknown threshold on sun elevation)
-diff_midi_solaire;Diff.Zenit;FALSE;???  (units ?)
-latitude;Lat;TRUE;Latitude (deg.)
-longitude;Lon;TRUE;Longitude (deg.)
-angle_Descent;Angle.desc;FALSE;Angle in the descent step  (units ?)
-angle_Ascent;Angle.asc;FALSE;Angle in the ascent step (units ?)
-lum150m;IR150;FALSE;Light intensity at 150 m (ref Thomas Jaud et al, 2012, Plos One)
-temp200m;T200m;FALSE;Temperature at 200 m (C deg.)
+;userAlias;suggestedAlias;keep;description
+dive_numb;Dive.id;Dive.id;TRUE;Dive number
+start_ptime;Time;Time;TRUE;Time when dive started (matlab numeric format)
+start_index;Start.idx;Start.idx;TRUE;Time when dive ended (matlab numeric format)
+dive_duration;Dive.dur;Dive.dur;TRUE;Dive duration (s)
+max_depth;Depth.max;Depth.max;TRUE;Maximum depth reached in dive (m)
+time_spent_surface_after;Surff.dur;Surff.dur;FALSE;Duration of the surface period just following the dive (s)
+desc_duration;Desc.dur;Desc.dur;FALSE;Duration of the descent step of the dive (s)
+bottom_duration;Bottom.dur;Bottom.dur;FALSE;Duration of the bottom step of the dive (s)
+asc_duration;Asc.dur;Asc.dur;FALSE;Duration of the ascent step of the dive (s)
+bottom_dur_res;BT.res;BT.res;FALSE;Residual of the linear model Bottom time vs. Depth + Dive duration (ref. Bailleul PhD)
+desc_speed;Desc.spd;Desc.spd;FALSE;Vertical speed during descent (m/s)
+asc_speed;Asc.spd;Asc.spd;FALSE;Vertical speed during ascent (m/s)
+sinuosity;Sinuosity;Sinuosity;TRUE;Sinuosity of vertical trajectory at bottom (deviation from straight lines between start/end of bottom and depth max)
+dive_class;Dive.type;Dive.type;FALSE;Result of dive classification (ref. Dragon PhD). 1 = Drift dives. Avoid using other categories.
+rem;Note;Note;FALSE;Note about the dive
+no_capture;Catch.numb;Catch.numb;TRUE;Prey catch attempt number (0 = not catch). One or several records with even number = 1 catch.
+no_bottom_capture;BCatch.numb;BCatch.numb;FALSE;Prey catch attempt number relatively to the bottom of this dive.
+temp_200m;T200m;T200m;FALSE;Temperature at 200 m (C deg.)
+light_150;Light150m;Light150m;FALSE;Light intensity at 150 m (ref Thomas Jaud et al, 2012, Plos One)  (units?)
+lum_surface;IR0;IR0;FALSE;Light intensity at surface (ref Thomas Jaud et al, 2012, Plos One)  (units?)
+lat;Lat;Lat;TRUE;Latitude (deg.)
+lon;Lon;Lon;TRUE;Longitude (deg.)
+angle;Angle;Angle;FALSE;Angle (which one ???)  (units ?)
+jour/nuit;is.Day;is.Day;FALSE;Is The dive occurring during daytrime (unknown threshold on sun elevation)
+diff_midi_solaire;Diff.Zenit;Diff.Zenit;FALSE;???  (units ?)
+latitude;Lat;Lat;TRUE;Latitude (deg.)
+longitude;Lon;Lon;TRUE;Longitude (deg.)
+angle_Descent;Angle.desc;Angle.desc;FALSE;Angle in the descent step  (units ?)
+angle_Ascent;Angle.asc;Angle.asc;FALSE;Angle in the ascent step (units ?)
+lum150m;IR150;IR150;FALSE;Light intensity at 150 m (ref Thomas Jaud et al, 2012, Plos One)
+temp200m;T200m;T200m;FALSE;Temperature at 200 m (C deg.)

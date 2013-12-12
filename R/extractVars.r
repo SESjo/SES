@@ -77,7 +77,8 @@ findVars <- function(vars, object, varnames=NULL,
 #' @param substring If \code{FALSE} then check that the \code{pattern} and the matching variables have the same number of characters.
 #' @param ignore.case Should case variants of the pattern be investigated ?
 #' @param mult Is \code{var} a regular expression pattern to match several elements in \code{object} variable names ?
-#' @return the desired variable
+#' @param ignore.depth.error Should the function check for ambiguities with the names of deeper element ?
+#' @return the desired variable not simplified.
 #' @seealso \code{\link{findVars}}, \code{\link{.findVar}}.
 #' @export
 #' @keywords internal
@@ -90,12 +91,12 @@ findVars <- function(vars, object, varnames=NULL,
 #' .checkVar("c", l, substring=F)
 #' .checkVar("d", l)
 #' .checkVar("d", l, ignore.case=F) # Error
-.checkVar <- function(var, object, mult=FALSE, substring=TRUE, ignore.case=TRUE){
+.checkVar <- function(var, object, mult=FALSE, substring=TRUE, ignore.case=TRUE, ignore.depth.error=FALSE){
   ans <- .findVar(object, var, ignore.case)
   match.names <- if (!is.null(ans$match)){names(ans$match)[ans$match]}else{NULL}
   
   # Check for ambiguities with the names of deeper elements
-  if (!is.null(match.names)){
+  if (!is.null(match.names) & !ignore.depth.error){
     nameList <- unique(gsub("[0-9]$", "", names(c(object, recursive=TRUE))))
     if (any(grepl(paste0(var,'.*\\..*',var), nameList, ignore.case))){
       stop(paste0("Ambiguous matching with '", var, "' in ", substitute(object),

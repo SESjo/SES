@@ -4,7 +4,7 @@
 #' @param type To choose among \code{tdr} (only TDR data), \code{stat} (only Statdives data) and \code{both} (for both of them).
 #' @return An object of class \code{ses}. Includes: ID of the individual - TDR and/or dive statistics (according to the \code{type} argument).
 #' @details The .mat file must be of version v7 or older (last MATLAB version v7.3): \code{R.matlab} requirement. Edit \code{formatSES} to modify the importation preferences
-#' @seealso \code{\link{formatSES}}
+#' @seealso \code{\link{formatSES}}, \code{\link{renames}}
 #' @author Yves
 #' @export
 #' @import R.matlab
@@ -12,7 +12,7 @@
 #' path <- system.file("extdata", package="SES")
 #' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 #' ses <- importSES(pathname)
-importSES <- function (matfile, type="both"){
+importSES <- function (matfile, type=c("both", "tdr", "stat")){
 	
 	old.opt <- options("warn") ; options(warn=-1)
 	
@@ -21,10 +21,17 @@ importSES <- function (matfile, type="both"){
 		res <- list(Ind.id=SESname(matfile), 
 					tdr=data.frame(), stat=data.frame())
 		class(res) <- c("ses", "list")
-		
+    
+		desiredData <- c("tdrcor2", "tdrcor2txt", "statdives", "statdivestxt")
+    type <- switch(match.arg(type), both = "*", tdr = "tdr", stat = "stat")
+		desiredData <- desiredData[grep(type, desiredData)]
+		findVars(desiredData, matdata, substring=FALSE, ignore.case=FALSE, ignore.depth.error=TRUE)
+    rm(matdata)
+
 		if (type != "stat"){
-			res$tdr <- as.data.frame(findVarlist("tdrcor2", matdata, substring=FALSE))
-			res$tdr <- renames(type="tdr", obj=res$tdr, objtxt=findVarlist("tdrcor2txt", matdata))
+			res$tdr <- as.data.frame(tdrcor2)
+			res$tdr <- renames(type="tdr", obj=res$tdr, objtxt=tdrcor2txt)
+			rm(list=desiredData[grep("tdr", desiredData)]) ; gc()
 			res$tdr$Time <- datenum2posx(res$tdr$Time)
 			res$tdr[, grep("is.", names(res$tdr))] <- as.logical(res$tdr[, grep("is.", names(res$tdr))])
 			res$tdr[] <- lapply(res$tdr, replaceMissing) # Replace matlab's NaN by NA
@@ -33,8 +40,9 @@ importSES <- function (matfile, type="both"){
 		if (type == "tdr") return(res)
 		
 		if (type != "tdr"){
-			res$stat <- as.data.frame(findVarlist("statdives", matdata, substring=FALSE))
-			res$stat <- renames(type="stat", obj=res$stat, objtxt=findVarlist("statdivestxt", matdata))
+			res$stat <- as.data.frame(statdives)
+			res$stat <- renames(type="stat", obj=res$stat, objtxt=statdivestxt)
+			rm(list=desiredData[grep("stat", desiredData)])
 			res$stat$Time <- datenum2posx(res$stat$Time)
 			res$stat[] <- lapply(res$stat, replaceMissing) # Replace matlab's NaN by NA
 		}
@@ -92,16 +100,16 @@ importSES <- function (matfile, type="both"){
 renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt){
 	findVars(type, formatSES, varnames="fmt", substring=FALSE)
 	headers <- unlist(objtxt)
-	newHeaders <- unname(fmt[headers, "alias"])
+	newHeaders <- unname(fmt[headers, "userAlias"])
 	if (ncol(obj) != length(newHeaders)){
 		warning("The number of variables differs between 'statdives' and 'statdivestxt'. The nth first variable names are assumed to be the good ones.")
 	}
 	names(obj) <- newHeaders[1:ncol(obj)]
-	if (any(match(fmt$alias[fmt$keep], names(obj), nomatch=0) == 0)){
+	if (any(match(fmt$userAlias[fmt$keep], names(obj), nomatch=0) == 0)){
 		warning(paste0("The desired variable(s) ", 
-					   paste(fmt$alias[fmt$keep][is.na(match(fmt$alias[fmt$keep], names(obj)))], collapse=" & "), 
+					   paste(fmt$userAlias[fmt$keep][is.na(match(fmt$userAlias[fmt$keep], names(obj)))], collapse=" & "), 
 					   " is(are) not available in statdives."))
 	}
-	obj <- obj[ , unique(match(fmt$alias[fmt$keep], names(obj), nomatch=0))] # unique needed to avoid duplicated columns with partial matching (e.g. lat and latitude)
+	obj <- obj[ , unique(match(fmt$userAlias[fmt$keep], names(obj), nomatch=0))] # unique needed to avoid duplicated columns with partial matching (e.g. lat and latitude)
 	obj
 }
