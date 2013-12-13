@@ -5,6 +5,7 @@
 print.fmtSES <- function(x){
   obj <- whichformatSES(x)
   message("Read/Edit importation preferences")
+  message("Notice that 'formatSES' items must be separately modified and imediately saved.  Otherwise anly changes on the last modified item will be saved")
   tmp <- edit(x)
   class(tmp) <-  class(x)
   if (!identical(tmp, x)){
@@ -39,7 +40,7 @@ save.fmtSES <- function(x) {
     inherits(elt, "fmtSES") || stop("Not a 'fmtSES' object.")
     obj <- whichformatSES(elt)
     filename <- paste0("formatSES.", obj, ".csv")
-    path <- "C:/Users/stationcalcul/Desktop/Yves/R" # system.file("extdata", package="SES")
+    path <- system.file("extdata", package="SES")
     write.table(elt, file.path(path, filename), sep=";")
   }
 }
