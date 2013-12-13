@@ -1,12 +1,12 @@
-;userAlias;suggestedAlias;keep;description
-DateTime;Time;Time;TRUE;Date and time (matlab numeric format)
-Distance;Distance;Distance;TRUE;Distance travelled (3D) from the last record (m?) ?
-LatRad;Lat.rad;Lat.rad;FALSE;Latitude (radian)
-LongRad;Lon.rad;Lon.rad;FALSE;Longitude (radian)
-Latitude;Lat;Lat;TRUE;Latitude (degree)
-Longitude;Lon;Lon;TRUE;Longitude (degree)
-Depth;Depth;Depth;TRUE;Depth (m)
-DRCalcSpd;var1;var1;FALSE;???
-NewX;var2;var2;FALSE;???
-NewY;var3;var3;FALSE;???
-Bering;var4;var4;FALSE;???
+"userAlias";"suggestedAlias";"keep";"description"
+"DateTime";"Time";"Time";TRUE;"Date and time (matlab numeric format)"
+"Distance";"Distance";"Distance";TRUE;"Distance travelled (3D) from the last record (m?) ?"
+"LatRad";"Lat.rad";"Lat.rad";FALSE;"Latitude (radian)"
+"LongRad";"Lon.rad";"Lon.rad";FALSE;"Longitude (radian)"
+"Latitude";"Lat";"Lat";TRUE;"Latitude (degree)"
+"Longitude";"Lon";"Lon";TRUE;"Longitude (degree)"
+"Depth";"Depth";"Depth";TRUE;"Depth (m)"
+"DRCalcSpd";"var1";"var1";FALSE;"???"
+"NewX";"var2";"var2";FALSE;"???"
+"NewY";"var3";"var3";FALSE;"???"
+"Bering";"var4";"var4";FALSE;"???"

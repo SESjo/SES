@@ -8,10 +8,10 @@
 #' @author Yves
 #' @export
 path <- system.file("extdata", package="SES")
-formatSES <- try(list(tdr=read.csv(file.path(path, "formatSES.tdr.csv"), sep=";", stringsAsFactors=FALSE, row.names="X"),
-					  stat=read.csv(file.path(path, "formatSES.stat.csv"), sep=";", stringsAsFactors=FALSE, row.names="X"),
-					  tdr3D=read.csv(file.path(path, "formatSES.tdr3D.csv"), sep=";", stringsAsFactors=FALSE, row.names="X"),
-					  stat3D=read.csv(file.path(path, "formatSES.stat3D.csv"), sep=";", stringsAsFactors=FALSE, row.names="X")),
+formatSES <- try(list(tdr=read.csv(file.path(path, "formatSES.tdr.csv"), sep=";", stringsAsFactors=FALSE),
+					  stat=read.csv(file.path(path, "formatSES.stat.csv"), sep=";", stringsAsFactors=FALSE),
+					  tdr3D=read.csv(file.path(path, "formatSES.tdr3D.csv"), sep=";", stringsAsFactors=FALSE),
+					  stat3D=read.csv(file.path(path, "formatSES.stat3D.csv"), sep=";", stringsAsFactors=FALSE)),
                  silent=TRUE)
 if (is.error(formatSES)){
 	formatSES <- structure(list(tdr = structure(list(userAlias = c("Time", "Depth", 

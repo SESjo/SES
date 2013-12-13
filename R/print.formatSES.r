@@ -13,12 +13,14 @@ print.fmtSES <- function(x){
     if (!ans) {
       message("Changes discarded.")
     }else{
+      unlockBinding(as.environment("package:SES"))
       if (!identical(obj, as.character())){
         assign("NewformatSES", within(formatSES, assign(obj, tmp)), envir=as.environment("package:SES"))
       }else if (identical(obj, as.character())){
         assign("NewformatSES", tmp, envir=as.environment("package:SES"))
       }
       assign("formatSES", NewformatSES, envir=as.environment("package:SES"))
+      lockBinding(as.environment("package:SES"))
     }
   }
 }
@@ -41,7 +43,8 @@ save.fmtSES <- function(x) {
     obj <- whichformatSES(elt)
     filename <- paste0("formatSES.", obj, ".csv")
     path <- system.file("extdata", package="SES")
-    write.table(elt, file.path(path, filename), sep=";")
+    print(file.path(path, filename))
+    write.table(elt, file.path(path, filename), sep=";", row.names=TRUE)
   }
 }
 
