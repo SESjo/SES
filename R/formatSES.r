@@ -77,3 +77,4 @@ if (is.error(formatSES)){
 for (i in seq_along(formatSES)){
   class(formatSES[[i]]) <- c("fmtSES", class(formatSES[[i]]))
 }
+
