@@ -2,6 +2,7 @@
 #' @name efmtSES
 #' @usage efmtSES
 #' @description Environment to keep SES importation preferences (\code{formatSES}).
+#' @export
 if (any(grepl("efmtSES", search()))) detach(efmtSES)
 efmtSES <- new.env(parent=.GlobalEnv)
 path <- system.file("extdata", package="SES")

@@ -1,9 +1,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 SES-draft.r
-/test/*
 .RHistory
 .gitignore
 SES_0.1.tar.gz
 .Rdata
 .Rproj
+./2010-21/*
