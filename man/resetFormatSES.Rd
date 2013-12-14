@@ -2,7 +2,7 @@
 \alias{resetFormatSES}
 \title{resetFormatSES}
 \usage{
-  resetFormatSES()
+  resetFormatSES(...)
 }
 \description{
   Reset formatSES to default (suggested alias).

@@ -1,11 +1,3 @@
-#' @title \code{importSES()}: User preferences
-#' @alias .fmtSES
-#' @name .fmtSES
-#' @description User preferences about SES formatting on import. To edit, simply type \code{formatSES} (or \code{formatSES$tdr} etc...) on console.
-#' @usage .fmtSES
-#' @format Four data frames, one for each of TDR and statdives datasets (classic or 3D), storing the names to give to the initial matlab variable (alias), whether or not they should be imported from the .mat file (keep) and a brief decription of them.
-#' @seealso \code{\link{importSES}}
-#' @author Yves
 if (any(grepl(".fmtSES", search()))) detach(.fmtSES)
 .fmtSES <- new.env(parent=.GlobalEnv)
 path <- system.file("extdata", package="SES")

@@ -2,7 +2,7 @@
 \alias{save.fmtSES}
 \title{save.fmtSES}
 \usage{
-  save.fmtSES(x)
+  save.fmtSES(x, verbose = FALSE)
 }
 \arguments{
   \item{x}{The object to save}

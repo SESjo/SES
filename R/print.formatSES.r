@@ -59,9 +59,10 @@ resetFormatSES <- function(...){
 		obj <- whichformatSES(elt)
 		tmp <- elt
 		tmp$userAlias <- tmp$suggestedAlias
-		assign("NewformatSES", within(formatSES, assign(obj, tmp)), envir=as.environment("package:SES"))
+		assign("formatSES", within(formatSES, assign(obj, tmp)), envir=.fmtSES)
 	}
-	assign("formatSES", NewformatSES, envir=as.environment("package:SES"))
+	if (any(grepl(".fmtSES", search()))) detach(.fmtSES)
+	attach(.fmtSES, warn.conflict=FALSE)
 	for (elt in formatSES){
 		save.fmtSES(elt, ...)
 	}
