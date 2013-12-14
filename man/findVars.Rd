@@ -18,7 +18,7 @@
   is the same as \code{vars}.}
 
   \item{...}{Other arguments to be passed to
-  \code{.checkVar}.}
+  \code{checkVar}.}
 }
 \description{
   Search and get variables in an object using its name. To
@@ -59,7 +59,7 @@ findVars("b", x, mult=TRUE) # Error
   Yves
 }
 \seealso{
-  \code{\link{.checkVar}}
+  \code{\link{checkVar}}
 }
 \keyword{internal}
 

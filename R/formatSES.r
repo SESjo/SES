@@ -1,13 +1,17 @@
-if (any(grepl(".fmtSES", search()))) detach(.fmtSES)
-.fmtSES <- new.env(parent=.GlobalEnv)
+#' @title efmtSES
+#' @name efmtSES
+#' @usage efmtSES
+#' @description Environment to keep SES importation preferences (\code{formatSES}).
+if (any(grepl("efmtSES", search()))) detach(efmtSES)
+efmtSES <- new.env(parent=.GlobalEnv)
 path <- system.file("extdata", package="SES")
 assign("formatSES", try(list(tdr=read.csv(file.path(path, "formatSES.tdr.csv"), sep=";", stringsAsFactors=FALSE),
 							 stat=read.csv(file.path(path, "formatSES.stat.csv"), sep=";", stringsAsFactors=FALSE),
 							 tdr3D=read.csv(file.path(path, "formatSES.tdr3D.csv"), sep=";", stringsAsFactors=FALSE),
 							 stat3D=read.csv(file.path(path, "formatSES.stat3D.csv"), sep=";", stringsAsFactors=FALSE)),
 						silent=TRUE),
-	   envir=.fmtSES)
-if (is.error(get("formatSES", envir=.fmtSES))){
+	   envir=efmtSES)
+if (is.error(get("formatSES", envir=efmtSES))){
 	warning("Rescue 'FormatSES' was loaded. Default headers will be used in imports.")
 	assign("formatSES", structure(list(tdr = structure(list(userAlias = c("Time", "Depth", 
 																		  "Temp", "Light", "is.Catch", "is.Catch.x", "is.Catch.y", "is.Catch.z", 
@@ -120,11 +124,11 @@ if (is.error(get("formatSES", envir=.fmtSES))){
 																		  																																 																																	  																	  																		 												   												  													  																				 														  																																			  													"dir", "spd", "spd_courantmercator", "dir_courantmercator", "plongee_georef", 
 																		  																																 																																	  																	  																		 												   												  													  																				 														  																																			  													"distance_gps", "distance_model3d", "diff_distancereel-distancemodel"
 																		  																																 																																	  																	  																		 												   												  													  																				 														  																																			  ))), .Names = c("tdr", "stat", "tdr3D", "stat3D")),
-		   envir=.fmtSES)
+		   envir=efmtSES)
 }
-with(.fmtSES,
+with(efmtSES,
 	 for (i in seq_along(formatSES)){
 	 	class(formatSES[[i]]) <- c("fmtSES", class(formatSES[[i]]))
 	 }
 )
-attach(.fmtSES)
+attach(efmtSES)

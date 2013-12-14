@@ -3,8 +3,8 @@
 #' @param vars The list of variables to search and to create in the current environment.
 #' @param object The object supposed to contain the variables.
 #' @param varnames An Optional atomic vector of type 'character'. The names to give to the variables found when assigning them to the current environment. Default is the same as \code{vars}.
-#' @param ... Other arguments to be passed to \code{.checkVar}.
-#' @seealso \code{\link{.checkVar}}
+#' @param ... Other arguments to be passed to \code{checkVar}.
+#' @seealso \code{\link{checkVar}}
 #' @author Yves
 #' @export
 #' @keywords internal
@@ -58,7 +58,7 @@ findVars <- function(vars, object, varnames=NULL,
     if (!is.null(varnames) && length(varnames) > 1) {mult <- TRUE}
     
     # Perform extraction
-    ans <- .checkVar(vars[k], object, mult, ...)
+    ans <- checkVar(vars[k], object, mult, ...)
     match.names <- names(ans$match)[ans$match]
     if (is.null(varnames) & mult) {varnames <- match.names}
     else if (is.null(varnames) & !mult) {varnames <- vars}
@@ -70,7 +70,7 @@ findVars <- function(vars, object, varnames=NULL,
   }
 }
 
-#' .checkVar
+#' checkVar
 #' @description Search and get the content of a variable anywhere in a 'list' object using its name.
 #' @param var Character givin the name of the variable to search.
 #' @param object The object in which to search.
@@ -79,20 +79,20 @@ findVars <- function(vars, object, varnames=NULL,
 #' @param mult Is \code{var} a regular expression pattern to match several elements in \code{object} variable names ?
 #' @param ignore.depth.error Should the function check for ambiguities with the names of deeper element ?
 #' @return the desired variable not simplified.
-#' @seealso \code{\link{findVars}}, \code{\link{.findVar}}.
+#' @seealso \code{\link{findVars}}, \code{\link{findVar}}.
 #' @export
 #' @keywords internal
 #' @author Yves
 #' @examples
 #' l <- list(a=1, b=list(c=2, cD=3))
-#' .checkVar("a", l)
-#' .checkVar("b", l)
-#' .checkVar("c", l) # Error
-#' .checkVar("c", l, substring=F)
-#' .checkVar("d", l)
-#' .checkVar("d", l, ignore.case=F) # Error
-.checkVar <- function(var, object, mult=FALSE, substring=TRUE, ignore.case=TRUE, ignore.depth.error=FALSE){
-  ans <- .findVar(object, var, ignore.case)
+#' checkVar("a", l)
+#' checkVar("b", l)
+#' checkVar("c", l) # Error
+#' checkVar("c", l, substring=F)
+#' checkVar("d", l)
+#' checkVar("d", l, ignore.case=F) # Error
+checkVar <- function(var, object, mult=FALSE, substring=TRUE, ignore.case=TRUE, ignore.depth.error=FALSE){
+  ans <- findVar(object, var, ignore.case)
   match.names <- if (!is.null(ans$match)){names(ans$match)[ans$match]}else{NULL}
   
   # Check for ambiguities with the names of deeper elements
@@ -134,24 +134,24 @@ findVars <- function(vars, object, varnames=NULL,
   return(ans)
 }
 
-#' .findVar
+#' findVar
 #' @description Similar to rapply but only aims only the names of variables within \code{object}.
 #' @param object A list.
 #' @param pattern a function (must return a logical).
 #' @param ... Optional arguments to be passed to \code{grepl}.
 #' @return A list with the desired variable (\code{$var}) and the results of the function \code{fun} at the matching depth. Returns \code{NULL} if no match.
-#' @seealso \code{\link{.checkVar}}
+#' @seealso \code{\link{checkVar}}
 #' @export
 #' @keywords internal
 #' @author Yves
 #' @examples
 #' l <- list(a=1, b=list(c=2))
-#' .findVar(l, grepl, pattern="a")
-#' .findVar(l, grepl, pattern="b")
-#' .findVar(l, grepl, pattern="c")
-#' is.null(.findVar(l, grepl, pattern="C")) # TRUE
-#' .findVar(l, grepl, pattern="C", ignore.case=TRUE)
-.findVar <- function(object, pattern, ...){
+#' findVar(l, grepl, pattern="a")
+#' findVar(l, grepl, pattern="b")
+#' findVar(l, grepl, pattern="c")
+#' is.null(findVar(l, grepl, pattern="C")) # TRUE
+#' findVar(l, grepl, pattern="C", ignore.case=TRUE)
+findVar <- function(object, pattern, ...){
   if (typeof(object) != "list") stop("'object' must be a list")
   fun2vars <- grepl(pattern, names(object), ...)
   names(fun2vars) <- names(object)
@@ -163,7 +163,7 @@ findVars <- function(vars, object, varnames=NULL,
   for (idx in seq_along(object)){
     vars <- names(object[[idx]])
     if (is.null(vars)) next
-    else ans <- .findVar(object[[idx]], pattern, ...)
+    else ans <- findVar(object[[idx]], pattern, ...)
     if (!is.null(ans)) names(ans$match) <- vars
     if (any(ans$match)) return(ans)
   }

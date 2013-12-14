@@ -12,11 +12,11 @@ print.fmtSES <- function(x){
 		if (!ans) {
 			message("Changes discarded.")
 		}else{
-			assign("formatSES", within(formatSES, assign(obj, tmp)), envir=.fmtSES)
+			assign("formatSES", within(formatSES, assign(obj, tmp)), envir=efmtSES)
 		}
 	}
-	if (any(grepl(".fmtSES", search()))) detach(.fmtSES)
-	attach(.fmtSES, warn.conflict=FALSE)
+	if (any(grepl("efmtSES", search()))) detach(efmtSES)
+	attach(efmtSES, warn.conflict=FALSE)
 }
 
 #' save.fmtSES
@@ -47,7 +47,7 @@ save.fmtSES <- function(x, verbose=FALSE) {
 #' @param x
 #' @keywords internal
 whichformatSES <- function(x){
-	obj <- sapply(get("formatSES", envir=.fmtSES), equals, x)
+	obj <- sapply(get("formatSES", envir=efmtSES), equals, x)
 	obj <- names(obj)[obj]
 }
 
@@ -59,10 +59,10 @@ resetFormatSES <- function(...){
 		obj <- whichformatSES(elt)
 		tmp <- elt
 		tmp$userAlias <- tmp$suggestedAlias
-		assign("formatSES", within(formatSES, assign(obj, tmp)), envir=.fmtSES)
+		assign("formatSES", within(formatSES, assign(obj, tmp)), envir=efmtSES)
 	}
-	if (any(grepl(".fmtSES", search()))) detach(.fmtSES)
-	attach(.fmtSES, warn.conflict=FALSE)
+	if (any(grepl("efmtSES", search()))) detach(efmtSES)
+	attach(efmtSES, warn.conflict=FALSE)
 	for (elt in formatSES){
 		save.fmtSES(elt, ...)
 	}
