@@ -12,23 +12,18 @@ print.fmtSES <- function(x){
 		if (!ans) {
 			message("Changes discarded.")
 		}else{
-			unlockBinding(as.environment("package:SES"))
-			if (!identical(obj, as.character())){
-				assign("NewformatSES", within(formatSES, assign(obj, tmp)), envir=as.environment("package:SES"))
-			}else if (identical(obj, as.character())){
-				assign("NewformatSES", tmp, envir=as.environment("package:SES"))
-			}
-			assign("formatSES", NewformatSES, envir=as.environment("package:SES"))
-			lockBinding(as.environment("package:SES"))
+			assign("formatSES", within(formatSES, assign(obj, tmp)), envir=.fmtSES)
 		}
 	}
+	if (any(grepl(".fmtSES", search()))) detach(.fmtSES)
+	attach(.fmtSES, warn.conflict=FALSE)
 }
 
 #' save.fmtSES
 #' @description S3 method for formatSES object of SES package. Export formatSES setting to package home so that modifications are loaded at every startup.
 #' @param x The object to save
 #' @S3method save fmtSES
-save.fmtSES <- function(x) {
+save.fmtSES <- function(x, verbose=FALSE) {
 	if (inherits(x, "data.frame")){
 		obj <- whichformatSES(x)
 		if (!identical(obj, as.character())){
@@ -42,7 +37,7 @@ save.fmtSES <- function(x) {
 		obj <- whichformatSES(elt)
 		filename <- paste0("formatSES.", obj, ".csv")
 		path <- system.file("extdata", package="SES")
-		print(file.path(path, filename))
+		!verbose || print(file.path(path, filename))
 		write.table(elt, file.path(path, filename), sep=";", row.names=TRUE)
 	}
 }
@@ -52,14 +47,14 @@ save.fmtSES <- function(x) {
 #' @param x
 #' @keywords internal
 whichformatSES <- function(x){
-	obj <- sapply(formatSES, equals, x)
+	obj <- sapply(get("formatSES", envir=.fmtSES), equals, x)
 	obj <- names(obj)[obj]
 }
 
 #' resetFormatSES
 #' @description Reset formatSES to default (suggested alias).
 #' @export
-resetFormatSES <- function(){
+resetFormatSES <- function(...){
 	for (elt in formatSES){
 		obj <- whichformatSES(elt)
 		tmp <- elt
@@ -68,6 +63,6 @@ resetFormatSES <- function(){
 	}
 	assign("formatSES", NewformatSES, envir=as.environment("package:SES"))
 	for (elt in formatSES){
-		save.fmtSES(elt)
+		save.fmtSES(elt, ...)
 	}
 }
