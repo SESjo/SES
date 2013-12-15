@@ -21,24 +21,25 @@ idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 		stat == "stat" ||  stop("'stat' must be set to 'stat' or left blank when 'ses' is given.")
 		stat <- eval(parse(text=paste0(substitute(ses), '$stat')))
 	}
-  existsVars(c("Lat", "Lon"), stat)
-	existsVars(c("Lat", "Lon"), grid)
-  
-  # Find nearest superior values of grid
-  nearestBins <- function(col){
-    gridcol <- grid[ , col] ; datacol <- stat[ , col]
-    delta <- outer(unique(gridcol), datacol, `-`) ; delta[delta > 0] <- -Inf ; delta[is.na(delta)] <- - Inf
-    res <- median(diff(unique(gridcol), 1)) ; ok <- abs(apply(delta, 2, max)) <= abs(res)
-    delta <- unique(gridcol)[apply(delta, 2, which.max)] ; delta[!ok] <- NA
-    delta
-  }
+	statVars <- userHeader(c("Lat", "Lon"), type="stat")
+	findVars(statVars, stat, type="check")
+	findVars(c("Lat", "Lon"), grid, type="check")
+	
+	# Find nearest superior values of a grid  variable
+	nearestBins <- function(col){
+		gridcol <- grid[ , col] ; datacol <- stat[ , statVars[col]]
+		delta <- outer(unique(gridcol), datacol, `-`) ; delta[delta > 0] <- -Inf ; delta[is.na(delta)] <- - Inf
+		res <- median(diff(unique(gridcol), 1)) ; ok <- abs(apply(delta, 2, max)) <= abs(res)
+		delta <- unique(gridcol)[apply(delta, 2, which.max)] ; delta[!ok] <- NA
+		delta
+	}
 	vals <- list()
-  vals[c("Lat", "Lon")] <- lapply(c("Lat", "Lon"), FUN=nearestBins)
-  
-  # Identify the corresponding pixel number and return results
+	vals[c("Lat", "Lon")] <- lapply(c("Lat", "Lon"), FUN=nearestBins)
+	
+	# Identify the corresponding pixel number and return results
 	findPix <- function(lat, lon, grid) {
-    if (is.na(lat) || is.na(lon)) return(NA)
-	  return(as.integer(which(grid$Lat == lat & grid$Lon == lon)))
+		if (is.na(lat) || is.na(lon)) return(NA)
+		return(as.integer(which(grid$Lat == lat & grid$Lon == lon)))
 	}
 	if (!append) return(mapply(findPix, vals$Lat, vals$Lon, MoreArgs=list(grid=grid)))
 	stat$Pixel.id <- mapply(findPix, vals$Lat, vals$Lon, MoreArgs=list(grid=grid))
