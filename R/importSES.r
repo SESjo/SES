@@ -3,8 +3,8 @@
 #' @param matfile Path to .mat file(s). If \code{matfiles} is an atomic vector, then the input is interpreted as a request to load a '3D' ses. Use \code{lapply()} to import several ses at once. 
 #' @param type To choose among \code{tdr} (only TDR data), \code{stat} (only Statdives data) and \code{both} (for both of them).
 #' @return An object of class \code{ses}. Includes: ID of the individual - TDR and/or dive statistics (according to the \code{type} argument).
-#' @details The .mat file must be of version v7 or older (last MATLAB version v7.3): \code{R.matlab} requirement. Edit \code{formatSES} to modify the importation preferences
-#' @seealso \code{\link{formatSES}}, \code{\link{renames}}
+#' @details The .mat file must be of version v7 or older (last MATLAB version v7.3): \code{R.matlab} requirement. Edit \code{formatSES} object to modify the importation preferences. See \code{\link{print.fmtSES}} documentation to learn how.
+#' @seealso \code{\link{print.fmtSES}}, \code{\link{renames}}
 #' @author Yves
 #' @export
 #' @import R.matlab
@@ -98,6 +98,7 @@ importSES <- function (matfile, type=c("both", "tdr", "stat")){
 #' @keywords internal
 #' @author Yves
 renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt){
+	formatSES <- get("formatSES", envir=efmtSES)
 	findVars(type, formatSES, varnames="fmt", substring=FALSE)
 	headers <- unlist(objtxt)
 	newHeaders <- unname(fmt[headers, "userAlias"])

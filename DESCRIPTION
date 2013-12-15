@@ -33,5 +33,5 @@ Collate:
     'summary.ses.r'
     'formatSES.r'
     'SESplot.r'
-    'print.formatSES.r'
     'extractVars.r'
+    'formatSESutils.r'

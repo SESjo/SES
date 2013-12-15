@@ -26,7 +26,9 @@
 \details{
   The .mat file must be of version v7 or older (last MATLAB
   version v7.3): \code{R.matlab} requirement. Edit
-  \code{formatSES} to modify the importation preferences
+  \code{formatSES} object to modify the importation
+  preferences. See \code{\link{print.fmtSES}} documentation
+  to learn how.
 }
 \examples{
 path <- system.file("extdata", package="SES")
@@ -37,6 +39,6 @@ ses <- importSES(pathname)
   Yves
 }
 \seealso{
-  \code{\link{formatSES}}, \code{\link{renames}}
+  \code{\link{print.fmtSES}}, \code{\link{renames}}
 }
 
