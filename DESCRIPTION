@@ -1,7 +1,7 @@
 Package: SES
 Title: Tools to manipulate SES data with R
 Description: Personal functions for efficient SES manipulation.
-Version: 0.3
+Version: 0.4
 Author: Yves Le Bras <yveslebras.fr@gmail.com>
 Maintainer: Yves Le Bras <yveslebras.fr@gmail.com>
 Depends:
