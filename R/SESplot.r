@@ -51,7 +51,8 @@ SESplot.ses <- function(ses, pch=19, cex=1, fill=TRUE,
 	old.par <- par("mar") ; on.exit(par(old.par))
 	par(mar=c(4,4,3.5,6))
 	findVars(c("Ind.id", "stat"), ses)
-	findVars(c("Lat", "Lon", "Time"), stat)
+	statVars <- userHeader(c("Lat", "Lon", "Time"), type="stat")
+	findVars(statVars, stat)
 	plot(Lat ~ Lon, pch=pch, cex=cex*0.3, type="n")
 	if (!is.null(Z)){
 		im <- as.image(Z, x=data.frame(Lon, Lat))
