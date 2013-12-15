@@ -93,3 +93,32 @@ whichformatSES <- function(x){
 	obj <- sapply(get("formatSES", envir=efmtSES), equals, x)
 	obj <- names(obj)[obj]
 }
+
+#' userHeader
+#' @description Get the user header associated with a default header in an object.
+#' @param header The default header.
+#' @param type The type of the object.
+#' @author Yves
+#' @export
+#' @keywords internal
+userHeader <- function(header, type){
+	object <- get("formatSES", envir=efmtSES)
+	object <- switch(type,
+					 tdr = object[["tdr"]],
+					 statdives = object[["stat"]],
+					 stat = object[["stat"]],
+					 tdr3D = object[["tdr3D"]],
+					 stat3D = object[["stat3D"]])
+	f <- function(h){
+		ans <- unique(object$userAlias[object$suggestedAlias == h])
+		if (identical(ans, character())) {
+			stop(paste0("Default header '", h, "' not found in '", type, "'."))
+		}
+		ans
+	}
+	ans <- try(vapply(header, f, as.character(1)))
+	if (is.error(ans)){
+		stop("One of the default header is associated with several user headers. Please edit 'formatSES' to correct this.")
+	}
+	return(ans)
+}

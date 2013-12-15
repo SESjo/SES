@@ -41,7 +41,7 @@
 findVars <- function(vars, object, varnames=NULL,
                      type=c("assign", "check"), mult=FALSE, ...){
   
-  spChar <- c("^", "$", "[", "]", ".", "?", "*", "+", "\\")
+  spChar <- c("^", "$", "[", "]", "\\.", "?", "*", "+", "\\")
   
   for (k in seq_along(vars)){
     
@@ -50,7 +50,7 @@ findVars <- function(vars, object, varnames=NULL,
       for (char in spChar){
         mult <- ifelse(any(grepl(char, vars[k], fixed=TRUE)), TRUE, FALSE)
         if (mult) {
-          message("Regular expression enabled. 'varnames' set to matched names.")
+          message(paste0("A special character was found: ", char , " . Regular expression enabled. 'varnames' set to matched names."))
           break
         }
       }

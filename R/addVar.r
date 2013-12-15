@@ -17,11 +17,14 @@ addVar <- function(var, from, to, ses=NULL, append=TRUE){
 		to <- eval(parse(text=paste0(substitute(ses), '$', to)))
 	}
 	argtdr <- match("tdr", c(class(from), class(to)) %wo% "data.frame", nomatch=0)
-  existsVars("Dive.id", from)
-	existsVars("Dive.id", to)
+	
+	dvidFrom <- userHeader("Dive.id", type=class(from)[1])
+	findVars(dvidFrom, from, type="check")
+	dvidTo <- userHeader("Dive.id", type=class(to)[1])
+	findVars(dvidTo, to, type="check")
   
 	if (argtdr == 1){
-		to <- merge(to, unique(from[ , c("Dive.id",  var)]), by="Dive.id")
+		to <- merge(to, unique(from[ , c(dvidFrom,  var)]), by.x=dvidTo, by.y=dvidFrom)
 		if (!append) return(to[, var])
 		class(to) <- c("statdives", "data.frame")
 	} else if (argtdr == 2){
@@ -29,7 +32,7 @@ addVar <- function(var, from, to, ses=NULL, append=TRUE){
 			message("Missing values (NAs) pasted as zeros")
 			from[ , var] <- replaceMissing(from[ , var], na.0=NA, na.1=0)
 		}
-		dvs <- per(to$Dive.id)
+		dvs <- per(to[ , dvidTo])
 		dvs$value[dvs$value != 0] <- from[ , var] 
 		if (!append) return(rep(dvs$value, dvs$length))
 		to[ , var] <- rep(dvs$value, dvs$length)
