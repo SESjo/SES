@@ -1,8 +1,6 @@
 #' sunPosition
 #' 
-#' Compute sun azimuth and elevation given a location and a date/time. Based on: 
-#' \url{http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-Day-latitude-and-longitude.}. 
-#' Update version: Jan 6 '12 at 21:40 by "Josh O'Brien".
+#' Compute sun azimuth and elevation given a location and a date/time.
 #' 
 #' @param Year Atomic numeric vector with year information.
 #' @param Month Atomic numeric vector with month information.
@@ -15,6 +13,11 @@
 #' to Second (6 columns).
 #' @param lat Atomic numeric vector with latitude information.
 #' @param lon Atomic numeric vector with longitude information.
+#' 
+#' @details Based on: 
+#' \url{http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-Day-latitude-and-longitude.}. 
+#' Update version: Jan 6 '12 at 21:40 by "Josh O'Brien".
+#' 
 #' @family generalUtils
 #' @seealso \code{\link{isDay}}
 #' @export
@@ -62,6 +65,8 @@ sunPosition <- function(Year, Month, Day, Hour=12, Minute=0, Second=0, time=NULL
 #' @inheritParams sunPosition
 #' @family generalUtils
 #' @seealso \code{\link{sunPosition}}
+#' @export
+#' @keywords internal
 .sunPosition <- function(Year, Month, Day, Hour=12, Minute=0, Second=0,
                         lat=46.5, long=6.5) {
   

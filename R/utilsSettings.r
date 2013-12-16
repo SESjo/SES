@@ -6,6 +6,8 @@
 #' @param obj The object to process.
 #' @param objtxt The original names. tdrcortxt or statdivestxt in the .mat file.
 #' @family settings
+#' @export
+#' @keywords internal
 renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt){
 	FMT <- get("formatSES", envir=SESsettings)
 	findVars(type, FMT, varnames="fmt", substring=FALSE)
@@ -30,8 +32,8 @@ renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt){
 #' S3 method for formatSES object of SES package. Allow to view and edit \code{importSES()} settings.
 #' 
 #' @param x The object to print
-#' @method print fmtSES
 #' @family settings
+#' @method print fmtSES
 #' @export
 #' @examples
 #' \dontrun{
@@ -122,6 +124,8 @@ reset.fmtSES <- function(type=c("files", "vars"), ...){
 #' 
 #' @param x
 #' @family settings
+#' @export
+#' @keywords internal
 whichSESobj <- function(x){
 	obj <- sapply(get("formatSES", envir=SESsettings), equals, x)
 	obj <- names(obj)[obj]
@@ -134,6 +138,8 @@ whichSESobj <- function(x){
 #' @param header The default header.
 #' @param type The type of the object.
 #' @family settings
+#' @export
+#' @keywords internal
 userHeader <- function(header, type){
 	object <- get("formatSES", envir=SESsettings)
 	object <- switch(type,

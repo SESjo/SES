@@ -16,22 +16,3 @@ Imports:
 License: MIT
 LazyData: true
 Collate:
-    'SES-package.r'
-    'SESutils.r'
-    'addLoc.r'
-    'importSES.r'
-    'importSEAPOpred.r'
-    'addVar.r'
-    'idPixel.r'
-    'isDay.r'
-    'ncgrid.r'
-    'per.r'
-    'time-utils.r'
-    'Zeu.r'
-    'sunPosition.r'
-    'extractBiom.r'
-    'summary.ses.r'
-    'formatSES.r'
-    'SESplot.r'
-    'extractVars.r'
-    'formatSESutils.r'

@@ -41,7 +41,8 @@ SESplot <- function(ses, ...){
 #' @param ... Other parameters to be passed to \code{plot()} or \code{par()}.
 #' @family SESplot
 #' @import maptools fields
-#' @S3method SESplot ses
+#' @method SESplot ses
+#' @export
 SESplot.ses <- function(ses, pch=19, cex=1, fill=TRUE,
 						m.col="gray", isobath=NULL, 
 						Z=NULL, Z.col=tim.colors(64), ...){

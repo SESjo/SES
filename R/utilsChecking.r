@@ -8,6 +8,8 @@
 #' \code{c("tdr", "stat", "tdr3D", "stat3D")}.
 #' @inheritParams findVars
 #' @family checkUtils
+#' @export
+#' @keywords internal
 findDefaultVars <- function(vars, object, type.obj, varnames=NULL,
 						type=c("assign", "check"), mult=FALSE, envir=sys.frame(-2), ...){
 	VARS <- userHeader(vars, type=type.obj)
@@ -110,8 +112,8 @@ findVars <- function(vars, object, varnames=NULL,
 #' @param ignore.depth.error Should the function check for ambiguities with the names of deeper element ?
 #' @return the desired variable not simplified.
 #' @family checkUtils
-#' @keywords internal
 #' @export
+#' @keywords internal
 #' @examples
 #' l <- list(a=1, b=list(c=2, cD=3))
 #' checkVar("a", l)
@@ -173,8 +175,8 @@ checkVar <- function(var, object, mult=FALSE, substring=TRUE, ignore.case=TRUE, 
 #' @return A list with the desired variable (\code{$var}) and the results of the function \code{fun}
 #' at the matching depth. Returns \code{NULL} if no match.
 #' @family checkUtils
-#' @keywords internal
 #' @export
+#' @keywords internal
 #' @examples
 #' l <- list(a=1, b=list(c=2))
 #' findVar(l, grepl, pattern="a")

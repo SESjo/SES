@@ -20,7 +20,7 @@ addVar <- function(var, from, to, ses=NULL, append=TRUE){
 	findVars(dvidFrom, from, type="check")
 	dvidTo <- userHeader("Dive.id", type=class(to)[1])
 	findVars(dvidTo, to, type="check")
-  
+	
 	if (argtdr == 1){
 		to <- merge(to, unique(from[ , c(dvidFrom,  var)]), by.x=dvidTo, by.y=dvidFrom)
 		if (!append) return(to[, var])

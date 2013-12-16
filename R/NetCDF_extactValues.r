@@ -80,6 +80,7 @@ extractBiom <- function(stat, tdr, biomdir) {
 #' \code{c("Bathy", "Epi", "Meso")}). Default is all layers.
 #' @param is.day Should the function focus on a specific period (to choose in 
 #' \code{c(TRUE, FALSE)}).
+#' @export
 #' @examples
 #' layerBiom(1:6) # Should be c(4, 10, 7, 15, 1, 5)
 layerBiom <- function(grp, all.col=FALSE, layers=NULL, is.day=NULL){
