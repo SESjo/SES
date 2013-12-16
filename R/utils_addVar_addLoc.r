@@ -14,7 +14,7 @@ addVar <- function(var, from, to, ses=NULL, append=TRUE){
 		from <- eval(parse(text=paste0(substitute(ses), '$', from)))
 		to <- eval(parse(text=paste0(substitute(ses), '$', to)))
 	}
-	argtdr <- match("tdr", c(class(from), class(to)) %wo% "data.frame", nomatch=0)
+	argtdr <- match("tdr", setdiff(c(class(from), class(to)), "data.frame"), nomatch=0)
 	
 	dvidFrom <- userHeader("Dive.id", type=class(from)[1])
 	findVars(dvidFrom, from, type="check")
@@ -64,8 +64,9 @@ addLoc <- function(from, to, ses=NULL, append=TRUE){
 		to <- eval(parse(text=paste0(substitute(ses), '$', to)))
 	}
 	
-	findDefaultVars(c("Lat", "Lon"), from, type.obj=class(from)[1]), type="check")
-if (!append) return(lapply(vars, addVar, from, to, append=FALSE))
-to[ , vars] <- lapply(vars, addVar, from, to, append=FALSE)
-return(to)
+	vars <- c("Lat", "Lon")
+	findDefaultVars(vars, from, type.obj=class(from)[1], type="check")
+	if (!append) return(lapply(vars, addVar, from, to, append=FALSE))
+	to[ , vars] <- lapply(vars, addVar, from, to, append=FALSE)
+	return(to)
 }

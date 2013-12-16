@@ -6,7 +6,6 @@
 #' @param grid The grid to look pixel into.
 #' @param ses A ses object. 'stat' is ignored when given.
 #' @param append Should the entire statdives object be returned.
-#' @param append.grid Should the variable 'Pixel.id' added to grid
 #' @details The pixel number is row number of the 'grid' data frame.
 #' @family SESspacial
 #' @export
@@ -53,16 +52,17 @@ idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 #' Extract the grid from a NetCDF file.
 #' 
 #' @param ncfile The to read the grid from.
+#' @param connection An existing connexion with a file can be used instead of \code{ncfile} argument.
 #' @return Retuns a data frame with combinations of latitude and longitude grid breaks.
 #' @family SESspacial
 #' @export
+#' @import ncdf
 #' @examples
 #' path <- system.file("extdata", package="SES")
 #' pathname <- file.path(path, "ker_0083x1d_catsat_vgpm_20111101_MTLPB.nc")
 #' expl <- ncgrid(ncfile=pathname)
 ncgrid <- function(ncfile, connection){
   if (missing(connection)) {
-  	require("ncdf", quietly=TRUE)
   	con <- open.ncdf(ncfile)
   } else {
   	con <- connection

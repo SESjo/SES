@@ -118,10 +118,11 @@ findVars <- function(vars, object, varnames=NULL,
 #' l <- list(a=1, b=list(c=2, cD=3))
 #' checkVar("a", l)
 #' checkVar("b", l)
-#' checkVar("c", l) # Error
-#' checkVar("c", l, substring=F)
-#' checkVar("d", l)
-#' checkVar("d", l, ignore.case=F) # Error
+#' checkVar("c", l, substring=FALSE) # Select only 'c'
+#' \dontrun{
+#' checkVar("d", l) # Print a warning
+#' checkVar("c", l) # Print an error
+#' }
 checkVar <- function(var, object, mult=FALSE, substring=TRUE, ignore.case=TRUE, ignore.depth.error=FALSE){
   ans <- findVar(object, var, ignore.case)
   match.names <- if (!is.null(ans$match)){names(ans$match)[ans$match]}else{NULL}

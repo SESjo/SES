@@ -2,7 +2,7 @@
 #' 
 #' Assign to a record the SEAPODYM layer it beyond using the depth expressed in multiple of Zeu.7
 #' 
-#' @param mZeu
+#' @param mZeu The depth expressed as multiple of the euphotic depth.
 #' @details Layers limits taken to be 1.5, 4.5 and 10.5 time Zeu.
 #' @family chl
 #' @export
@@ -19,7 +19,7 @@ mZeu2layer <- function(mZeu){
 #' 
 #' Predict euphotic depth (m) from the surface chlorophyll concentration.
 #' 
-#' @param Chl
+#' @param Chl Vector giving the chlorophyll a concentration in the surface layer.
 #' @param stat A statdives object. 'chl' argument is ignored. The values are taken from this statdive object.
 #' @param append Should the variable be returned with the entire statdives object ?
 #' @references Morel and Berthon (1989)

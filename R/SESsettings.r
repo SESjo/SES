@@ -12,7 +12,7 @@ assign("formatSES", try(list(tdr=read.csv(file.path(path, "formatSES.tdr.csv"), 
 							 stat3D=read.csv(file.path(path, "formatSES.stat3D.csv"), sep=";", stringsAsFactors=FALSE)),
 						silent=TRUE),
 	   envir=SESsettings)
-if (is.error(get("formatSES", envir=SESsettings))){
+if (inherits(get("formatSES", envir=SESsettings), "try-error")){
 	warning("Rescue 'FormatSES' was loaded. Default headers will be used in imports.")
 	assign("formatSES", structure(list(tdr = structure(list(userAlias = c("Time", "Depth", 
 																		  "Temp", "Light", "is.Catch", "is.Catch.x", "is.Catch.y", "is.Catch.z", 

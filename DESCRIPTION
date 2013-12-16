@@ -16,3 +16,18 @@ Imports:
 License: MIT
 LazyData: true
 Collate:
+    'NetCDF_extactValues.r'
+    'SES-package.r'
+    'SESplot.r'
+    'SESsettings.r'
+    'chlFunctions.r'
+    'importFunctions.r'
+    'isDay.r'
+    'spacialFunctions.r'
+    'utilsChecking.r'
+    'utilsSettings.r'
+    'utilsTime.r'
+    'utilsVarious.r'
+    'utils_addVar_addLoc.r'
+    'utils_per.r'
+    'utils_sunPosition.r'

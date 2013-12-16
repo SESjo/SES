@@ -11,8 +11,9 @@
 #' @param time An object with date and time information, thus previous arguments are ignored. 
 #' Can be of POSIXct or data.frame classes. If data frame order of columns must be from Year 
 #' to Second (6 columns).
-#' @param lat Atomic numeric vector with latitude information.
-#' @param lon Atomic numeric vector with longitude information.
+#' @param Lat Atomic numeric vector with latitude information.
+#' @param Lon Atomic numeric vector with longitude information.
+#' @param loc A data frame including with Lat and Lon can replace the last two variables.
 #' 
 #' @details Based on: 
 #' \url{http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-Day-latitude-and-longitude.}. 
@@ -51,12 +52,12 @@ sunPosition <- function(Year, Month, Day, Hour=12, Minute=0, Second=0, time=NULL
       ymd <- replaceMissing(time, na.0=NA, 0)
       names(ymd) <- c("Year", "Month", "Day", "Hour", "Minute", "Second")
     }
-    return(with(ymd, .sunPosition(Year, Month, Day, Hour, Minute, Second, Lat, Lon)))
+    return(with(ymd, sunPos(Year, Month, Day, Hour, Minute, Second, Lat, Lon)))
   }
-  .sunPosition(Year, Month, Day, Hour, Minute, Second, Lat, Lon)
+  sunPos(Year, Month, Day, Hour, Minute, Second, Lat, Lon)
 }
 
-#' .sunPosition
+#' sunPos
 #' 
 #' Compute sun azimuth and elevation given a location and a date/time. Algorithm taken from: 
 #' \url{http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-Day-latitude-and-longitude.}. 
@@ -67,7 +68,7 @@ sunPosition <- function(Year, Month, Day, Hour=12, Minute=0, Second=0, time=NULL
 #' @seealso \code{\link{sunPosition}}
 #' @export
 #' @keywords internal
-.sunPosition <- function(Year, Month, Day, Hour=12, Minute=0, Second=0,
+sunPos <- function(Year, Month, Day, Hour=12, Minute=0, Second=0,
                         lat=46.5, long=6.5) {
   
   # From: http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-Day-latitude-and-longitude

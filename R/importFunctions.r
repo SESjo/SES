@@ -70,14 +70,14 @@ importSES <- function (matfile, type=c("both", "tdr", "stat")){
 								   Lon.i=matdata$gps.geor[ , 2],
 								   Lat.f=matdata$gps.geor[ , 3],
 								   lon.f=matdata$gps.geor[ , 4]))
-			if (is.error(locs)){next}
+			if (inherits(locs, "try-error")){next}
 			else{matfile <- matfile[-which(matfile == infile)] ; break}
 		}
-		if (is.error(locs)){stop("Multiple matfile input is reserved to 3D dives data.")}
+		if (inherits(locs, "try-error")){stop("Multiple matfile input is reserved to 3D dives data.")}
 		for(infile in matfile){
 			matdata <- readMat(infile) 	
 			res$stat <- try(renames(type="stat3D", obj=as.data.frame(matdata$data), objtxt=matdata$titre.colonne))
-			if (is.error(res$stat)){next}
+			if (inherits(res$stat, "try-error")){next}
 			else{
 				res$stat$Dive.id <- seq_along(res$stat[ , 1])
 				res$stat <- merge(locs, res$stat, by="Dive.id", all.y=TRUE)
@@ -106,6 +106,7 @@ importSES <- function (matfile, type=c("both", "tdr", "stat")){
 #' @param ncfile Alternatively to previous arguments, a specific NetCDF file can be given directlty.
 #' @return Returns a data frame with latitude, longitude and biomass of the six functional groups.
 #' @family SESspacial
+#' @import ncdf
 #' @export
 #' @examples
 #' path <- system.file("extdata", package="SES")
@@ -116,7 +117,6 @@ importSES <- function (matfile, type=c("both", "tdr", "stat")){
 #' image.plot(as.image(expl$Meso.b, x=expl[, 1:2], nx=750, ny=250), breaks=brk, nlevel=30, zlim=brk[c(1,30)])
 importSEAPOpred <- function(date, dir, ncfile=NULL) {
 	
-	require("ncdf", quietly=TRUE)
 	if (is.null(ncfile)){
 		ncfiles <- list.files(dir, "*.nc", full.names=TRUE)
 		ncres <- median(diff(text2posx(ncfiles), lag=1, units="day"))
@@ -156,9 +156,9 @@ importSEAPOpred <- function(date, dir, ncfile=NULL) {
 #' @param ncfile Alternatively to previous arguments, a NetCDF file can be given directlty.
 #' @return Returns a data frame with latitude, longitude and the associate [Chl].
 #' @family chl
+#' @import ncdf
 #' @export
 importChl <- function(date, dir, ncfile=NULL){
-	require("ncdf", quietly=TRUE)
 	if (is.null(ncfile)){
 		ncfiles <- list.files(dir, "*.nc", full.names=TRUE)
 		ncfile <- ncfiles[which(text2posx(ncfiles) == date)]

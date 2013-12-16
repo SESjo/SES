@@ -2,7 +2,7 @@
 #' 
 #' Create [Chl]_surf variable by extracting relevant values from NetCDF files.
 #' 
-#' @param stat
+#' @param stat The 'statdives' object.
 #' @param chldir The directory where to find the NetCDF files with [chl] values.
 #' @param append Should the variable be returned with the entire statdives object ?
 #' @family chl
@@ -26,7 +26,8 @@ extractChl <- function(stat, chldir, append=TRUE) {
 #' of the biomass NetCDF files is > 1day, then the biomass is extracted in the pixel where the 
 #' averaged daily location of seal belongs (Beware, implies day/night same location).
 #' 
-#' @param stat
+#' @param stat  The 'statdives' object.
+#' @param tdr The 'tdr' object.
 #' @param biomdir The directory where to find the NetCDF files with biomass values.
 #' @export
 extractBiom <- function(stat, tdr, biomdir) {
@@ -76,7 +77,7 @@ extractBiom <- function(stat, tdr, biomdir) {
 #' @param grp Atomic vector giving the functional groups biomass in the following order:
 #' \code{c(epi, meso, mmeso, bathy, mbathy, hmbathy)}.
 #' @param all.col Should the function return all columns: \code{Layer} and \code{is.Day}
-#' @param layer Should the function focus on a specific layer (to choose in 
+#' @param layers Should the function focus on a specific layer (to choose in 
 #' \code{c("Bathy", "Epi", "Meso")}). Default is all layers.
 #' @param is.day Should the function focus on a specific period (to choose in 
 #' \code{c(TRUE, FALSE)}).

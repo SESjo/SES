@@ -32,6 +32,7 @@ renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt){
 #' S3 method for formatSES object of SES package. Allow to view and edit \code{importSES()} settings.
 #' 
 #' @param x The object to print
+#' @param ... Arguments to be passed to \code{edit()}.
 #' @family settings
 #' @method print fmtSES
 #' @export
@@ -47,10 +48,10 @@ renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt){
 #' # Reset default settings
 #' reset.fmtSES()
 #' }
-print.fmtSES <- function(x){
+print.fmtSES <- function(x, ...){
 	obj <- whichSESobj(x)
 	message("Read/Edit importation preferences")
-	tmp <- edit(x)
+	tmp <- edit(x, ...)
 	class(tmp) <-  class(x)
 	if (!identical(tmp, x)){
 		ans <- as.logical(pmatch(readline(prompt="Save changes [y/N] ? "), "yes", nomatch=FALSE))
@@ -61,7 +62,7 @@ print.fmtSES <- function(x){
 		}
 	}
 	if (any(grepl("SESsettings", search()))) detach(SESsettings)
-	attach(SESsettings, warn.conflict=FALSE)
+	attach(SESsettings, warn.conflictss=FALSE)
 }
 
 #' save.fmtSES
@@ -72,7 +73,6 @@ print.fmtSES <- function(x){
 #' 
 #' @param x The object to save
 #' @param verbose To print the filepath.
-#' @param envir The formatSES environment.
 #' @family settings
 #' @export
 save.fmtSES <- function(x, verbose=FALSE) {
@@ -112,7 +112,7 @@ reset.fmtSES <- function(type=c("files", "vars"), ...){
 		 }
 	)
 	if (any(grepl("SESsettings", search()))) detach(SESsettings)
-	attach(SESsettings, warn.conflict=FALSE)
+	attach(SESsettings, warn.conflictss=FALSE)
 	for (elt in get("formatSES", envir=SESsettings)){
 		save.fmtSES(elt, ...)
 	}
@@ -156,7 +156,7 @@ userHeader <- function(header, type){
 		ans
 	}
 	ans <- try(vapply(header, f, as.character(1)))
-	if (is.error(ans)){
+	if (inherits(ans, "try-error")){
 		stop("One of the default header is associated with several user headers. Please edit 'formatSES' to correct this.")
 	}
 	return(ans)
