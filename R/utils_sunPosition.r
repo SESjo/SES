@@ -1,17 +1,22 @@
 #' sunPosition
-#' @description Compute sun azimuth and elevation given a location and a date/time.
-#' @param Year
-#' @param Month
-#' @param Day
-#' @param Hour
-#' @param Minute
-#' @param Second
-#' @param time An object with date and time information, thus previous arguments are ignored. Can be of POSIXct or data.frame classes. If data frame order of columns must be from Year to Second (6 columns).
-#' @param lat
-#' @param lon
-#' @details Algorithm taken from: http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-Day-latitude-and-longitude. Update: the Jan 6 '12 at 21:40 by "Josh O'Brien"
+#' 
+#' Compute sun azimuth and elevation given a location and a date/time. Based on: 
+#' \url{http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-Day-latitude-and-longitude.}. 
+#' Update version: Jan 6 '12 at 21:40 by "Josh O'Brien".
+#' 
+#' @param Year Atomic numeric vector with year information.
+#' @param Month Atomic numeric vector with month information.
+#' @param Day Atomic numeric vector with day information.
+#' @param Hour Atomic numeric vector with hour information.
+#' @param Minute Atomic numeric vector with minute information.
+#' @param Second Atomic numeric vector with second information.
+#' @param time An object with date and time information, thus previous arguments are ignored. 
+#' Can be of POSIXct or data.frame classes. If data frame order of columns must be from Year 
+#' to Second (6 columns).
+#' @param lat Atomic numeric vector with latitude information.
+#' @param lon Atomic numeric vector with longitude information.
+#' @family generalUtils
 #' @seealso \code{\link{isDay}}
-#' @author Yves
 #' @export
 #' @examples
 #' testPts <- data.frame(Lat = c(-41,-3,3, 41), 
@@ -48,9 +53,15 @@ sunPosition <- function(Year, Month, Day, Hour=12, Minute=0, Second=0, time=NULL
   .sunPosition(Year, Month, Day, Hour, Minute, Second, Lat, Lon)
 }
 
-
-
-
+#' .sunPosition
+#' 
+#' Compute sun azimuth and elevation given a location and a date/time. Algorithm taken from: 
+#' \url{http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-Day-latitude-and-longitude.}. 
+#' Update version: Jan 6 '12 at 21:40 by "Josh O'Brien".
+#' 
+#' @inheritParams sunPosition
+#' @family generalUtils
+#' @seealso \code{\link{sunPosition}}
 .sunPosition <- function(Year, Month, Day, Hour=12, Minute=0, Second=0,
                         lat=46.5, long=6.5) {
   

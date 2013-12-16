@@ -1,13 +1,14 @@
 #' isDay
-#' @description Use time and loc info to find if  events occured during the day or the night.
+#' 
+#' Use time and loc info to find if events occured during the day or the night. SEAPODYm criteria 
+#' elevlim=c(-18, 18). Transition periods filled with NAs.
+#' 
 #' @param Time 
 #' @param loc
 #' @param stat A statdives object can be used instead of the two previous arguments.
 #' @param elevlim Sun elevation the thresholds to distinguish between day and night
 #' @param append Should the entire updated object be returned (if 'stat' argument was used).
-#' @details SEAPODYm criteria elevlim=c(-18, 18). Transition periods filled with NAs.
 #' @seealso \code{\link{sunPosition}}
-#' @author Yves
 #' @export
 #' @examples
 #' testPts <- data.frame(Lat = c(-41,-3,3, 41), 
@@ -18,8 +19,8 @@
 #' isDay(convertTime(time, to="posx"), testPts)
 isDay <- function(Time, loc, stat=NULL, elevlim=c(-18, 18), append=TRUE) {
 	if (!is.null(stat)){
-		statVars <- userHeader(c("Time", "Lat", "Lon"), type="stat")
-		findVars(statVars, stat, varnames=c("Time", "Lat", "Lon"))
+		findDefaultVars(c("Time", "Lat", "Lon"), stat, type.obj="stat",
+						varnames=c("Time", "Lat", "Lon"))
 		loc <- data.frame(Lat=Lat, Lon=Lon)
 	}
 	

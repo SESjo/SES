@@ -1,12 +1,14 @@
 #' idPixel
-#' @description Attribute to dives the pixel number they belong to.
+#' 
+#' Given a grig, attribute to the dives the pixel number they belong to.
+#' 
 #' @param stat A statdives object.
 #' @param grid The grid to look pixel into.
 #' @param ses A ses object. 'stat' is ignored when given.
 #' @param append Should the entire statdives object be returned.
 #' @param append.grid Should the variable 'Pixel.id' added to grid
 #' @details The pixel number is row number of the 'grid' data frame.
-#' @seealso \code{\link{addLoc}} \code{\link{importSEAPOpred}} \code{\link{importSES}}
+#' @family SESspacial
 #' @export
 #' @examples
 #' path <- system.file("extdata", package="SES")
@@ -44,4 +46,29 @@ idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 	if (!append) return(mapply(findPix, vals$Lat, vals$Lon, MoreArgs=list(grid=grid)))
 	stat$Pixel.id <- mapply(findPix, vals$Lat, vals$Lon, MoreArgs=list(grid=grid))
 	return(stat)
+}
+
+#' ncgrid
+#' 
+#' Extract the grid from a NetCDF file.
+#' 
+#' @param ncfile The to read the grid from.
+#' @return Retuns a data frame with combinations of latitude and longitude grid breaks.
+#' @family SESspacial
+#' @export
+#' @examples
+#' path <- system.file("extdata", package="SES")
+#' pathname <- file.path(path, "ker_0083x1d_catsat_vgpm_20111101_MTLPB.nc")
+#' expl <- ncgrid(ncfile=pathname)
+ncgrid <- function(ncfile, connection){
+  if (missing(connection)) {
+  	require("ncdf", quietly=TRUE)
+  	con <- open.ncdf(ncfile)
+  } else {
+  	con <- connection
+  }
+  lat <- con$dim$latitude$vals
+  lon <- con$dim$longitude$vals
+  if (missing(connection)) close.ncdf(con)
+  return(expand.grid(Lon=lon, Lat=lat))
 }

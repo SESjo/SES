@@ -1,13 +1,36 @@
+#' findDefaultVars
+#' 
+#' Search and/or get variables in an object using its default name as it is given in formatSES.
+#' To use for error handling and initial checking in functions.
+#' 
+#' @param vars The variables to search called by their default name.
+#' @param type.obj The type of object in wich to look for the user name. To choose in 
+#' \code{c("tdr", "stat", "tdr3D", "stat3D")}.
+#' @inheritParams findVars
+#' @family checkUtils
+findDefaultVars <- function(vars, object, type.obj, varnames=NULL,
+						type=c("assign", "check"), mult=FALSE, envir=sys.frame(-2), ...){
+	VARS <- userHeader(vars, type=type.obj)
+	findVars(VARS, object, varnames, type, mult, envir)
+}
+
 #' findVars
-#' @description Search and get variables in an object using its name. To use for error handling and initial checking in functions.
-#' @param vars The list of variables to search and to create in the current environment.
+#' 
+#' Search and/or get variables in an object using its name. To use for error handling and initial 
+#' checking in functions.
+#' 
+#' @param vars The variables to search and to create in the current environment.
 #' @param object The object supposed to contain the variables.
-#' @param varnames An Optional atomic vector of type 'character'. The names to give to the variables found when assigning them to the current environment. Default is the same as \code{vars}.
+#' @param varnames An Optional atomic vector of type 'character'. The names to give to the variables
+#' found when assigning them to the current environment. Default is the same as \code{vars}.
+#' @param type To choose in \code{c("assign", "check")}. The second choice checks run the process 
+#' but do not assign thematching variables in the environment.
+#' @param mult Should the multiple matching of a variable name be allowed.
+#' @param envir The environement in with the matching variables should be assigned.
+#' Default is the enviromnent in which the function is called.
 #' @param ... Other arguments to be passed to \code{checkVar}.
-#' @seealso \code{\link{checkVar}}
-#' @author Yves
+#' @family checkUtils
 #' @export
-#' @keywords internal
 #' @examples
 #' x <- list(A=1, a=2, B=list(b=3, C=4, ca=5, abc=6, c=7))
 #' # Example 1: Basic matching
@@ -39,7 +62,7 @@
 #' findVars("b", x, mult=TRUE) # Error
 #' }
 findVars <- function(vars, object, varnames=NULL,
-                     type=c("assign", "check"), mult=FALSE, ...){
+                     type=c("assign", "check"), mult=FALSE, envir=sys.frame(-1), ...){
   
   spChar <- c("^", "$", "[", "]", "\\.", "?", "*", "+", "\\")
   
@@ -64,25 +87,31 @@ findVars <- function(vars, object, varnames=NULL,
     else if (is.null(varnames) & !mult) {varnames <- vars}
     for (kk in seq_along(match.names)){
       switch(match.arg(type),
-             assign = assign(varnames[k + kk - 1], ans$var[[match.names[kk]]], envir=sys.frame(-1)),
+             assign = assign(varnames[k + kk - 1], ans$var[[match.names[kk]]], envir=envir),
              check = invisible())
     }
   }
 }
 
 #' checkVar
-#' @description Search and get the content of a variable anywhere in a 'list' object using its name.
+#' 
+#' Check if a variable exists anywhere in a 'list' object using its name. Print messages, 
+#' warning or errors according according to the gravity of ambiguous situations. Include various
+#' arguments letting specify how should be matched these names.
+#' 
 #' @param var Character givin the name of the variable to search.
 #' @param object The object in which to search.
-#' @param substring If \code{FALSE} then check that the \code{pattern} and the matching variables have the same number of characters.
+#' @param mult Should the multiple matching of a variable name be allowed.
+#' @param substring If \code{FALSE} then check that the \code{pattern} and the matching variables 
+#' have the same number of characters.
 #' @param ignore.case Should case variants of the pattern be investigated ?
-#' @param mult Is \code{var} a regular expression pattern to match several elements in \code{object} variable names ?
+#' @param mult Is \code{var} a regular expression pattern to match several elements in \code{object}
+#'  variable names ?
 #' @param ignore.depth.error Should the function check for ambiguities with the names of deeper element ?
 #' @return the desired variable not simplified.
-#' @seealso \code{\link{findVars}}, \code{\link{findVar}}.
-#' @export
+#' @family checkUtils
 #' @keywords internal
-#' @author Yves
+#' @export
 #' @examples
 #' l <- list(a=1, b=list(c=2, cD=3))
 #' checkVar("a", l)
@@ -135,15 +164,17 @@ checkVar <- function(var, object, mult=FALSE, substring=TRUE, ignore.case=TRUE, 
 }
 
 #' findVar
-#' @description Similar to rapply but only aims only the names of variables within \code{object}.
+#' 
+#' Recursively explore a 'list' object until a variable name match with the given pattern.
+#' 
 #' @param object A list.
 #' @param pattern a function (must return a logical).
 #' @param ... Optional arguments to be passed to \code{grepl}.
-#' @return A list with the desired variable (\code{$var}) and the results of the function \code{fun} at the matching depth. Returns \code{NULL} if no match.
-#' @seealso \code{\link{checkVar}}
-#' @export
+#' @return A list with the desired variable (\code{$var}) and the results of the function \code{fun}
+#' at the matching depth. Returns \code{NULL} if no match.
+#' @family checkUtils
 #' @keywords internal
-#' @author Yves
+#' @export
 #' @examples
 #' l <- list(a=1, b=list(c=2))
 #' findVar(l, grepl, pattern="a")

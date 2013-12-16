@@ -1,11 +1,12 @@
 #' convertTime
-#' @description Convert a time object to another format (among those used in the package and data files)
+#' 
+#' Convert a time object to another format (among those used in the package and data files).
+#' 
 #' @param x The object to convert
 #' @param to The output format. Choose in 'posx', 'ymd', 'text'.
 #' @param width The desired number of columns desired in the data frame.
-#' @details Width = 3 when 'text' format is involved.
-#' @seealso \code{\link{importSEAPOpred}}
-#' @author Yves
+#' @details width = 3 when 'text' format is involved.
+#' @family generalUtils
 #' @export
 #' @examples
 #' tm <- as.POSIXct("2011-11-01 01:02:03")
@@ -25,11 +26,12 @@ convertTime <- function(x, to, width=6){
   else message("Requested conversion is not implemented")
 }
 
-# posx2ymd
-# @description Convert a POSIX object to a data frame.
-# @param posx The POSIX object to convert
-# @param width The desired number of columns desired in the data frame.
-# @author Yves
+#' posx2ymd
+#' 
+#' Convert a POSIX object to a data frame with the desired number of columns.
+#' 
+#' @param posx The POSIX object to convert
+#' @param width The desired number of columns desired in the data frame.
 posx2ymd = function(posx, width=6){
   fmt <- c(Year="%Y", Month="%m", Day="%d", Hour="%H", Minute="%M", Second="%S")
   if (width != 6) fmt <- fmt[1:width]
@@ -37,6 +39,11 @@ posx2ymd = function(posx, width=6){
   return(ymd)
 }
 
+#' text2posx
+#' 
+#' Convert a text date ('YYYYMMDD' formatting) to a POSIXct object.
+#' 
+#' @param text The text date(s) to convert
 text2posx <- function(text){
   # Extract 8 consecutive numeric characters begining with 20 (years 20**)
   dates.str <- regmatches(text, regexpr('(20+[0-9]{6})', text))
@@ -47,8 +54,13 @@ text2posx <- function(text){
   }
 }
 
+#' ymd2posx
+#' 
+#' Convert a date matrix or data frame (yyyy|mm|dd) to a POSIXct object.
+#' 
+#' @param ymd 
+#' @inheritParams posx2ymd
 ymd2posx <- function(ymd, width=ncol(ymd)){
-  # Convert a date matrix (yyyy|mm|dd) into a posixct array
   ymd <- ymd[ , 1:width]
   fmt = c(Year="%Y", Month="%m", Day="%d", Hour="%H", Minute="%M", Second="%S")
   length(fmt[names(ymd)]) == ncol(ymd) || stop("Column names muste be 'Year', 'Month', ... 'Second'.")
@@ -57,6 +69,18 @@ ymd2posx <- function(ymd, width=ncol(ymd)){
   return(as.POSIXct(ymd, format=fmt))
 }
 
+#' text2posx
+#' 
+#' Convert a POSIXct object to a text date ('YYYYMMDD' formatting).
+#' 
+#' @inheritParams posx2ymd
 posx2date <- function(posx){
   ymd2posx(posx2ymd(posx, width=3))
 }
+
+#' datenum2posx
+#' 
+#' Utility to convert Matlab numeric detes to R's POSIXct format.
+#' 
+#' @param x The atomic vector of matlab dates.
+datenum2posx <- function(x){as.POSIXct((x - 719529)*24*3600, tz="UTC", origin="1970-01-01")}
