@@ -62,7 +62,7 @@ print.fmtSES <- function(x, ...){
 		}
 	}
 	if (any(grepl("SESsettings", search()))) detach(SESsettings)
-	attach(SESsettings, warn.conflictss=FALSE)
+	attach(SESsettings, warn.conflicts=FALSE)
 }
 
 #' save.fmtSES
@@ -112,7 +112,7 @@ reset.fmtSES <- function(type=c("files", "vars"), ...){
 		 }
 	)
 	if (any(grepl("SESsettings", search()))) detach(SESsettings)
-	attach(SESsettings, warn.conflictss=FALSE)
+	attach(SESsettings, warn.conflicts=FALSE)
 	for (elt in get("formatSES", envir=SESsettings)){
 		save.fmtSES(elt, ...)
 	}
