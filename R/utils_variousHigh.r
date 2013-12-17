@@ -1,0 +1,150 @@
+#' isDay
+#' 
+#' Use time and loc info to find if events occured during the day or the night. SEAPODYm criteria 
+#' elevlim=c(-18, 18). Transition periods filled with NAs.
+#' 
+#' @param Time The time information in \code{POSIXct} format.
+#' @param loc A data frame including latitude ('Lat' column) and longitude ('Lon' column).
+#' @param stat A statdives object can be used instead of the two previous arguments.
+#' @param elevlim Sun elevation the thresholds to distinguish between day and night
+#' @param append Should the entire updated object be returned (if 'stat' argument was used).
+#' @seealso \code{\link{sunPosition}}
+#' @export
+#' @examples
+#' testPts <- data.frame(Lat = c(-41,-3,3, 41), 
+#'                      Lon = c(0, 0, 0, 0))
+#' time <- data.frame(Year=rep(2012, 4), Month=rep(12, 4), Day=rep(22, 4),
+#'                    Hour=10:13, Minute=rep(0, 4), Second=rep(0,4))
+#' isDay(time, testPts)
+#' isDay(convertTime(time, to="posx"), testPts)
+isDay <- function(Time, loc, stat=NULL, elevlim=c(-18, 18), append=TRUE) {
+	if (!is.null(stat)){
+		findDefaultVars(c("Time", "Lat", "Lon"), stat, type.obj="stat",
+						varnames=c("Time", "Lat", "Lon"))
+		loc <- data.frame(Lat=Lat, Lon=Lon)
+	}
+	
+	if (any(is.na(Time))) stop("NA not allowed in 'Time' argument")
+	if (any(is.na(loc))) {
+		locNA <- apply(is.na(loc), 1, sum) != 0
+		sunAngle <- try(rep(NA, nrow(Time)), silent=TRUE)
+		if (inherits(sunAngle, "try-error")) sunAngle <- rep(NA, length(Time))
+		sunAngle[!locNA] <- sunPosition(time=Time[!locNA], loc=loc[!locNA, ])$el
+	}
+	else {
+		locNA <- try(rep(FALSE, nrow(Time)), silent=TRUE)
+		if (inherits(locNA, "try-error")) locNA <- rep(FALSE, length(Time))
+		sunAngle <- sunPosition(time=Time, loc=loc)$el
+	}
+	is.Day <- rep(NA, length(locNA))
+	is.Day[!locNA & sunAngle > elevlim[2]] <- TRUE
+	if (!is.null(stat) & append) {stat$is.Day <- is.Day ; return(stat)}
+	else {return(is.Day)}
+}
+
+#' addVar
+#' 
+#' Copy values of variable from an object to another within a ses.
+#' 
+#' @param var The name of the variable to be copied.
+#' @inheritParams addLoc
+#' @return Object given at the 'to' argument, updated with location information.
+#' @details Missing values (NAs) of the choosen variable are transformed in zeros when pasted 
+#' to a 'tdr' object.
+#' @seealso \code{\link{addLoc}}
+#' @export
+addVar <- function(var, from, to, ses=NULL, append=TRUE){
+	if (!is.null(ses)) {
+		from <- eval(parse(text=paste0(substitute(ses), '$', from)))
+		to <- eval(parse(text=paste0(substitute(ses), '$', to)))
+	}
+	argtdr <- match("tdr", setdiff(c(class(from), class(to)), "data.frame"), nomatch=0)
+	
+	dvidFrom <- userHeader("Dive.id", type=class(from)[1])
+	findVars(dvidFrom, from, type="check")
+	dvidTo <- userHeader("Dive.id", type=class(to)[1])
+	findVars(dvidTo, to, type="check")
+	
+	if (argtdr == 1){
+		to <- merge(to, unique(from[ , c(dvidFrom,  var)]), by.x=dvidTo, by.y=dvidFrom)
+		if (!append) return(to[, var])
+		class(to) <- c("statdives", "data.frame")
+	} else if (argtdr == 2){
+		if (any(is.na(from[ , var]))) {
+			message("Missing values (NAs) pasted as zeros")
+			from[ , var] <- replaceMissing(from[ , var], na.0=NA, na.1=0)
+		}
+		dvs <- per(to[ , dvidTo])
+		dvs$value[dvs$value != 0] <- from[ , var] 
+		if (!append) return(rep(dvs$value, dvs$length))
+		to[ , var] <- rep(dvs$value, dvs$length)
+	}else{
+		stop("Input objects must be of class 'tdr', and 'statdives'.")
+	}
+	return(to)
+}
+
+#' addLoc
+#' 
+#' Copy locations (Latitude and Longitude) from onre table to another within a 'ses' object
+#' 
+#' @param from Source of location information ('tdr' or 'statdives' object).
+#' @param to Where to add location inforation (respectively a 'statdives' or 'tdr' object).
+#' @param ses A SES from which use the data. If used 'from' and 'to' must be taken in "tdr" and "stat".
+#' @param append logical. If TRUE, the function returns the entire object 'to' with the 
+#' added column. if FALSE it returns the columns.
+#' @return Object given at the 'to' argument, updated with location information.
+#' @seealso \code{\link{addVar}} \code{\link{importSES}}
+#' @export
+#' @examples
+#' path <- system.file("extdata", package="SES")
+#' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
+#' ses <- importSES(pathname)
+#' ses$tdr <- addLoc(ses$stat, ses$tdr)
+#' head(ses$tdr)
+addLoc <- function(from, to, ses=NULL, append=TRUE){
+	if (!is.null(ses)) {
+		from <- eval(parse(text=paste0(substitute(ses), '$', from)))
+		to <- eval(parse(text=paste0(substitute(ses), '$', to)))
+	}
+	
+	vars <- c("Lat", "Lon")
+	findDefaultVars(vars, from, type.obj=class(from)[1], type="check")
+	if (!append) return(lapply(vars, addVar, from, to, append=FALSE))
+	to[ , vars] <- lapply(vars, addVar, from, to, append=FALSE)
+	return(to)
+}
+
+#' per
+#' 
+#' The reverse of 'base::rep()' function: decompose an atomic vector to its successive 
+#' values and their length.
+#' 
+#' @param x The atomic vector to examine.
+#' @param idx Should the indexes (start and end) of homogeneous sequences be returned as well ?
+#' 
+#' @return A data frame with values and lengths of the homogeneous sequences of x. The class of the 
+#' column 'value' is copied from the input.
+#'  
+#' @family generalUtils
+#' @export
+#' @examples
+#' (x <- rep(LETTERS[1:10], 10:1))
+#' (y <- per(x))
+#' # 'per()' is the reverse of 'rep()'
+#' # identical(rep(y$value, y$length), x)   # TRUE
+#' # Because characters are not converted to factors
+#' # inherits(y$value, class(x))            # TRUE
+per <- function(x, idx=FALSE) {
+	# Save original object
+	x.org <- x
+	# Concert x to numeric
+	if      (is.logical(x))   {x <- as.numeric(x)}
+	else if (is.factor(x))    {x <- as.numeric(x)}
+	else if (is.character(x)) {x <- as.numeric(as.factor(x))}
+	# Compute and return
+	chg <- diff(x, lag=1)
+	end <- c(which(chg != 0), length(x)) ; start <- c(1, end[-length(end)] + 1)
+	if (idx) return(data.frame(st.idx=start, ed.idx=end, value=x.org[start], length=end - start + 1, stringsAsFactors=FALSE))
+	else return(data.frame(value=x.org[start], length=end - start + 1, stringsAsFactors=FALSE))
+}
