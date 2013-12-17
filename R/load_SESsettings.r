@@ -5,7 +5,7 @@
 #' @export
 if (any(grepl("SESsettings", search()))) detach(SESsettings)
 SESsettings <- new.env(parent=.GlobalEnv)
-path <- system.file("extdata", package="SES")
+path <- try(system.file("extdata", package="SES"), silent=TRUE)
 assign("formatSES", try(list(tdr=read.csv(file.path(path, "formatSES.tdr.csv"), sep=";", stringsAsFactors=FALSE),
 							 stat=read.csv(file.path(path, "formatSES.stat.csv"), sep=";", stringsAsFactors=FALSE),
 							 tdr3D=read.csv(file.path(path, "formatSES.tdr3D.csv"), sep=";", stringsAsFactors=FALSE),
