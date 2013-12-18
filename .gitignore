@@ -1,13 +1,20 @@
-.Rhistory
-*-Ex.R
+# R/Rstudio files
 .Rproj.user/*
 SES.Rproj
-*.RData
-*.tar.gz
-*.html
 .Rproj.user
-*draft*
-
-2010-21/*
-Rprof.out
+*.RData
+.Rhistory
 .Rprofile
+Rprof.out
+
+# Packeage archives
+*.tar.gz
+*.zip
+
+# Compiled to auxiliary files
+*.html
+*.pdf
+
+# Other utils
+desktop.ini
+git-SES.lnk

@@ -1,9 +1,25 @@
+# R/Rstudio files
 ^.*\.Rproj$
 ^\.Rproj\.user$
-SES-draft.r
-.RHistory
-.gitignore
-SES_0.1.tar.gz
 .Rdata
 .Rproj
-./2010-21/*
+.Rhistory
+.Rprofile
+Rprof.out
+
+# Packeage archives
+*.tar.gz
+*.zip
+
+# Git/Github files
+.gitignore
+.git/*
+.README.md
+
+# Compiled to auxiliary files
+*.html
+*.pdf
+
+# Other utils
+desktop.ini
+git-SES.lnk
