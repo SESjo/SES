@@ -8,7 +8,8 @@
 #' @family chl
 #' @export
 extractChl <- function(stat, chldir, append=TRUE) {
-	existsVars(c("Lat", "Lon", "Date"), stat)
+	findDefaultVars(c("Lat", "Lon"), stat, type.obj="stat", type="check")
+  findVars("Date", stat, type="check")
 	chl <- rep(NA, nrow(stat))
 	chlgrid <- ncgrid(list.files(chldir, "*.nc", full.names=TRUE)[1])
 	chlPix <- idPixel(stat, chlgrid, append=FALSE)
