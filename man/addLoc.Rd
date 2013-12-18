@@ -2,7 +2,7 @@
 \alias{addLoc}
 \title{addLoc}
 \usage{
-  addLoc(from, to, ses = NULL, append = TRUE)
+addLoc(from, to, ses = NULL, append = TRUE)
 }
 \arguments{
   \item{from}{Source of location information ('tdr' or
@@ -19,12 +19,12 @@
   returns the columns.}
 }
 \value{
-  Object given at the 'to' argument, updated with location
-  information.
+Object given at the 'to' argument, updated with location
+information.
 }
 \description{
-  Copy locations (Latitude and Longitude) from onre table
-  to another within a 'ses' object
+Copy locations (Latitude and Longitude) from onre table to
+another within a 'ses' object
 }
 \examples{
 path <- system.file("extdata", package="SES")
@@ -34,6 +34,6 @@ ses$tdr <- addLoc(ses$stat, ses$tdr)
 head(ses$tdr)
 }
 \seealso{
-  \code{\link{addVar}} \code{\link{importSES}}
+\code{\link{addVar}} \code{\link{importSES}}
 }
 

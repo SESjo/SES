@@ -2,9 +2,8 @@
 \alias{sunPosition}
 \title{sunPosition}
 \usage{
-  sunPosition(Year, Month, Day, Hour = 12, Minute = 0,
-    Second = 0, time = NULL, Lat = 46.5, Lon = 6.5,
-    loc = NULL)
+sunPosition(Year, Month, Day, Hour = 12, Minute = 0, Second = 0,
+  time = NULL, Lat = 46.5, Lon = 6.5, loc = NULL)
 }
 \arguments{
   \item{Year}{Atomic numeric vector with year information.}
@@ -37,13 +36,13 @@
   replace the last two variables.}
 }
 \description{
-  Compute sun azimuth and elevation given a location and a
-  date/time.
+Compute sun azimuth and elevation given a location and a
+date/time.
 }
 \details{
-  Based on:
-  \url{http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-Day-latitude-and-longitude.}.
-  Update version: Jan 6 '12 at 21:40 by "Josh O'Brien".
+Based on:
+\url{http://stackoverflow.com/questions/8708048/position-of-the-sun-given-time-of-Day-latitude-and-longitude.}.
+Update version: Jan 6 '12 at 21:40 by "Josh O'Brien".
 }
 \examples{
 testPts <- data.frame(Lat = c(-41,-3,3, 41),
@@ -63,10 +62,10 @@ time <- data.frame(Year=rep(2012, 4), Month=rep(12, 4), Day=rep(22, 4),
 sunPosition(time=time, loc=testPts)
 }
 \seealso{
-  \code{\link{isDay}}
+\code{\link{isDay}}
 
-  Other generalUtils: \code{\link{SESname}},
-  \code{\link{convertTime}}, \code{\link{per}},
-  \code{\link{replaceMissing}}, \code{\link{sunPos}}
+Other generalUtils: \code{\link{SESname}};
+\code{\link{convertTime}}; \code{\link{per}};
+\code{\link{replaceMissing}}; \code{\link{sunPos}}
 }
 

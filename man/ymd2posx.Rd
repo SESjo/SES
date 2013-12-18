@@ -2,7 +2,7 @@
 \alias{ymd2posx}
 \title{ymd2posx}
 \usage{
-  ymd2posx(ymd, width = ncol(ymd))
+ymd2posx(ymd, width = ncol(ymd))
 }
 \arguments{
   \item{ymd}{}
@@ -11,8 +11,8 @@
   data frame.}
 }
 \description{
-  Convert a date matrix or data frame (yyyy|mm|dd) to a
-  POSIXct object.
+Convert a date matrix or data frame (yyyy|mm|dd) to a
+POSIXct object.
 }
 \keyword{internal}
 
