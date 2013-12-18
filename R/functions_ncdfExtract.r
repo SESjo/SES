@@ -34,7 +34,7 @@ extractChl <- function(stat, chldir, append=TRUE) {
 extractBiom <- function(stat, tdr, biomdir) {
 	
   findDefaultVars(c("Lat", "Lon"), stat, type.obj="stat", type="check")
-  findVars("Date", stat, type="check")
+  findVars("Date", stat)
 	findVars(c("Layer", "is.Day", "Pixel.id", "Date"), tdr, 
 					varnames=c("tdrLayer", "tdris.Day", "tdrPixel.id", "tdrDate"))
 	
