@@ -17,29 +17,38 @@
 #'                    Hour=10:13, Minute=rep(0, 4), Second=rep(0,4))
 #' isDay(time, testPts)
 #' isDay(convertTime(time, to="posx"), testPts)
-isDay <- function(Time, loc, stat=NULL, elevlim=c(-18, 18), append=TRUE) {
-	if (!is.null(stat)){
-		findDefaultVars(c("Time", "Lat", "Lon"), stat, type.obj="stat",
-						varnames=c("Time", "Lat", "Lon"))
-		loc <- data.frame(Lat=Lat, Lon=Lon)
-	}
-	
-	if (any(is.na(Time))) stop("NA not allowed in 'Time' argument")
-	if (any(is.na(loc))) {
-		locNA <- apply(is.na(loc), 1, sum) != 0
-		sunAngle <- try(rep(NA, nrow(Time)), silent=TRUE)
-		if (inherits(sunAngle, "try-error")) sunAngle <- rep(NA, length(Time))
-		sunAngle[!locNA] <- sunPosition(time=Time[!locNA], loc=loc[!locNA, ])$el
-	}
-	else {
-		locNA <- try(rep(FALSE, nrow(Time)), silent=TRUE)
-		if (inherits(locNA, "try-error")) locNA <- rep(FALSE, length(Time))
-		sunAngle <- sunPosition(time=Time, loc=loc)$el
-	}
-	is.Day <- rep(NA, length(locNA))
-	is.Day[!locNA & sunAngle > elevlim[2]] <- TRUE
-	if (!is.null(stat) & append) {stat$is.Day <- is.Day ; return(stat)}
-	else {return(is.Day)}
+isDay <- function (time, loc, stat = NULL, elevlim = c(-18, 18), append = TRUE) 
+{
+  if (!is.null(stat)) {
+    findDefaultVars(c("Time", "Lat", "Lon"), stat, type.obj = "stat")
+    if (missing(time)) time <- Time
+    if (missing(loc))  loc  <- data.frame(Lat = Lat, Lon = Lon)
+  }
+  if (any(is.na(time))) 
+    stop("NA not allowed in 'time' argument")
+  if (any(is.na(loc))) {
+    locNA <- apply(is.na(loc), 1, sum) != 0
+    sunAngle <- try(rep(NA, nrow(time)), silent = TRUE)
+    if (inherits(sunAngle, "try-error")) 
+      sunAngle <- rep(NA, length(time))
+    sunAngle[!locNA] <- sunPosition(time = time[!locNA], 
+                                    loc = loc[!locNA, ])$el
+  }
+  else {
+    locNA <- try(rep(FALSE, nrow(time)), silent = TRUE)
+    if (inherits(locNA, "try-error")) 
+      locNA <- rep(FALSE, length(time))
+    sunAngle <- sunPosition(time = time, loc = loc)$el
+  }
+  is.Day <- rep(NA, length(locNA))
+  is.Day[!locNA & sunAngle > elevlim[2]] <- TRUE
+  if (!is.null(stat) & append) {
+    stat$is.Day <- is.Day
+    return(stat)
+  }
+  else {
+    return(is.Day)
+  }
 }
 
 #' addVar
