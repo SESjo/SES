@@ -11,7 +11,7 @@
 #' @export
 #' @keywords internal
 findDefaultVars <- function(vars, object, type.obj, varnames=NULL,
-						type=c("assign", "check"), mult=FALSE, envir=sys.frame(-2), ...){
+						type=c("assign", "check"), mult=FALSE, envir=parent.frame(2), ...){
 	VARS <- userHeader(vars, type=type.obj)
 	findVars(VARS, object, varnames, type, mult, envir)
 }
@@ -64,7 +64,7 @@ findDefaultVars <- function(vars, object, type.obj, varnames=NULL,
 #' findVars("b", x, mult=TRUE) # Error
 #' }
 findVars <- function(vars, object, varnames=NULL,
-                     type=c("assign", "check"), mult=FALSE, envir=sys.frame(-1), ...){
+                     type=c("assign", "check"), mult=FALSE, envir=parent.frame(), ...){
   
   spChar <- c("^", "$", "[", "]", "\\.", "?", "*", "+", "\\")
   
