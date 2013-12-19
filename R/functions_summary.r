@@ -1,5 +1,3 @@
-# S3 method for summary, class ses - tdr and statdives
-
 summary.tdr <- function(x, na.rm=TRUE){
 	
 	funs <- c(min=min, mean=mean, median=median, max=max)
@@ -21,11 +19,9 @@ summary.tdr <- function(x, na.rm=TRUE){
 	return(out)
 }
 
-
 summary.statdives <- function(x, na.rm=TRUE){
 	
 }
-
 
 summary.ses <- function(x, na.rm=TRUE) {
 

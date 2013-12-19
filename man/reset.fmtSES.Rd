@@ -2,7 +2,7 @@
 \alias{reset.fmtSES}
 \title{reset.fmtSES}
 \usage{
-reset.fmtSES(type = c("files", "vars"), ...)
+\method{reset}{fmtSES}(type = c("files", "vars"), ...)
 }
 \arguments{
   \item{type}{\code{files} restore original settings in the

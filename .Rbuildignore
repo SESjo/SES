@@ -1,15 +1,14 @@
 # R/Rstudio files
 ^.*\.Rproj$
 ^\.Rproj\.user$
-.Rdata
-.Rproj
-.Rhistory
-.Rprofile
+^.*\.Rdata$
+\.Rhistory$
+\.Rprofile$
 Rprof.out
 
 # Packeage archives
-*.tar.gz
-*.zip
+^.*\.tar.gz$
+^.*\.zip$
 
 # Git/Github files
 .gitignore
@@ -17,8 +16,8 @@ Rprof.out
 .README.md
 
 # Compiled to auxiliary files
-*.html
-*.pdf
+^.*\.html$
+^.*\.pdf$
 
 # Other utils
 desktop.ini
