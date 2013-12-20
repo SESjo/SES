@@ -2,8 +2,9 @@
 \alias{findDefaultVars}
 \title{findDefaultVars}
 \usage{
-findDefaultVars(vars, object, type.obj, varnames = NULL, type = c("assign",
-  "check"), mult = FALSE, envir = parent.frame(2), ...)
+  findDefaultVars(vars, object, type.obj, varnames = NULL,
+    type = c("assign", "check"), mult = FALSE,
+    envir = parent.frame(2), ...)
 }
 \arguments{
   \item{vars}{The variables to search called by their
@@ -36,13 +37,13 @@ findDefaultVars(vars, object, type.obj, varnames = NULL, type = c("assign",
   \code{checkVar}.}
 }
 \description{
-Search and/or get variables in an object using its default
-name as it is given in formatSES. To use for error handling
-and initial checking in functions.
+  Search and/or get variables in an object using its
+  default name as it is given in formatSES. To use for
+  error handling and initial checking in functions.
 }
 \seealso{
-Other checkUtils: \code{\link{checkVar}};
-\code{\link{findVars}}; \code{\link{findVar}}
+  Other checkUtils: \code{\link{checkVar}},
+  \code{\link{findVar}}, \code{\link{findVars}}
 }
 \keyword{internal}
 

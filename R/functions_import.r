@@ -9,6 +9,7 @@
 #' interpreted as a request to load a '3D' ses. Use \code{lapply()} to import several ses at once. 
 #' @param type To choose among \code{tdr} (only TDR data), \code{stat} (only Statdives data) and 
 #' \code{both} (for both of them).
+#' @inheritParams renames
 #' 
 #' @return An object of class \code{ses}. Includes: ID of the individual - TDR and/or dive statistics (according to the \code{type} argument).
 #' 
@@ -20,7 +21,7 @@
 #' path <- system.file("extdata", package="SES")
 #' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 #' ses <- importSES(pathname)
-importSES <- function (matfile, type=c("both", "tdr", "stat")){
+importSES <- function (matfile, type=c("both", "tdr", "stat"), convert=TRUE){
 	
 	old.opt <- options("warn") ; options(warn=-1)
 	
@@ -38,10 +39,12 @@ importSES <- function (matfile, type=c("both", "tdr", "stat")){
 		
 		if (type != "stat"){
 			res$tdr <- as.data.frame(tdrcor2)
-			res$tdr <- renames(type="tdr", obj=res$tdr, objtxt=tdrcor2txt)
+			res$tdr <- renames(type="tdr", obj=res$tdr, objtxt=tdrcor2txt, convert)
 			rm(list=desiredData[grep("tdr", desiredData)]) ; gc()
-			res$tdr$Time <- datenum2posx(res$tdr$Time)
-			res$tdr[, grep("is.", names(res$tdr))] <- as.logical(res$tdr[, grep("is.", names(res$tdr))])
+			if (!convert){
+				res$tdr$Time <- datenum2posx(res$tdr$Time)
+				res$tdr[, grep("is.", names(res$tdr))] <- as.logical(res$tdr[, grep("is.", names(res$tdr))])
+			}
 			res$tdr[] <- lapply(res$tdr, replaceMissing) # Replace matlab's NaN by NA
 		}
 		class(res$tdr) <- c("tdr", "data.frame")
@@ -49,9 +52,11 @@ importSES <- function (matfile, type=c("both", "tdr", "stat")){
 		
 		if (type != "tdr"){
 			res$stat <- as.data.frame(statdives)
-			res$stat <- renames(type="stat", obj=res$stat, objtxt=statdivestxt)
+			res$stat <- renames(type="stat", obj=res$stat, objtxt=statdivestxt, convert)
 			rm(list=desiredData[grep("stat", desiredData)])
-			res$stat$Time <- datenum2posx(res$stat$Time)
+			if (!convert){
+				res$stat$Time <- datenum2posx(res$stat$Time)
+			}
 			res$stat[] <- lapply(res$stat, replaceMissing) # Replace matlab's NaN by NA
 		}
 		class(res$stat) <- c("statdives", "data.frame")
@@ -76,7 +81,8 @@ importSES <- function (matfile, type=c("both", "tdr", "stat")){
 		if (inherits(locs, "try-error")){stop("Multiple matfile input is reserved to 3D dives data.")}
 		for(infile in matfile){
 			matdata <- readMat(infile) 	
-			res$stat <- try(renames(type="stat3D", obj=as.data.frame(matdata$data), objtxt=matdata$titre.colonne))
+			res$stat <- try(renames(type="stat3D", obj=as.data.frame(matdata$data),
+									objtxt=matdata$titre.colonne, convert))
 			if (inherits(res$stat, "try-error")){next}
 			else{
 				res$stat$Dive.id <- seq_along(res$stat[ , 1])
@@ -88,7 +94,8 @@ importSES <- function (matfile, type=c("both", "tdr", "stat")){
 			}
 		}
 		matdata <- readMat(matfile) 	
-		res$tdr <- renames("tdr3D", as.data.frame(Reduce(rbind, matdata$GeoRefLatLong[ ])), matdata$GeoRefLatLong.titles)
+		res$tdr <- renames("tdr3D", as.data.frame(Reduce(rbind, matdata$GeoRefLatLong[ ])),
+						   matdata$GeoRefLatLong.titles, convert)
 		res$tdr$Dive.id <- rep(locs$Dive.id, sapply(matdata$GeoRefLatLong, nrow))
 		class(res$tdr) <- c("tdr3D", "tdr", "data.frame")
 		if (type == "tdr") res$stat <- NULL

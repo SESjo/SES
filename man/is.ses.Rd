@@ -1,19 +1,18 @@
-\name{is.SES}
-\alias{is.SES}
-\title{is.SES}
+\name{is.ses}
+\alias{is.ses}
+\title{is.ses}
 \usage{
-is.SES(x)
+  is.ses(x)
 }
 \arguments{
   \item{x}{The object}
 }
 \description{
-Test if an object belongs to the family of SES package
-object.
+  Test if an object belong to the 'ses' class
 }
 \seealso{
-Other is.thing: \code{\link{is.ses}};
-\code{\link{is.stat3D}}; \code{\link{is.stat}};
-\code{\link{is.tdr3D}}; \code{\link{is.tdr}}
+  Other is.thing: \code{\link{is.SES}},
+  \code{\link{is.stat}}, \code{\link{is.stat3D}},
+  \code{\link{is.tdr}}, \code{\link{is.tdr3D}}
 }
 

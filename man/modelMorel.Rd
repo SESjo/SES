@@ -2,7 +2,7 @@
 \alias{modelMorel}
 \title{modelMorel}
 \usage{
-modelMorel(Chl, stat = NULL, append = TRUE)
+  modelMorel(Chl, stat = NULL, append = TRUE)
 }
 \arguments{
   \item{Chl}{Vector giving the chlorophyll a concentration
@@ -15,14 +15,14 @@ modelMorel(Chl, stat = NULL, append = TRUE)
   entire statdives object ?}
 }
 \description{
-Predict euphotic depth (m) from the surface chlorophyll
-concentration.
+  Predict euphotic depth (m) from the surface chlorophyll
+  concentration.
 }
 \references{
-Morel and Berthon (1989)
+  Morel and Berthon (1989)
 }
 \seealso{
-Other chl: \code{\link{extractChl}};
-\code{\link{importChl}}; \code{\link{mZeu2layer}}
+  Other chl: \code{\link{extractChl}},
+  \code{\link{importChl}}, \code{\link{mZeu2layer}}
 }
 

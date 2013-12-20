@@ -2,7 +2,7 @@
 \alias{convertTime}
 \title{convertTime}
 \usage{
-convertTime(x, to, width = 6)
+  convertTime(x, to, width = 6)
 }
 \arguments{
   \item{x}{The object to convert}
@@ -14,11 +14,11 @@ convertTime(x, to, width = 6)
   data frame.}
 }
 \description{
-Convert a time object to another format (among those used
-in the package and data files).
+  Convert a time object to another format (among those used
+  in the package and data files).
 }
 \details{
-width = 3 when 'text' format is involved.
+  width = 3 when 'text' format is involved.
 }
 \examples{
 tm <- as.POSIXct("2011-11-01 01:02:03")
@@ -29,9 +29,9 @@ convertTime(tm, to="posx")          # "2011-11-01 01:02:03 CET"
 convertTime(tm, to="text")          # "20111101", width = 3 when 'text' is involved
 }
 \seealso{
-Other generalUtils: \code{\link{SESname}};
-\code{\link{nval}}; \code{\link{per}};
-\code{\link{replaceMissing}}; \code{\link{sunPosition}};
-\code{\link{sunPos}}
+  Other generalUtils: \code{\link{SESname}},
+  \code{\link{nval}}, \code{\link{per}},
+  \code{\link{replaceMissing}}, \code{\link{sunPos}},
+  \code{\link{sunPosition}}
 }
 

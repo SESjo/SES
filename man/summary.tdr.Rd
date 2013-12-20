@@ -2,7 +2,7 @@
 \alias{summary.tdr}
 \title{summary.tdr}
 \usage{
-summary.tdr(object, na.rm = TRUE)
+  summary.tdr(object, na.rm = TRUE)
 }
 \arguments{
   \item{object}{An object for which a summary is desired.}
@@ -12,6 +12,6 @@ summary.tdr(object, na.rm = TRUE)
   proceeds.}
 }
 \description{
-S3 method for 'tdr' objects.
+  S3 method for 'tdr' objects.
 }
 

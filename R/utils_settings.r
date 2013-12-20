@@ -5,10 +5,11 @@
 #' @param type The type of dataset
 #' @param obj The object to process.
 #' @param objtxt The original names. tdrcortxt or statdivestxt in the .mat file.
+#' @param convert Should the formating functions given in \code{formatSES} be applied to the variable ?
 #' @family settings
 #' @export
 #' @keywords internal
-renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt){
+renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt, convert=TRUE){
 	FMT <- get("formatSES", envir=SESsettings)
 	findVars(type, FMT, varnames="fmt", substring=FALSE)
 	headers <- unlist(objtxt)
@@ -22,8 +23,20 @@ renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt){
 					   paste(fmt$userAlias[fmt$keep][is.na(match(fmt$userAlias[fmt$keep], names(obj)))], collapse=" & "), 
 					   " is(are) not available in statdives."))
 	}
-	# unique() needed to avoid duplicated columns with partial matching (e.g. lat and latitude)
-	obj <- obj[ , unique(match(fmt$userAlias[fmt$keep], names(obj), nomatch=0))]
+	objVars <- intersect(fmt$userAlias[fmt$keep], names(obj))
+	obj <- obj[ , objVars]
+	if (convert){
+		# lapply function disposable function
+		applyConvFun <- function(i, funs, objects){
+			argList <- as.list(args(funs[[i]]))
+			names(objects)[i] <- names(argList)[1]
+			return(do.call(funs[[i]], objects[i]))
+		}
+		objVarsl <- fmt$userAlias[fmt$keep] %in% names(obj)
+		obj[ , names(obj)] <- lapply(seq_along(objVars), applyConvFun, 
+									 funs=sapply(fmt$applyFun[objVarsl], match.fun), 
+									 objects=sapply(obj[ , objVars], list))
+	}
 	obj
 }
 

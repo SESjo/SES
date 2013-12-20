@@ -2,8 +2,8 @@
 \alias{checkVar}
 \title{checkVar}
 \usage{
-checkVar(var, object, mult = FALSE, substring = TRUE, ignore.case = TRUE,
-  ignore.depth.error = FALSE)
+  checkVar(var, object, mult = FALSE, substring = TRUE,
+    ignore.case = TRUE, ignore.depth.error = FALSE)
 }
 \arguments{
   \item{var}{Character givin the name of the variable to
@@ -28,14 +28,14 @@ checkVar(var, object, mult = FALSE, substring = TRUE, ignore.case = TRUE,
   ambiguities with the names of deeper element ?}
 }
 \value{
-the desired variable not simplified.
+  the desired variable not simplified.
 }
 \description{
-Check if a variable exists anywhere in a 'list' object
-using its name. Print messages, warning or errors according
-according to the gravity of ambiguous situations. Include
-various arguments letting specify how should be matched
-these names.
+  Check if a variable exists anywhere in a 'list' object
+  using its name. Print messages, warning or errors
+  according according to the gravity of ambiguous
+  situations. Include various arguments letting specify how
+  should be matched these names.
 }
 \examples{
 l <- list(a=1, b=list(c=2, cD=3))
@@ -48,8 +48,8 @@ checkVar("c", l) # Print an error
 }
 }
 \seealso{
-Other checkUtils: \code{\link{findDefaultVars}};
-\code{\link{findVars}}; \code{\link{findVar}}
+  Other checkUtils: \code{\link{findDefaultVars}},
+  \code{\link{findVar}}, \code{\link{findVars}}
 }
 \keyword{internal}
 

@@ -2,7 +2,7 @@
 \alias{summary.ses}
 \title{summary.ses}
 \usage{
-summary.ses(object, na.rm = TRUE)
+  summary.ses(object, na.rm = TRUE)
 }
 \arguments{
   \item{object}{An object for which a summary is desired.}
@@ -12,6 +12,6 @@ summary.ses(object, na.rm = TRUE)
   proceeds.}
 }
 \description{
-S3 method for 'ses' objects.
+  S3 method for 'ses' objects.
 }
 

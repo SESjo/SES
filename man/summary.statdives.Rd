@@ -2,7 +2,7 @@
 \alias{summary.statdives}
 \title{summary.statdives}
 \usage{
-summary.statdives(object, na.rm = TRUE)
+  summary.statdives(object, na.rm = TRUE)
 }
 \arguments{
   \item{object}{An object for which a summary is desired.}
@@ -12,6 +12,6 @@ summary.statdives(object, na.rm = TRUE)
   proceeds.}
 }
 \description{
-S3 method for 'statdives' objects.
+  S3 method for 'statdives' objects.
 }
 
