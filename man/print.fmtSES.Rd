@@ -21,15 +21,15 @@ attach(SESsettings)
 formatSES$tdr
 # Process to modif ...
 # Save to package files for automatic load in the futur
-save.fmtSES(formatSES$tdr)
+saveFmtSES(formatSES$tdr)
 # Reset default settings
-reset.fmtSES()
+resetFmtSES()
 }
 }
 \seealso{
 Other settings: \code{\link{importSES}};
-\code{\link{renames}}; \code{\link{reset.fmtSES}};
-\code{\link{save.fmtSES}}; \code{\link{userHeader}};
+\code{\link{renames}}; \code{\link{resetFmtSES}};
+\code{\link{saveFmtSES}}; \code{\link{userHeader}};
 \code{\link{whichSESobj}}
 }
 

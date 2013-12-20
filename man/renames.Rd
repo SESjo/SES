@@ -18,8 +18,8 @@ formatSES instructions.
 }
 \seealso{
 Other settings: \code{\link{importSES}};
-\code{\link{print.fmtSES}}; \code{\link{reset.fmtSES}};
-\code{\link{save.fmtSES}}; \code{\link{userHeader}};
+\code{\link{print.fmtSES}}; \code{\link{resetFmtSES}};
+\code{\link{saveFmtSES}}; \code{\link{userHeader}};
 \code{\link{whichSESobj}}
 }
 \keyword{internal}

@@ -16,7 +16,7 @@ of a package object.
 \seealso{
 Other settings: \code{\link{importSES}};
 \code{\link{print.fmtSES}}; \code{\link{renames}};
-\code{\link{reset.fmtSES}}; \code{\link{save.fmtSES}};
+\code{\link{resetFmtSES}}; \code{\link{saveFmtSES}};
 \code{\link{whichSESobj}}
 }
 \keyword{internal}

@@ -34,8 +34,8 @@ ses <- importSES(pathname)
 }
 \seealso{
 Other settings: \code{\link{print.fmtSES}};
-\code{\link{renames}}; \code{\link{reset.fmtSES}};
-\code{\link{save.fmtSES}}; \code{\link{userHeader}};
+\code{\link{renames}}; \code{\link{resetFmtSES}};
+\code{\link{saveFmtSES}}; \code{\link{userHeader}};
 \code{\link{whichSESobj}}
 }
 

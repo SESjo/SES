@@ -21,7 +21,8 @@ replaceMissing(x)
 }
 \seealso{
 Other generalUtils: \code{\link{SESname}};
-\code{\link{convertTime}}; \code{\link{per}};
-\code{\link{sunPosition}}; \code{\link{sunPos}}
+\code{\link{convertTime}}; \code{\link{nval}};
+\code{\link{per}}; \code{\link{sunPosition}};
+\code{\link{sunPos}}
 }
 

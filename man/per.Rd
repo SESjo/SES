@@ -29,7 +29,8 @@ vector to its successive values and their length.
 }
 \seealso{
 Other generalUtils: \code{\link{SESname}};
-\code{\link{convertTime}}; \code{\link{replaceMissing}};
-\code{\link{sunPosition}}; \code{\link{sunPos}}
+\code{\link{convertTime}}; \code{\link{nval}};
+\code{\link{replaceMissing}}; \code{\link{sunPosition}};
+\code{\link{sunPos}}
 }
 

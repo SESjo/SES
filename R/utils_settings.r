@@ -44,9 +44,9 @@ renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt){
 #' formatSES$tdr
 #' # Process to modif ...
 #' # Save to package files for automatic load in the futur
-#' save.fmtSES(formatSES$tdr)
+#' saveFmtSES(formatSES$tdr)
 #' # Reset default settings
-#' reset.fmtSES()
+#' resetFmtSES()
 #' }
 print.fmtSES <- function(x, ...){
 	obj <- whichSESobj(x)
@@ -65,7 +65,7 @@ print.fmtSES <- function(x, ...){
 	attach(SESsettings, warn.conflicts=FALSE)
 }
 
-#' save.fmtSES
+#' saveFmtSES
 #' 
 #' A kind of \code{save} (S3) method designed for formatSES object of the SES package.
 #' Export formatSES settings to package files so that user preferences are automaticaly
@@ -75,7 +75,7 @@ print.fmtSES <- function(x, ...){
 #' @param verbose To print the filepath.
 #' @family settings
 #' @export
-save.fmtSES <- function(x, verbose=FALSE) {
+saveFmtSES <- function(x, verbose=FALSE) {
 	if (inherits(x, "data.frame")){
 		obj <- whichSESobj(x)
 		if (!identical(obj, as.character())){
@@ -94,15 +94,15 @@ save.fmtSES <- function(x, verbose=FALSE) {
 	}
 }
 
-#' reset.fmtSES
+#' resetFmtSES
 #' 
 #' Reset formatSES to defaults settings (suggested alias column).
 #' 
 #' @param type \code{files} restore original settings in the package folder. \code{vars} restore the settings in this session but leave the package files unchanged.
-#' @param ... arguments to be passed to \code{save.fmtSES}.
+#' @param ... arguments to be passed to \code{saveFmtSES}.
 #' @family settings
 #' @export
-reset.fmtSES <- function(type=c("files", "vars"), ...){
+resetFmtSES <- function(type=c("files", "vars"), ...){
 	with(SESsettings,
 		 for (elt in formatSES){
 		 	obj <- whichSESobj(elt)
@@ -114,7 +114,7 @@ reset.fmtSES <- function(type=c("files", "vars"), ...){
 	if (any(grepl("SESsettings", search()))) detach(SESsettings)
 	attach(SESsettings, warn.conflicts=FALSE)
 	for (elt in get("formatSES", envir=SESsettings)){
-		save.fmtSES(elt, ...)
+		saveFmtSES(elt, ...)
 	}
 }
 

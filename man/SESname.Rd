@@ -19,7 +19,8 @@ SESname("Path/to/seal/file/2011-12_some_ses_file.txt")
 }
 \seealso{
 Other generalUtils: \code{\link{convertTime}};
-\code{\link{per}}; \code{\link{replaceMissing}};
-\code{\link{sunPosition}}; \code{\link{sunPos}}
+\code{\link{nval}}; \code{\link{per}};
+\code{\link{replaceMissing}}; \code{\link{sunPosition}};
+\code{\link{sunPos}}
 }
 

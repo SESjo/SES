@@ -29,3 +29,14 @@ replaceMissing <- function(x, na.0=NaN, na.1=NA) {
   else x[is.na(x)] <- na.1
   x
 }
+
+#' nval
+#'
+#' Count the number of distinct values in an atomic vector.
+#' 
+#' @param x The object to compute the number of distinct values.
+#' @family generalUtils
+#' @export
+#' @examples
+#' nval(rep(1:5, 5:1)) # 5
+nval <- function(x){sum(!duplicated(x))}
