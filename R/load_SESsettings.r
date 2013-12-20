@@ -3,7 +3,7 @@
 #' @usage SESsettings
 #' @description Environment to keep SES importation preferences (\code{formatSES}). To edit first run \code{attach(SESsettings)} and then \code{format$tdr} etc to proceed.
 #' @export
-if (any(grepl("SESsettings", search()))) detach(SESsettings)
+if (any(grepl("SESsettings", search()))) detach('SESsettings')
 SESsettings <- new.env(parent=.GlobalEnv)
 path <- try(system.file("extdata", package="SES"), silent=TRUE)
 assign("formatSES", try(list(tdr=read.csv(file.path(path, "formatSES.tdr.csv"), sep=";", stringsAsFactors=FALSE),

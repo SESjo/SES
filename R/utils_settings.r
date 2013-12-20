@@ -61,7 +61,7 @@ print.fmtSES <- function(x, ...){
 			assign("formatSES", within(formatSES, assign(obj, tmp)), envir=SESsettings)
 		}
 	}
-	if (any(grepl("SESsettings", search()))) detach(SESsettings)
+	if (any(grepl("SESsettings", search()))) detach('SESsettings')
 	attach(SESsettings, warn.conflicts=FALSE)
 }
 
@@ -111,7 +111,7 @@ resetFmtSES <- function(type=c("files", "vars"), ...){
 		 	assign("formatSES", within(formatSES, assign(obj, tmp)), envir=SESsettings)
 		 }
 	)
-	if (any(grepl("SESsettings", search()))) detach(SESsettings)
+	if (any(grepl("SESsettings", search()))) detach('SESsettings')
 	attach(SESsettings, warn.conflicts=FALSE)
 	for (elt in get("formatSES", envir=SESsettings)){
 		saveFmtSES(elt, ...)
