@@ -14,21 +14,21 @@ summary.ses <- function(object, na.rm=TRUE){
 #' @inheritParams summary.ses
 #' @S3method summary tdr
 summary.tdr <- function(object, na.rm=TRUE){
-	
-	funs <- c(min=min, mean=mean, median=median, max=max)
-	fun.double <- function(object){lapply(funs, function(f) f(x=x, na.rm=na.rm))}
-	cond <- vapply(object, is.double, logical(1)) & !sapply(myses$tdr, inherits, what="POSIXt")
-	ans.double <- matrix(unlist(lapply(object[ , cond], fun.double)), nrow=length(funs))
-	class(ans.double) <- "table"
-	attr(ans.double, which="dim") <- c(length(funs), sum(cond))
-	attr(ans.double, which="dimnames") <- list(names(funs), names(object)[cond])
-	
-	if (any(grepl("Dive.id", names(object)))) {ans.dv <- max(object$Dive.id)}
-
-	ans <- list(nDives=ans.dv, Time=range(object$Time), 
-				Reso=difftime(object$Time[2], object$Time[1], units="sec"),
-				Vars=ans.double)
-	return(ans)
+  cond <- vapply(object, is.double, logical(1)) & !vapply(object, inherits, logical(1), what="POSIXt")
+  obj <- object[ , cond]
+  funs <- c(min=min, mean=mean, median=median, max=max)
+  summary.funs <- function(object){lapply(funs, function(f) f(x=object, na.rm=na.rm))}
+  ans.double <- matrix(unlist(lapply(object[ , cond], summary.funs)), nrow=length(funs))
+  class(ans.double) <- "table"
+  attr(ans.double, which="dim") <- c(length(funs), sum(cond))
+  attr(ans.double, which="dimnames") <- list(names(funs), names(object)[cond])
+  
+  if (any(grepl("Dive.id", names(object)))) {ans.dv <- max(object$Dive.id)}
+  
+  ans <- list(nDives=ans.dv, Time=range(object$Time), 
+              Reso=difftime(object$Time[2], object$Time[1], units="sec"),
+              Vars=ans.double)
+  return(ans)
 }
 
 #' summary.statdives
