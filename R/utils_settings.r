@@ -137,7 +137,6 @@ resetFmtSES <- function(type=c("files", "vars"), ...){
 #' 
 #' @param x
 #' @family settings
-#' @importFrom R.oo equals
 #' @export
 #' @keywords internal
 whichSESobj <- function(x){

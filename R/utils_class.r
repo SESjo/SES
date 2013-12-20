@@ -62,6 +62,7 @@ is.ses <- function(x){inherits(x, 'ses')}
 #' 
 #' Test if an object belongs to the family of SES package object.
 #' 
+#' @rdname is.MAJses
 #' @param x The object
 #' @export
 #' @family is.thing
