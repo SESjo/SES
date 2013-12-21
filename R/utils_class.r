@@ -29,9 +29,10 @@ as.ses <- function(x, type=c("classic", "3D"), ind, tdr, stat){
 #' 
 #' S3 method of \code{as.ses} for list objects.
 #' 
+#' @aliases as.ses
 #' @inheritParams as.ses
 #' @S3method as.ses list
-as.ses.list <- function(x, type=c("classic", "3D"), ...){
+as.ses.list <- function(x, type=c("classic", "3D")){
   findVars(vars=c("Ind.id", "tdr", "stat"), x, type="check", ignore.depth.error=TRUE)
   type <- match.arg(type)
   cl.vec <- switch(type,

@@ -1,8 +1,9 @@
 \name{summary.tdr}
+\alias{summary.ses}
 \alias{summary.tdr}
 \title{summary.tdr}
 \usage{
-  summary.tdr(object, na.rm = TRUE, complete = TRUE, ...)
+  summary.tdr(object, na.rm = TRUE, complete = TRUE)
 }
 \arguments{
   \item{complete}{Should the function compute all

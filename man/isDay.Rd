@@ -6,7 +6,7 @@
     append = TRUE)
 }
 \arguments{
-  \item{Time}{The time information in \code{POSIXct}
+  \item{time}{The time information in \code{POSIXct}
   format.}
 
   \item{loc}{A data frame including latitude ('Lat' column)

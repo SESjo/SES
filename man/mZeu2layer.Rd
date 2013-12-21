@@ -9,8 +9,8 @@
   euphotic depth.}
 }
 \description{
-  Assign to a record the SEAPODYM layer it beyond using the
-  depth expressed in multiple of Zeu.7
+  Assign to a record the SEAPODYM layer it belongs ond
+  using the depth expressed in multiple of Zeu.7
 }
 \details{
   Layers limits taken to be 1.5, 4.5 and 10.5 time Zeu.

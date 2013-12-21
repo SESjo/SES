@@ -1,4 +1,5 @@
 \name{summary.statdives}
+\alias{summary.ses}
 \alias{summary.statdives}
 \title{summary.statdives}
 \usage{

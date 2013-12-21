@@ -1,8 +1,9 @@
 \name{as.ses.list}
+\alias{as.ses}
 \alias{as.ses.list}
 \title{as.ses.list}
 \usage{
-  as.ses.list(x, type = c("classic", "3D"), ...)
+  as.ses.list(x, type = c("classic", "3D"))
 }
 \arguments{
   \item{x}{The object to coerce to 'ses'}

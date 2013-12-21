@@ -3,7 +3,7 @@
 #' Use time and loc info to find if events occured during the day or the night. SEAPODYm criteria 
 #' elevlim=c(-18, 18). Transition periods filled with NAs.
 #' 
-#' @param Time The time information in \code{POSIXct} format.
+#' @param time The time information in \code{POSIXct} format.
 #' @param loc A data frame including latitude ('Lat' column) and longitude ('Lon' column).
 #' @param stat A statdives object can be used instead of the two previous arguments.
 #' @param elevlim Sun elevation the thresholds to distinguish between day and night
