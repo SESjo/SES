@@ -1,13 +1,12 @@
 #' mZeu2layer
 #' 
-#' Assign to a record the SEAPODYM layer it beyond using the depth expressed in multiple of Zeu.7
+#' Assign to a record the SEAPODYM layer it belongs ond using the depth expressed in multiple of Zeu.7
 #' 
 #' @param mZeu The depth expressed as multiple of the euphotic depth.
 #' @details Layers limits taken to be 1.5, 4.5 and 10.5 time Zeu.
 #' @family chl
 #' @export
 mZeu2layer <- function(mZeu){
-  # Find the layer to wich a depth expressed in mZeu belongs
   Layer <- rep(NA, length(mZeu))
   Layer[mZeu > 4.5] <- "Bathy" ; Layer[is.na(Layer) & mZeu > 1.5] <- "Meso" ; Layer[is.na(Layer)] <- "Epi"
   Layer[mZeu == Inf] <- NA
