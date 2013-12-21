@@ -4,7 +4,7 @@
 \usage{
   findDefaultVars(vars, object, type.obj, varnames = NULL,
     type = c("assign", "check"), mult = FALSE,
-    envir = parent.frame(2), ...)
+    envir = parent.frame(1), ...)
 }
 \arguments{
   \item{vars}{The variables to search called by their

@@ -14,7 +14,7 @@
 "sinuosity";"Sinuosity";"Sinuosity";TRUE;"Sinuosity of vertical trajectory at bottom (deviation from straight lines between start/end of bottom and depth max)";"as.double"
 "dive_class";"Dive.type";"Dive.type";FALSE;"Result of dive classification (ref. Dragon PhD). 1 = Drift dives. Avoid using other categories.";"as.integer"
 "rem";"Note";"Note";FALSE;"Note about the dive";"as.character"
-"no_capture";"Catch.numb";"Catch.numb";TRUE;"Prey catch attempt number (0 = not catch). One or several records with even number = 1 catch.";"as.integer"
+"no_capture";"Catch.numb";"Catch.numb";TRUE;"Prey catch attempt number (0 = not catch). One or several records with even number = 1 catch.";"as.double"
 "no_bottom_capture";"BCatch.numb";"BCatch.numb";FALSE;"Prey catch attempt number relatively to the bottom of this dive.";"as.integer"
 "temp_200m";"T200m";"T200m";FALSE;"Temperature at 200 m (C deg.)";"as.double"
 "light_150";"Light150m";"Light150m";FALSE;"Light intensity at 150 m (ref Thomas Jaud et al, 2012, Plos One)  (units?)";"as.double"

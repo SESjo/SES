@@ -2,9 +2,12 @@
 \alias{summary.tdr}
 \title{summary.tdr}
 \usage{
-  summary.tdr(object, na.rm = TRUE)
+  summary.tdr(object, na.rm = TRUE, complete = TRUE, ...)
 }
 \arguments{
+  \item{complete}{Should the function compute all
+  statistics.}
+
   \item{object}{An object for which a summary is desired.}
 
   \item{na.rm}{A logical value indicating whether \code{NA}
