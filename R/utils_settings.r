@@ -32,7 +32,7 @@ renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt, conve
 			names(objects)[i] <- names(argList)[1]
 			return(do.call(funs[[i]], objects[i]))
 		}
-		objVarsl <- fmt$userAlias[fmt$keep] %in% names(obj)
+		objVarsl <-  fmt$userAlias %in% names(obj)
 		obj[ , names(obj)] <- lapply(seq_along(objVars), applyConvFun, 
 									 funs=sapply(fmt$applyFun[objVarsl], match.fun), 
 									 objects=sapply(obj[ , objVars], list))
