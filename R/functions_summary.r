@@ -31,7 +31,7 @@ summary.ses <- function(object, na.rm=TRUE, all=FALSE){
 #' @param complete Should the function compute all statistics.
 #' @S3method summary tdr
 summary.tdr <- function(object, na.rm=TRUE, complete=TRUE){
-	findDefaultVars("Dive.id", object, type.obj="tdr", ignore.depth.error=TRUE)
+	findDefaultVars("Dive.id", object, type.obj="tdr")
 	dvs <-  Dive.id[Dive.id != 0]
 	types <- sapply(object, typeof)
 	ans <- list()
@@ -73,7 +73,7 @@ summary.tdr <- function(object, na.rm=TRUE, complete=TRUE){
 #' @inheritParams summary.tdr
 #' @S3method summary statdives
 summary.statdives <- function(object, na.rm=TRUE){
-	findDefaultVars("Dive.id", object, type.obj="tdr", ignore.depth.error=TRUE)
+	findDefaultVars("Dive.id", object, type.obj="stat")
 	types <- sapply(object, typeof)
 	ans <- list()
 	for (type in unique(types)){

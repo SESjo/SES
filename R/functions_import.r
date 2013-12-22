@@ -34,7 +34,7 @@ importSES <- function (matfile, type=c("both", "tdr", "stat"), convert=TRUE){
 		desiredData <- c("tdrcor2", "tdrcor2txt", "statdives", "statdivestxt")
 		type <- switch(match.arg(type), both = "*", tdr = "tdr", stat = "stat")
 		desiredData <- desiredData[grep(type, desiredData)]
-		findVars(desiredData, matdata, substring=FALSE, ignore.case=FALSE, ignore.depth.error=TRUE)
+		findVars(desiredData, matdata, substring=FALSE, ignore.case=FALSE)
 		rm(matdata)
 		
 		if (type != "stat"){
