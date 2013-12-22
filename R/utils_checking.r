@@ -129,11 +129,13 @@ checkVar <- function(var, object, mult=FALSE, substring=TRUE, ignore.case=TRUE, 
   
   # Check for ambiguities with the names of deeper elements
   if (!is.null(match.names) & !ignore.depth.error){
-    nameList <- unique(gsub("[0-9]$", "", names(c(object, recursive=TRUE))))
+    nameList <- unique(gsub("[0-9]$", "", nstr(object)))
     if (any(grepl(paste0(var,'.*\\..*',var), nameList, ignore.case))){
       stop(paste0("Ambiguous matching with '", var, "' in ", substitute(object),
                   ": several depth levels matching. Try a more specific pattern or set 'ignore.case = FALSE' instead."))
     }
+  }else{
+  	warning("Not checking for depth ambiguities.")
   }
   
   # Update results if substring = FALSE
