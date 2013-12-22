@@ -186,7 +186,7 @@ checkVar <- function(var, object, mult=FALSE, substring=TRUE, ignore.case=TRUE, 
 #' is.null(findVar(l, grepl, pattern="C")) # TRUE
 #' findVar(l, grepl, pattern="C", ignore.case=TRUE)
 findVar <- function(object, pattern, ...){
-  if (typeof(object) != "list") stop("'object' must be a list")
+  typeof(object) == "list" || stop("'object' must be a list")
   fun2vars <- grepl(pattern, names(object), ...)
   names(fun2vars) <- names(object)
   
@@ -196,7 +196,7 @@ findVar <- function(object, pattern, ...){
   # Otherwise continue further in the object tree
   for (idx in seq_along(object)){
     vars <- names(object[[idx]])
-    if (is.null(vars)) next
+    if (is.null(vars)) {next}
     else ans <- findVar(object[[idx]], pattern, ...)
     if (!is.null(ans)) names(ans$match) <- vars
     if (any(ans$match)) return(ans)
