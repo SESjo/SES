@@ -6,22 +6,23 @@
 #' stripped before the computation proceeds.
 #' @param all Should the function return results with both os 'statdives' ans 'tdr'
 #' objects
+#' @param digits The number of digits to show in dive statistics.
 #' @S3method summary ses
-summary.ses <- function(object, na.rm=TRUE, all=FALSE){
+summary.ses <- function(object, na.rm=TRUE, all=FALSE, digits=2){
 	ans <-  findVar(object, "Ind.id")$var
 	if (!all){
 		if (nrow(object$stat) > 0) {
 			ans <- c(ans, Dive_stats=summary(object$stat, na.rm))
 		} else {
 			if (nrow(object$tdr) > 0) {
-				ans <- c(ans, Dive_stats=summary(object$tdr, na.rm, complete=FALSE))
+				ans <- c(ans, Dive_stats=summary(object$tdr, na.rm, complete=FALSE, digits))
 			}
 		}
 	} else {
-		ans <- c(ans, Dive_stats=list(stat=summary(object$stat, na.rm), 
-									  tdr=summary(object$tdr, na.rm, complete=TRUE)))
+		ans <- c(ans, Dive_stats=list(stat=summary(object$stat, na.rm, digits), 
+									  tdr=summary(object$tdr, na.rm, complete=TRUE, digits)))
 	}
-	print(ans)
+	ans
 }
 
 #' summary.tdr
@@ -30,11 +31,11 @@ summary.ses <- function(object, na.rm=TRUE, all=FALSE){
 #' @inheritParams summary.ses
 #' @param complete Should the function compute all statistics.
 #' @S3method summary tdr
-summary.tdr <- function(object, na.rm=TRUE, complete=TRUE){
+summary.tdr <- function(object, na.rm=TRUE, complete=TRUE, digits=2){
 	findDefaultVars("Dive.id", object, type.obj="tdr", ignore.depth.error=TRUE)
 	dvs <-  Dive.id[Dive.id != 0]
 	types <- sapply(object, typeof)
-	ans <- list()
+	ans <- sapply(unique(types), assign, value=NULL)
 	if (complete){
 		for (type in unique(types)){
 			if (type == 'double'){
@@ -45,20 +46,17 @@ summary.tdr <- function(object, na.rm=TRUE, complete=TRUE){
 				MoreArgs <- list()	
 			}
 			if (any(cond)){
-				ans[[type]] <- list()
-				x <- object[Dive.id != 0, cond]
+				x <- object[Dive.id != 0, cond, drop=FALSE]
+				ans[[type]] <- sapply(names(x), assign, value=NULL)
 				for (i in seq_len(sum(cond))){
-					if(is.atomic(x)) {xx <- x}
-					else {xx <- x[[i]]}
-					name <- ifelse(is.atomic(x), names(object)[which(cond)], names(x)[i])
-					ans[[type]][[name]] <- list()
+					xx <- x[[i]]
 					funs <- statFuns(type)
 					for (ii in seq_along(funs)){
-						ans[[type]][[name]][[names(funs)[ii]]] <- do.call('tapply', c(list(X=xx, INDEX=dvs, FUN=funs[[ii]]), MoreArgs))
+						ans[[type]][[names(x)[i]]][[names(funs)[ii]]] <- do.call('tapply', c(list(X=xx, INDEX=dvs, FUN=funs[[ii]]), MoreArgs))
 					}
-					ans[[type]][[name]] <- sapply(ans[[type]][[name]], mean)
+					ans[[type]][[names(x)[i]]] <- sapply(ans[[type]][[names(x)[i]]], mean)
 				}
-				ans[[type]] <- as.data.frame(ans[[type]])
+				ans[[type]] <- round(as.data.frame(ans[[type]]), digits)
 			}
 		}
 	}
@@ -74,10 +72,10 @@ summary.tdr <- function(object, na.rm=TRUE, complete=TRUE){
 #' @description S3 method for 'statdives' objects.
 #' @inheritParams summary.tdr
 #' @S3method summary statdives
-summary.statdives <- function(object, na.rm=TRUE){
+summary.statdives <- function(object, na.rm=TRUE, digits=2){
 	findDefaultVars("Dive.id", object, type.obj="tdr", ignore.depth.error=TRUE)
 	types <- sapply(object, typeof)
-	ans <- list()
+	ans <- sapply(unique(types), assign, value=NULL)
 	for (type in unique(types)){
 		if (type == 'double'){
 			cond <- vapply(object, is.double, logical(1)) & !vapply(object, inherits, logical(1), what="POSIXt")
@@ -87,15 +85,12 @@ summary.statdives <- function(object, na.rm=TRUE){
 			MoreArgs <- list()	
 		}
 		if (any(cond)){
-			ans[[type]] <- list()
-			x <- object[Dive.id != 0, cond]
-			name <- ifelse(is.atomic(x), names(object)[which(cond)], names(x)[i])
+			x <- object[Dive.id != 0, cond, drop=FALSE]
+			ans[[type]] <- sapply(names(x), assign, value=NULL)
 			for (i in seq_len(sum(cond))){
-				if(is.atomic(x)) {xx <- x}
-				else {xx <- x[[i]]}
-				ans[[type]][[name]] <- sapply(statFuns(type), function(f) f(xx))
+				ans[[type]][[names(x)[i]]] <- sapply(statFuns(type), function(f) f(x[[i]]))
 			}
-			ans[[type]] <- as.data.frame(ans[[type]])
+			ans[[type]] <- round(as.data.frame(ans[[type]]), digits)
 		}
 	}
 	ans
@@ -110,18 +105,20 @@ summary.statdives <- function(object, na.rm=TRUE){
 #' @export
 #' @keywords internal
 statFuns <- function(type=c("double", "integer", "logical", "factor", "character")){
-	seq_length <- function(x){
+	seq_length <- function(x, type=c('integer', 'logical')){
 		seqs <- per(x)
-		seqs <- seqs$length[seqs$value]
+		seqs <- switch(match.arg(type), 
+						logical = seqs$length[seqs$value], 
+						integer = seqs$length[seqs$value != 0])
 		if (length(seqs) == 0) return(0)
-		else return(mean(seqs, ))
+		else return(mean(seqs))
 	}
 						   
 	funs <- switch(match.arg(type),
-				   double = list(Min=min, Mean=mean, Median=median, Max=max),
-				   integer = list(Number=nval),
+				   double  = list(Min=min, Mean=mean, Median=median, Max=max),
+				   integer = list(Number=nval, Seq_length=function(x) seq_length(x, type='integer')),
 				   logical = list(Prop=mean, True_seq_length=seq_length),
-				   factor = list(Table=table),
+				   factor  = list(Table=table),
 				   character = list(Table=table))
 	return(funs)
 }
