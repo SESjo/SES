@@ -3,7 +3,7 @@
 "corrected_depth";"Depth";"Depth";TRUE;"Depth (m) (corrected according to surface offsets of device)";"as.double"
 "external_temperature";"Temp";"Temp";FALSE;"Temperature (deg. C)";"as.double"
 "ligth_level";"Light";"Light";TRUE;"Light intensity (ref. Vacquie-Garcia et al, 2012, J. Plos One to convert it in Wcm^2)";"as.double"
-"capture";"is.Catch";"is.Catch";FALSE;"Is the record associated with a prey catch attempt (Beware not equivalent to a catch)";"as.logical"
+"capture";"is.Catch";"is.Catch";TRUE;"Is the record associated with a prey catch attempt (Beware not equivalent to a catch)";"as.logical"
 "captureX";"is.Catch.x";"is.Catch.x";FALSE;"Is the record  > threshold on x axes of the accelerometer";"as.logical"
 "captureY";"is.Catch.y";"is.Catch.y";FALSE;"Is the record  > threshold on y axes of the accelerometer";"as.logical"
 "captureZ";"is.Catch.z";"is.Catch.z";FALSE;"Is the record  > threshold on z axes of the accelerometer";"as.integer"

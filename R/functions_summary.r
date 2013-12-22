@@ -47,14 +47,16 @@ summary.tdr <- function(object, na.rm=TRUE, complete=TRUE){
 			if (any(cond)){
 				ans[[type]] <- list()
 				x <- object[Dive.id != 0, cond]
-				for (i in seq_along(x)){
-					xx <- x[[i]]
-					ans[[type]][[names(x)[i]]] <- list()
+				for (i in seq_len(sum(cond))){
+					if(is.atomic(x)) {xx <- x}
+					else {xx <- x[[i]]}
+					name <- ifelse(is.atomic(x), names(object)[which(cond)], names(x)[i])
+					ans[[type]][[name]] <- list()
 					funs <- statFuns(type)
 					for (ii in seq_along(funs)){
-						ans[[type]][[names(x)[i]]][[names(funs)[ii]]] <- do.call('tapply', c(list(X=xx, INDEX=dvs, FUN=funs[[ii]]), MoreArgs))
+						ans[[type]][[name]][[names(funs)[ii]]] <- do.call('tapply', c(list(X=xx, INDEX=dvs, FUN=funs[[ii]]), MoreArgs))
 					}
-					ans[[type]][[names(x)[i]]] <- sapply(ans[[type]][[names(x)[i]]], mean)
+					ans[[type]][[name]] <- sapply(ans[[type]][[name]], mean)
 				}
 				ans[[type]] <- as.data.frame(ans[[type]])
 			}
@@ -87,8 +89,11 @@ summary.statdives <- function(object, na.rm=TRUE){
 		if (any(cond)){
 			ans[[type]] <- list()
 			x <- object[Dive.id != 0, cond]
-			for (i in seq_along(x)){
-				ans[[type]][[names(x)[i]]] <- sapply(statFuns(type), function(f) f(x[[i]]))
+			name <- ifelse(is.atomic(x), names(object)[which(cond)], names(x)[i])
+			for (i in seq_len(sum(cond))){
+				if(is.atomic(x)) {xx <- x}
+				else {xx <- x[[i]]}
+				ans[[type]][[name]] <- sapply(statFuns(type), function(f) f(xx))
 			}
 			ans[[type]] <- as.data.frame(ans[[type]])
 		}
@@ -105,11 +110,18 @@ summary.statdives <- function(object, na.rm=TRUE){
 #' @export
 #' @keywords internal
 statFuns <- function(type=c("double", "integer", "logical", "factor", "character")){
+	seq_length <- function(x){
+		seqs <- per(x)
+		seqs <- seqs$length[seqs$value]
+		if (length(seqs) == 0) return(0)
+		else return(mean(seqs, ))
+	}
+						   
 	funs <- switch(match.arg(type),
-				   double = list(min=min, mean=mean, median=median, max=max),
-				   integer = list(N=nval),
-				   logical = list(prop=mean, seq_length=function(x){mean(per(x)$length)}),
-				   factor = list(table=table),
-				   character = list(table=table))
+				   double = list(Min=min, Mean=mean, Median=median, Max=max),
+				   integer = list(Number=nval),
+				   logical = list(Prop=mean, True_seq_length=seq_length),
+				   factor = list(Table=table),
+				   character = list(Table=table))
 	return(funs)
 }
