@@ -134,8 +134,6 @@ checkVar <- function(var, object, mult=FALSE, substring=TRUE, ignore.case=TRUE, 
       stop(paste0("Ambiguous matching with '", var, "' in ", substitute(object),
                   ": several depth levels matching. Try a more specific pattern or set 'ignore.case = FALSE' instead."))
     }
-  }else{
-  	warning("Not checking for depth ambiguities.")
   }
   
   # Update results if substring = FALSE

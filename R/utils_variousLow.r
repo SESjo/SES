@@ -52,7 +52,7 @@ depth <- function (x) {
 	if (is.list(x)) {
 		maxdepth <- 1
 		for (lindex in 1:length(x)) {
-			newdepth <- listDepth(x[[lindex]]) + 1
+			newdepth <- depth(x[[lindex]]) + 1
 			if (newdepth > maxdepth) 
 				maxdepth <- newdepth
 		}
