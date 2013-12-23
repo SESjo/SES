@@ -95,7 +95,7 @@ SESplot.ses <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.args=li
 #' @param plt.args Other parameters to be passed to \code{\link{plot}}.
 #' Notice the possibility to set \code{xlim} and \code{ylim} arguments.
 #' @param colorvarname Name for the legend. For compatibility when called from 
-#' SESplot.ses
+#' \code{SESplot.ses()}
 #' @details If this error show up 'data set ‘worldMapEnv’ not found' 
 #' try \code{require(maps)}. See examples in \code{\link{SESplot}}.
 #' @family SESplot
@@ -159,7 +159,7 @@ SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.a
 #' Defaults: \code{list(side=3, legend.width=1, legend.mar=7.8, legend.shrink=.7, 
 #' legend.lab=colorvarname, legend.line=3.5)}.
 #' @family SESplot
-#' @importFrom fields color.scale
+#' @import fields
 #' @S3method SESplot tdr3D
 SESplot.tdr3D <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
 						  scatter.args=list(), colscale.args=list(), implt.args=list()){
