@@ -166,7 +166,7 @@ SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.a
 #' SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id==1015, colorvar=ses3d$tdr$Distance)
 #' # Use manipulate to change view angle
 #' require(manipulate)
-#'  manipulate(SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id ==2500,
+#'  manipulate(SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id==2500,
 #'   scatter.args=list(angle=angle)), angle=slider(0, 360))
 #' }
 SESplot.tdr3D <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
