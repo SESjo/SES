@@ -36,6 +36,15 @@
 \description{
   A method for \code{SESplot()} with tdr3D objects.
 }
+\examples{
+\dontrun{
+SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id==1015, colorvar=ses3d$tdr$Distance)
+# Use manipulate to change view angle
+require(manipulate)
+ manipulate(SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id ==2500,
+  scatter.args=list(angle=angle)), angle=slider(0, 360))
+}
+}
 \seealso{
   Other SESplot: \code{\link{SESplot}},
   \code{\link{SESplot.ses}},
