@@ -49,7 +49,7 @@
   \code{xlim} and \code{ylim} arguments.}
 
   \item{colorvarname}{Name for the legend. For
-  compatibility when called from SESplot.ses}
+  compatibility when called from \code{SESplot.ses()}}
 }
 \description{
   A S3 method for \code{SESplot()} with regular ses

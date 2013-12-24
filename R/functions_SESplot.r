@@ -137,8 +137,8 @@ SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.a
 	}
 	do.call('points', c(list(Lat ~ Lon), pts.args))
 	mtext(text=paste(range(Time), collapse="  -->  "), side=3, line=.75)
-	points(Lon[1], Lat[1], col="deeppink3", pch="*", cex=3)
 	do.call('map', c(list(add=TRUE), map.args))
+	points(Lon[1], Lat[1], col="deeppink3", pch="*", cex=3)
 	if (!is.null(isobath)) {
 		bath <- readShapeSpatial(file.path(system.file("extdata", package="SES"), "bath.shp"))
 		bath <- bath[bath$CONTOUR %in% isobath, ]
@@ -161,6 +161,14 @@ SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.a
 #' @family SESplot
 #' @import fields
 #' @S3method SESplot tdr3D
+#' @examples
+#' \dontrun{
+#' SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id==1015, colorvar=ses3d$tdr$Distance)
+#' # Use manipulate to change view angle
+#' require(manipulate)
+#'  manipulate(SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id ==2500,
+#'   scatter.args=list(angle=angle)), angle=slider(0, 360))
+#' }
 SESplot.tdr3D <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
 						  scatter.args=list(), colscale.args=list(), implt.args=list()){
 	colorvarname <- deparse(substitute(colorvar))
@@ -170,7 +178,7 @@ SESplot.tdr3D <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
 	}
 	findDefaultVars(c("Lat", "Lon", "Time", "Depth"), obj, type.obj="tdr3D")
 	# Settings
-	defaults <- list(scatter.args=list(pch=19, cex.symbol=.1, mar=c(4.2,4.2,3.5,9)), 
+	defaults <- list(scatter.args=list(pch=19, cex.symbol=.1, mar=c(3.5,3.5,2,9)), 
 					 colscale.args=list(),
 					 implt.args=list(side=3, legend.width=1, legend.mar=7.8, legend.shrink=.7,
 					 				legend.lab=colorvarname, legend.line=3.5))
@@ -198,4 +206,5 @@ SESplot.tdr3D <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
 		do.call('image.plot', c(list(legend.only=TRUE, add=TRUE,
 									 z=colorvar, col=cols), implt.args))
 	}
+	sp3$points3d(Lon, Lat, rep(min(pretty(Depth)), length(Lon)), type='l', lty="dotted")
 }
