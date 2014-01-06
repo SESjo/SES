@@ -2,12 +2,13 @@
 \alias{SESplot.statdives}
 \title{SESplot.statdives}
 \usage{
-  \method{SESplot}{ses} (obj, colorvar = NULL, cond = NULL,
-    isobath = NULL, pts.args = list(), map.args = list(),
-    img.args = list(), implt.args = list(),
-    plt.args = list(), colorvarname)
+\method{SESplot}{statdives}(obj, colorvar = NULL, cond = NULL,
+  isobath = NULL, pts.args = list(), map.args = list(),
+  img.args = list(), implt.args = list(), plt.args = list(), colorvarname)
 }
 \arguments{
+  \item{obj}{An object to plot}
+
   \item{colorvar}{Optionnal \code{obj} variable to plot
   with the color of symbols.}
 
@@ -47,20 +48,14 @@
 
   \item{colorvarname}{Name for the legend. For
   compatibility when called from \code{SESplot.ses()}}
-
-  \item{obj}{An object to plot}
 }
 \description{
-  \code{SESplot()} with regular 'statdives' objects.
+Method for 'statdives' objects.
 }
 \details{
-  Includes bathymetry taken from
-  \url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}.
-  If this error show up 'data set ‘worldMapEnv’ not found'
-  try \code{require(maps)}.
-}
-\seealso{
-  Other SESplot: \code{\link{SESplot}},
-  \code{\link{SESplot.ses}}, \code{\link{SESplot.tdr3D}}
+Includes bathymetry taken from
+\url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}.
+If this error show up 'data set ‘worldMapEnv’ not
+found' try \code{require(maps)}.
 }
 

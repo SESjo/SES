@@ -2,9 +2,8 @@
 \alias{SESplot.tdr3D}
 \title{SESplot.tdr3D}
 \usage{
-  SESplot.tdr3D(obj, colorvar = NULL, cond = NULL,
-    isobath = NULL, scatter.args = list(),
-    colscale.args = list(), implt.args = list())
+\method{SESplot}{tdr3D}(obj, colorvar = NULL, cond = NULL, isobath = NULL,
+  scatter.args = list(), colscale.args = list(), implt.args = list())
 }
 \arguments{
   \item{scatter.args}{Other parameters to be passed to
@@ -35,13 +34,13 @@
   range from -200 to -4400 meters by 200 m.}
 }
 \description{
-  A method for \code{SESplot()} with tdr3D objects.
+Method for 'tdr3D' objects.
 }
 \details{
-  With a \code{colorvar} of type 'integer', 'logical' or
-  'factor' color the scale can be controled with
-  \code{palette()} while type 'double' must be handled with
-  \code{colscale.args} argument.
+With a \code{colorvar} of type 'integer', 'logical' or
+'factor' color the scale can be controled with
+\code{palette()} while type 'double' must be handled with
+\code{colscale.args} argument.
 }
 \examples{
 \dontrun{
@@ -51,10 +50,5 @@ require(manipulate)
  manipulate(SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id==2500,
   scatter.args=list(angle=angle)), angle=slider(0, 360))
 }
-}
-\seealso{
-  Other SESplot: \code{\link{SESplot}},
-  \code{\link{SESplot.ses}},
-  \code{\link{SESplot.statdives}}
 }
 

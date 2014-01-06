@@ -2,7 +2,7 @@
 \alias{addVar}
 \title{addVar}
 \usage{
-  addVar(var, from, to, ses = NULL, append = TRUE)
+addVar(var, from, to, ses = NULL, append = TRUE)
 }
 \arguments{
   \item{var}{The name of the variable to be copied.}
@@ -21,18 +21,18 @@
   returns the columns.}
 }
 \value{
-  Object given at the 'to' argument, updated with location
-  information.
+Object given at the 'to' argument, updated with location
+information.
 }
 \description{
-  Copy values of variable from an object to another within
-  a ses.
+Copy values of variable from an object to another within a
+ses.
 }
 \details{
-  Missing values (NAs) of the choosen variable are
-  transformed in zeros when pasted to a 'tdr' object.
+Missing values (NAs) of the choosen variable are
+transformed in zeros when pasted to a 'tdr' object.
 }
 \seealso{
-  \code{\link{addLoc}}
+\code{\link{addLoc}}
 }
 

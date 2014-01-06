@@ -2,9 +2,8 @@
 \alias{SESplot.tdr}
 \title{SESplot.tdr}
 \usage{
-  \method{SESplot}{tdr} (obj, colorvar = NULL, cond = NULL,
-    isobath = NULL, plt.args = list(),
-    colscale.args = list(), implt.args = list())
+\method{SESplot}{tdr}(obj, colorvar = NULL, cond = NULL, isobath = NULL,
+  plt.args = list(), colscale.args = list(), implt.args = list())
 }
 \arguments{
   \item{obj}{An object to plot}
@@ -31,12 +30,12 @@
   legend.line = 3.5)}.}
 }
 \description{
-  A method for \code{SESplot()} with tdr objects.
+Method for with 'tdr' objects.
 }
 \details{
-  With a \code{colorvar} of type 'integer', 'logical' or
-  'factor' color the scale can be controled with
-  \code{palette()} while type 'double' must be handled with
-  \code{colscale.args} argument.
+With a \code{colorvar} of type 'integer', 'logical' or
+'factor' color the scale can be controled with
+\code{palette()} while type 'double' must be handled with
+\code{colscale.args} argument.
 }
 

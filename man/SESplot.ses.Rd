@@ -2,12 +2,13 @@
 \alias{SESplot.ses}
 \title{SESplot.ses}
 \usage{
-  \method{SESplot}{ses} (obj, colorvar = NULL, cond = NULL,
-    isobath = NULL, pts.args = list(), map.args = list(),
-    img.args = list(), implt.args = list(),
-    plt.args = list())
+\method{SESplot}{ses}(obj, colorvar = NULL, cond = NULL, isobath = NULL,
+  pts.args = list(), map.args = list(), img.args = list(),
+  implt.args = list(), plt.args = list())
 }
 \arguments{
+  \item{obj}{An object to plot}
+
   \item{colorvar}{Optionnal \code{obj} variable to plot
   with the color of symbols.}
 
@@ -46,15 +47,10 @@
   \code{xlim} and \code{ylim} arguments.}
 }
 \description{
-  \code{SESplot()} with regular 'ses' objects.
+Method for 'ses' objects.
 }
 \details{
-  Includes bathymetry taken from
-  \url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}.
-}
-\seealso{
-  Other SESplot: \code{\link{SESplot}},
-  \code{\link{SESplot.statdives}},
-  \code{\link{SESplot.tdr3D}}
+Includes bathymetry taken from
+\url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}.
 }
 

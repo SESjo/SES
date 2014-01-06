@@ -2,7 +2,7 @@
 \alias{posx2ymd}
 \title{posx2ymd}
 \usage{
-  posx2ymd(posx, width = 6)
+posx2ymd(posx, width = 6)
 }
 \arguments{
   \item{posx}{The POSIX object to convert}
@@ -11,8 +11,8 @@
   data frame.}
 }
 \description{
-  Convert a POSIX object to a data frame with the desired
-  number of columns.
+Convert a POSIX object to a data frame with the desired
+number of columns.
 }
 \keyword{internal}
 

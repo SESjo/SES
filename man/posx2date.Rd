@@ -2,14 +2,14 @@
 \alias{posx2date}
 \title{text2posx}
 \usage{
-  posx2date(posx)
+posx2date(posx)
 }
 \arguments{
   \item{posx}{The POSIX object to convert}
 }
 \description{
-  Convert a POSIXct object to a text date ('YYYYMMDD'
-  formatting).
+Convert a POSIXct object to a text date ('YYYYMMDD'
+formatting).
 }
 \keyword{internal}
 

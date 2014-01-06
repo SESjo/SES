@@ -2,8 +2,7 @@
 \alias{isDay}
 \title{isDay}
 \usage{
-  isDay(time, loc, stat = NULL, elevlim = c(-18, 18),
-    append = TRUE)
+isDay(time, loc, stat = NULL, elevlim = c(-18, 18), append = TRUE)
 }
 \arguments{
   \item{time}{The time information in \code{POSIXct}
@@ -22,9 +21,9 @@
   returned (if 'stat' argument was used).}
 }
 \description{
-  Use time and loc info to find if events occured during
-  the day or the night. SEAPODYm criteria elevlim=c(-18,
-  18). Transition periods filled with NAs.
+Use time and loc info to find if events occured during the
+day or the night. SEAPODYm criteria elevlim=c(-18, 18).
+Transition periods filled with NAs.
 }
 \examples{
 testPts <- data.frame(Lat = c(-41,-3,3, 41),
@@ -35,6 +34,6 @@ isDay(time, testPts)
 isDay(convertTime(time, to="posx"), testPts)
 }
 \seealso{
-  \code{\link{sunPosition}}
+\code{\link{sunPosition}}
 }
 

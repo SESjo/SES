@@ -3,8 +3,7 @@
 \alias{summary.tdr}
 \title{summary.tdr}
 \usage{
-  summary.tdr(object, na.rm = TRUE, complete = TRUE,
-    digits = 2)
+summary.tdr(object, na.rm = TRUE, complete = TRUE, digits = 2)
 }
 \arguments{
   \item{complete}{Should the function compute all
@@ -20,6 +19,6 @@
   statistics.}
 }
 \description{
-  S3 method for 'tdr' objects.
+S3 method for 'tdr' objects.
 }
 

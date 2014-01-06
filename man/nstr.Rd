@@ -2,14 +2,14 @@
 \alias{nstr}
 \title{nstr}
 \usage{
-  nstr(x)
+nstr(x)
 }
 \arguments{
   \item{x}{The object to analyse.}
 }
 \description{
-  Recursive extraction of names (such as \code{names(c(x,
-  recursive=TRUE))}) but stops when a subelement is atomic.
+Recursive extraction of names (such as \code{names(c(x,
+recursive=TRUE))}) but stops when a subelement is atomic.
 }
 \examples{
 x <- data.frame(X=1:10, Y=10:1)

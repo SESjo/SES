@@ -2,7 +2,7 @@
 \alias{extractChl}
 \title{extractChl}
 \usage{
-  extractChl(stat, chldir, append = TRUE)
+extractChl(stat, chldir, append = TRUE)
 }
 \arguments{
   \item{stat}{The 'statdives' object.}
@@ -14,11 +14,11 @@
   entire statdives object ?}
 }
 \description{
-  Create [Chl]_surf variable by extracting relevant values
-  from NetCDF files.
+Create [Chl]_surf variable by extracting relevant values
+from NetCDF files.
 }
 \seealso{
-  Other chl: \code{\link{importChl}},
-  \code{\link{mZeu2layer}}, \code{\link{modelMorel}}
+Other chl: \code{\link{importChl}};
+\code{\link{mZeu2layer}}; \code{\link{modelMorel}}
 }
 

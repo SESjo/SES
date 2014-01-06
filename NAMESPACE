@@ -1,4 +1,6 @@
 S3method(SESplot,ses)
+S3method(SESplot,statdives)
+S3method(SESplot,tdr)
 S3method(SESplot,tdr3D)
 S3method(as.ses,list)
 S3method(print,fmtSES)

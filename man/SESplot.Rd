@@ -2,23 +2,32 @@
 \alias{SESplot}
 \title{SESplot}
 \usage{
-  SESplot(obj, colorvar = NULL, isobath = NULL, ...)
+SESplot(obj, colorvar = NULL, isobath = NULL, ...)
 }
 \arguments{
+  \item{...}{Other parameters to be passed to methods.}
+
   \item{obj}{An object to plot}
 
-  \item{...}{Other parameters to be passed to methods.}
+  \item{colorvar}{Optionnal \code{obj} variable to plot
+  with the color of symbols.}
+
+  \item{isobath}{Isobaths to draw (Bathymetry) . Default is
+  NULL (none). Isobath at -1000 m corresponds
+  approximatively to the Kerguelen shell boarder. Slow down
+  the function (shapefile loading). Available isobaths
+  range from -200 to -4400 meters by 200 m.}
 }
 \description{
-  To draw relevant chart of a 'ses-class' object (generated
-  by importSES) such as tdr', 'statdives', 'tdr3D' or
-  'ststdives3D'.
+To draw relevant chart of an object generated with
+\code{importSES()} such as tdr', 'statdives', 'tdr3D' or
+'ststdives3D'.
 }
 \details{
-  Includes bathymetry taken from
-  \url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}.
-  Available isobaths range from -200 to -4400 meters by 200
-  m.
+Includes bathymetry taken from
+\url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}.
+Available isobaths range from -200 to -4400 meters by 200
+m.
 }
 \examples{
 \dontrun{
@@ -42,10 +51,5 @@ SESplot(ses$tdr, colorvar=ses$tdr$is.Catch, cond=ses$tdr$Dive.id == 650)
 # 3D-Scatterplot of the 1015th dive with colored variable.
 # SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id==1015, colorvar=ses3d$tdr$Distance)
 }
-}
-\seealso{
-  Other SESplot: \code{\link{SESplot.ses}},
-  \code{\link{SESplot.statdives}},
-  \code{\link{SESplot.tdr3D}}
 }
 

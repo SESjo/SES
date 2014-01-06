@@ -2,9 +2,8 @@
 \alias{findVars}
 \title{findVars}
 \usage{
-  findVars(vars, object, varnames = NULL,
-    type = c("assign", "check"), mult = FALSE,
-    envir = parent.frame(), ...)
+findVars(vars, object, varnames = NULL, type = c("assign", "check"),
+  mult = FALSE, envir = parent.frame(), ...)
 }
 \arguments{
   \item{vars}{The variables to search and to create in the
@@ -33,9 +32,8 @@
   \code{checkVar}.}
 }
 \description{
-  Search and/or get variables in an object using its name.
-  To use for error handling and initial checking in
-  functions.
+Search and/or get variables in an object using its name. To
+use for error handling and initial checking in functions.
 }
 \examples{
 x <- list(A=1, a=2, B=list(b=3, C=4, ca=5, abc=6, c=7))
@@ -69,7 +67,7 @@ findVars("b", x, mult=TRUE) # Error
 }
 }
 \seealso{
-  Other checkUtils: \code{\link{checkVar}},
-  \code{\link{findDefaultVars}}, \code{\link{findVar}}
+Other checkUtils: \code{\link{checkVar}};
+\code{\link{findDefaultVars}}; \code{\link{findVar}}
 }
 

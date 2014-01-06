@@ -2,7 +2,7 @@
 \alias{importChl}
 \title{importChl}
 \usage{
-  importChl(date, dir, ncfile = NULL)
+importChl(date, dir, ncfile = NULL)
 }
 \arguments{
   \item{date}{The date (class POSIXct) to load.}
@@ -13,14 +13,14 @@
   NetCDF file can be given directlty.}
 }
 \value{
-  Returns a data frame with latitude, longitude and the
-  associate [Chl].
+Returns a data frame with latitude, longitude and the
+associate [Chl].
 }
 \description{
-  Load a NetCDF file matching with a date and a directory.
+Load a NetCDF file matching with a date and a directory.
 }
 \seealso{
-  Other chl: \code{\link{extractChl}},
-  \code{\link{mZeu2layer}}, \code{\link{modelMorel}}
+Other chl: \code{\link{extractChl}};
+\code{\link{mZeu2layer}}; \code{\link{modelMorel}}
 }
 

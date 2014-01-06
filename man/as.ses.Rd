@@ -2,7 +2,7 @@
 \alias{as.ses}
 \title{as.ses}
 \usage{
-  as.ses(x, type = c("classic", "3D"), ind, tdr, stat)
+as.ses(x, type = c("classic", "3D"), ind, tdr, stat)
 }
 \arguments{
   \item{x}{The object to coerce to 'ses'}
@@ -18,7 +18,7 @@
   \item{stat}{The statdives data. Ignored if x is given.}
 }
 \description{
-  Coerce an object to a 'ses' if possible
+Coerce an object to a 'ses' if possible
 }
 \examples{
 new.ses <- list(Ind.id="Example", tdr=data.frame(), stat=data.frame())

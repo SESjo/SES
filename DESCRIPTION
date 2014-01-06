@@ -15,18 +15,3 @@ Imports:
     maptools
 License: MIT
 LazyData: true
-Collate:
-    'functions_SESplot.r'
-    'functions_chl.r'
-    'functions_gridStuff.r'
-    'functions_import.r'
-    'functions_ncdfExtract.r'
-    'functions_summary.r'
-    'load_SESsettings.r'
-    'utils_checking.r'
-    'utils_class.r'
-    'utils_settings.r'
-    'utils_sunPosition.r'
-    'utils_time.r'
-    'utils_variousHigh.r'
-    'utils_variousLow.r'
