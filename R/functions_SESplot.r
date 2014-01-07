@@ -157,8 +157,8 @@ SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.a
 #'   scatter.args=list(angle=angle)), angle=slider(0, 360))
 #' }
 SESplot.tdr3D <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
-						  scatter.args=list(), colscale.args=list(), implt.args=list()){
-	colorvarname <- deparse(substitute(colorvar))
+						  scatter.args=list(), colscale.args=list(), implt.args=list(), colorvarname){
+	if (missing(colorvarname)) {colorvarname <- deparse(substitute(colorvar))}
 	if (!is.null(cond)) {
 		obj <- obj[cond, ]
 		colorvar <- colorvar[cond]
@@ -199,7 +199,7 @@ SESplot.tdr3D <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
 	if (!is.null(isobath)) {for (iso in isobath) {sp3$plane3d(iso, 0, 0)}}
 	if (!is.null(colorvar) & is.numeric(colorvar)) {
 		do.call('image.plot', c(list(legend.only=TRUE, add=TRUE,
-									 z=colorvar, col=cols), implt.args))
+									 z=colorvar, col=unique(cols[order(colorvar)])), implt.args))
 	}
 	sp3$points3d(Lon, Lat, rep(min(pretty(Depth)), length(Lon)), type='l', lty="dotted")
 	invisible(sp3)
@@ -256,6 +256,6 @@ SESplot.tdr <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
 		opar <- par("mar") ; on.exit(par(opar))
 		par(mar=c(4.2,4.2,3.5,7.9))
 		do.call('image.plot', c(list(legend.only=TRUE, add=TRUE,
-									 z=colorvar), implt.args))
+									 z=colorvar, col=unique(cols[order(colorvar)])), implt.args))
 	}
 }
