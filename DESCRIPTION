@@ -10,8 +10,8 @@ Imports:
     R.matlab,
     ncdf,
     fields,
-    R.utils,
     maps,
-    maptools
+    maptools,
+    rgl
 License: MIT
 LazyData: true

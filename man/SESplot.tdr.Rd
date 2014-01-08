@@ -6,6 +6,9 @@
   plt.args = list(), colscale.args = list(), implt.args = list())
 }
 \arguments{
+  \item{plt.args}{Other parameters to be passed to
+  \code{plot}.}
+
   \item{obj}{An object to plot}
 
   \item{colorvar}{Optionnal \code{obj} variable to plot

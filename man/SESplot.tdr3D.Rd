@@ -3,12 +3,14 @@
 \title{SESplot.tdr3D}
 \usage{
 \method{SESplot}{tdr3D}(obj, colorvar = NULL, cond = NULL, isobath = NULL,
-  scatter.args = list(), colscale.args = list(), implt.args = list())
+  scatter.args = list(), colscale.args = list(), implt.args = list(),
+  colorvarname, dev = c("rgl", "default"))
 }
 \arguments{
   \item{scatter.args}{Other parameters to be passed to
-  \code{scatterplot3d}. Defaults: \code{list(pch = 19,
-  cex.symbol = .1, mar = c(4.2,4.2,3.5,9)))}}
+  \code{plot3d} if \code{dev} is set to \code{'rgl'}, to
+  \code{scatterplot3d} otherwise. Defaults: \code{list(pch
+  = 19, cex.symbol = .1, mar = c(4.2,4.2,3.5,9)))}}
 
   \item{colscale.args}{Other parameters to be passed to
   \code{\link{color.scale}}. Defaults: \code{list()}.}
@@ -18,6 +20,9 @@
   \code{list(legend.width = 1, legend.mar = 7.8,
   legend.shrink = .7, legend.lab = colorvarname,
   legend.line = 3.5)}.}
+
+  \item{dev}{The device to use: to choose in c('rgl',
+  'default'). See consequences in details.}
 
   \item{obj}{An object to plot}
 
@@ -32,6 +37,9 @@
   approximatively to the Kerguelen shell boarder. Slow down
   the function (shapefile loading). Available isobaths
   range from -200 to -4400 meters by 200 m.}
+
+  \item{colorvarname}{Name for the legend. For
+  compatibility when called from \code{SESplot.ses()}}
 }
 \description{
 Method for 'tdr3D' objects.
@@ -40,7 +48,9 @@ Method for 'tdr3D' objects.
 With a \code{colorvar} of type 'integer', 'logical' or
 'factor' color the scale can be controled with
 \code{palette()} while type 'double' must be handled with
-\code{colscale.args} argument.
+\code{colscale.args} argument. When \code{dev} is set
+\code{'rgl'} the figure can be rotated and zoomed
+interactively but no color legend can be added.
 }
 \examples{
 \dontrun{

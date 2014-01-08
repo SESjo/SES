@@ -34,7 +34,7 @@
 #' # SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id==1015, colorvar=ses3d$tdr$Distance)
 #' }
 SESplot <- function(obj, colorvar=NULL, isobath=NULL, ...){
-	UseMethod("SESplot")
+  UseMethod("SESplot")
 }
 
 #' SESplot.ses
@@ -46,12 +46,12 @@ SESplot <- function(obj, colorvar=NULL, isobath=NULL, ...){
 #' \url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}. 
 #' @S3method SESplot ses
 SESplot.ses <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.args=list(), 
-						map.args=list(), img.args=list(), implt.args=list(), plt.args=list()) {
-	findVars(c("Ind.id", "stat"), obj)
-	SESplot.statdives(stat, colorvar, cond, isobath, pts.args, 
-					  map.args, img.args, implt.args, plt.args, 
-					  colorvarname=deparse(substitute(colorvar)))
-	title(main=paste(Ind.id, ": ", nrow(stat), "dives"), line=2)
+                        map.args=list(), img.args=list(), implt.args=list(), plt.args=list()) {
+  findVars(c("Ind.id", "stat"), obj)
+  SESplot.statdives(stat, colorvar, cond, isobath, pts.args, 
+                    map.args, img.args, implt.args, plt.args, 
+                    colorvarname=deparse(substitute(colorvar)))
+  title(main=paste(Ind.id, ": ", nrow(stat), "dives"), line=2)
 }
 
 #' SESplot.statdives
@@ -87,48 +87,48 @@ SESplot.ses <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.args=li
 #' @import maptools fields maps
 #' @S3method SESplot statdives
 SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.args=list(), 
-							  map.args=list(), img.args=list(), implt.args=list(), plt.args=list(),
-							  colorvarname) {
-	if (missing(colorvarname)) colorvarname <- deparse(substitute(colorvar))
-	# 	if (is.logical(colorvar)) colorvar <- as.numeric(colorvar)
-	nas <- apply(is.na(obj), 1, any)
-	obj <- obj[!nas, ] ; colorvar <- colorvar[!nas]
-	if (!is.null(cond)){
-		obj <- obj[cond & !nas, ]
-		colorvar <- colorvar[cond]
-	}
-	if (inherits(obj, "statdives3D")) {
-		findVars(c("Lat.i", "Lon.i", "Dive.id"), obj, varnames=c("Lat", "Lon", "Time"))
-	} else {
-		findDefaultVars(c("Lat", "Lon", "Time"), obj, type.obj="stat", substring=FALSE)
-	}
-	# Settings
-	opar <- par("mar") ; on.exit(par(opar))
-	par(mar=c(4.2,4.2,3.5,7.9))
-	defaults <- list(pts.args=list(pch=19, cex=.1), map.args=list(fill=TRUE, col="gray"), 
-					 img.args=list(na.rm=TRUE),
-					 implt.args=list(legend.width=1, legend.mar=7.8, legend.shrink=.7,
-					 				legend.lab=colorvarname, legend.line=3.5),
-					 plt.args=list())
-	chkArgs <- function(args, def) c(args, def[!names(def) %in% names(args)])
-	for (i in seq_along(defaults)) {
-		assign(names(defaults)[i], chkArgs(get(names(defaults)[i]), defaults[[i]]))
-	}
-	# Call plot functions
-	do.call('plot', c(list(Lat ~ Lon, type="n"), plt.args))
-	if (!is.null(colorvar)) {
-		im <- do.call('as.image', c(list(colorvar, x=data.frame(Lon, Lat)), img.args))
-		do.call('image.plot', c(list(im, add=TRUE), implt.args))
-	}
-	do.call('points', c(list(Lat ~ Lon), pts.args))
-	mtext(text=paste(range(Time), collapse="  -->  "), side=3, line=.75)
-	do.call('map', c(list(add=TRUE), map.args))
-	points(Lon[1], Lat[1], col="deeppink3", pch="*", cex=3)
-	if (!is.null(isobath)) {
-		bath <- readShapeSpatial(file.path(system.file("extdata", package="SES"), "bath.shp"))
-		bath <- bath[bath$CONTOUR %in% isobath, ]
-		lines(bath, lty=2)
-	}
+                              map.args=list(), img.args=list(), implt.args=list(), plt.args=list(),
+                              colorvarname) {
+  if (missing(colorvarname)) colorvarname <- deparse(substitute(colorvar))
+  # 	if (is.logical(colorvar)) colorvar <- as.numeric(colorvar)
+  nas <- apply(is.na(obj), 1, any)
+  obj <- obj[!nas, ] ; colorvar <- colorvar[!nas]
+  if (!is.null(cond)){
+    obj <- obj[cond & !nas, ]
+    colorvar <- colorvar[cond]
+  }
+  if (inherits(obj, "statdives3D")) {
+    findVars(c("Lat.i", "Lon.i", "Dive.id"), obj, varnames=c("Lat", "Lon", "Time"))
+  } else {
+    findDefaultVars(c("Lat", "Lon", "Time"), obj, type.obj="stat", substring=FALSE)
+  }
+  # Settings
+  opar <- par("mar") ; on.exit(par(opar))
+  par(mar=c(4.2,4.2,3.5,7.9))
+  defaults <- list(pts.args=list(pch=19, cex=.1), map.args=list(fill=TRUE, col="gray"), 
+                   img.args=list(na.rm=TRUE),
+                   implt.args=list(legend.width=1, legend.mar=7.8, legend.shrink=.7,
+                                   legend.lab=colorvarname, legend.line=3.5),
+                   plt.args=list())
+  chkArgs <- function(args, def) c(args, def[!names(def) %in% names(args)])
+  for (i in seq_along(defaults)) {
+    assign(names(defaults)[i], chkArgs(get(names(defaults)[i]), defaults[[i]]))
+  }
+  # Call plot functions
+  do.call('plot', c(list(Lat ~ Lon, type="n"), plt.args))
+  if (!is.null(colorvar)) {
+    im <- do.call('as.image', c(list(colorvar, x=data.frame(Lon, Lat)), img.args))
+    do.call('image.plot', c(list(im, add=TRUE), implt.args))
+  }
+  do.call('points', c(list(Lat ~ Lon), pts.args))
+  mtext(text=paste(range(Time), collapse="  -->  "), side=3, line=.75)
+  do.call('map', c(list(add=TRUE), map.args))
+  points(Lon[1], Lat[1], col="deeppink3", pch="*", cex=3)
+  if (!is.null(isobath)) {
+    bath <- readShapeSpatial(file.path(system.file("extdata", package="SES"), "bath.shp"))
+    bath <- bath[bath$CONTOUR %in% isobath, ]
+    lines(bath, lty=2)
+  }
 }
 
 #' SESplot.tdr3D
@@ -136,17 +136,22 @@ SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.a
 #'  Method for 'tdr3D' objects.
 #'  
 #' @inheritParams SESplot.statdives
-#' @param scatter.args Other parameters to be passed to \code{scatterplot3d}. 
+#' @param scatter.args Other parameters to be passed to \code{plot3d} if 
+#' \code{dev} is set to \code{'rgl'}, to \code{scatterplot3d} otherwise.
 #' Defaults: \code{list(pch = 19, cex.symbol = .1, mar = c(4.2,4.2,3.5,9)))}
 #' @param colscale.args Other parameters to be passed to \code{\link{color.scale}}. 
 #' Defaults: \code{list()}.
 #' @param implt.args Other parameters to be passed to \code{\link{image.plot}}. 
 #' Defaults: \code{list(legend.width = 1, legend.mar = 7.8, legend.shrink = .7, 
 #' legend.lab = colorvarname, legend.line = 3.5)}.
+#' @param dev The device to use: to choose in c('rgl', 'default'). See 
+#' consequences in details.
 #' @details With a \code{colorvar} of type 'integer', 'logical' or 'factor' color 
 #' the scale can be controled with \code{palette()} while type 'double' must be 
-#' handled with \code{colscale.args} argument.
-#' @import fields
+#' handled with \code{colscale.args} argument. When \code{dev} is set \code{'rgl'}
+#' the figure can be rotated and zoomed interactively but no color legend can 
+#' be added.
+#' @import fields rgl
 #' @S3method SESplot tdr3D
 #' @examples
 #' \dontrun{
@@ -157,52 +162,61 @@ SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.a
 #'   scatter.args=list(angle=angle)), angle=slider(0, 360))
 #' }
 SESplot.tdr3D <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
-						  scatter.args=list(), colscale.args=list(), implt.args=list(), colorvarname){
-	if (missing(colorvarname)) {colorvarname <- deparse(substitute(colorvar))}
-	if (!is.null(cond)) {
-		obj <- obj[cond, ]
-		colorvar <- colorvar[cond]
-	}
-	findDefaultVars(c("Lat", "Lon", "Time", "Depth"), obj, type.obj="tdr3D")
-	# Settings
-	defaults <- list(scatter.args=list(pch=19, cex.symbol=.1, mar=c(3.5,3.5,2.5,9)), 
-					 colscale.args=list(),
-					 implt.args=list(legend.width=1, legend.mar=7.8, legend.shrink=.7,
-					 				legend.lab=colorvarname, legend.line=3.5))
-	chkArgs <- function(args, def) c(args, def[!names(def) %in% names(args)])
-	for (i in seq_along(defaults)) {
-		assign(names(defaults)[i], chkArgs(get(names(defaults)[i]), defaults[[i]]))
-	}
-	# Colors
-	if (!is.null(colorvar)){
-		if (is.integer(colorvar)){
-			if(any(colorvar == 0L) & !any(colorvar == 1L)){
-				colorvar[which(colorvar == 0L)] <- 1L
-			} else if (any(colorvar == 0L) & any(colorvar == 1L)) {
-				stop("0 is not a color.")
-			} else if (nval(colorvar) == 1){colorvar <- rep(1L, length(Depth))}
-		}
-		cols <- switch(typeof(colorvar),
-					   double = do.call('color.scale', c(list(z=colorvar), colscale.args)),
-					   logical  = colorvar + 1,
-					   character = as.numeric(as.factor(colorvar)),
-					   factor = as.numeric(colorvar),
-					   integer = colorvar)
-	} else {
-		cols <- rep(1, length(Depth))
-	}
-	# Plot
-	sp3 <- do.call(getFromNamespace('scatterplot3d', 'scatterplot3d'), c(list(Lon, Lat, Depth, color=cols, add=TRUE,
-																			  xlab="Lon", ylab="Lat", zlab="Depth"), scatter.args))
-	sp3$points3d(Lon[1], Lat[1], Depth[1], col="deeppink3",
-				 pch="*", cex=3)
-	if (!is.null(isobath)) {for (iso in isobath) {sp3$plane3d(iso, 0, 0)}}
-	if (!is.null(colorvar) & is.numeric(colorvar)) {
-		do.call('image.plot', c(list(legend.only=TRUE, add=TRUE,
-									 z=colorvar, col=unique(cols[order(colorvar)])), implt.args))
-	}
-	sp3$points3d(Lon, Lat, rep(min(pretty(Depth)), length(Lon)), type='l', lty="dotted")
-	invisible(sp3)
+                          scatter.args=list(), colscale.args=list(), implt.args=list(), colorvarname, dev=c('rgl', 'default')){
+  if (missing(colorvarname)) {colorvarname <- deparse(substitute(colorvar))}
+  if (!is.null(cond)) {
+    obj <- obj[cond, ]
+    colorvar <- colorvar[cond]
+  }
+  findDefaultVars(c("Lat", "Lon", "Time", "Depth"), obj, type.obj="tdr3D")
+  # Settings
+  defaults <- list(scatter.args=list(pch=19, cex.symbol=.1, mar=c(3.5,3.5,2.5,9)), 
+                   colscale.args=list(),
+                   implt.args=list(legend.width=1, legend.mar=7.8, legend.shrink=.7,
+                                   legend.lab=colorvarname, legend.line=3.5))
+  chkArgs <- function(args, def) c(args, def[!names(def) %in% names(args)])
+  for (i in seq_along(defaults)) {
+    assign(names(defaults)[i], chkArgs(get(names(defaults)[i]), defaults[[i]]))
+  }
+  # Colors
+  if (!is.null(colorvar)){
+    if (is.integer(colorvar)){
+      if(any(colorvar == 0L) & !any(colorvar == 1L)){
+        colorvar[which(colorvar == 0L)] <- 1L
+      } else if (any(colorvar == 0L) & any(colorvar == 1L)) {
+        stop("0 is not a color.")
+      } else if (nval(colorvar) == 1){colorvar <- rep(1L, length(Depth))}
+    }
+    cols <- switch(typeof(colorvar),
+                   double = do.call('color.scale', c(list(z=colorvar), colscale.args)),
+                   logical  = colorvar + 1,
+                   character = as.numeric(as.factor(colorvar)),
+                   factor = as.numeric(colorvar),
+                   integer = colorvar)
+  } else {
+    cols <- rep(1, length(Depth))
+  }
+  # Plot
+  if (pmatch(dev, 'default', nomatch=0)){
+    sp3 <- do.call(getFromNamespace('scatterplot3d', 'scatterplot3d'),
+                   c(list(Lon, Lat, Depth, color=cols, 
+                          xlab="Lon", ylab="Lat", zlab="Depth"), scatter.args))
+                   sp3$points3d(Lon[1], Lat[1], Depth[1], col="deeppink3",
+                                pch="*", cex=3)
+                   if (!is.null(isobath)) {for (iso in isobath) {sp3$plane3d(iso, 0, 0)}}
+                   if (!is.null(colorvar) & is.numeric(colorvar)) {
+                     do.call('image.plot', c(list(legend.only=TRUE, add=TRUE,
+                                                  z=colorvar, col=unique(cols[order(colorvar)])), implt.args))
+                   }
+                   sp3$points3d(Lon, Lat, rep(min(pretty(Depth)), length(Lon)), type='l', lty="dotted")
+                   invisible(sp3)
+  }else if (pmatch(dev, 'rgl', nomatch=0)){
+    do.call(plot3d, c(list(Lon[-1], Lat[-1], Depth[-1], col=cols, xlab="Lon", ylab="Lat", zlab="Depth"), scatter.args))
+    points3d(Lon[1], Lat[1], Depth[1], col="deeppink3", size=12, add=TRUE)
+    lines3d(Lon, Lat, rep(min(pretty(Depth)), length(Lon)), lty=2)
+    grid3d(c("x", "y", "z"))
+    if (!is.null(isobath)) {for (iso in isobath) {planes3d(1, 1, -1, iso, alpha=.5, col="plum2")}}
+  }
 }
 
 #' SESplot.tdr
@@ -210,52 +224,53 @@ SESplot.tdr3D <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
 #' Method for with 'tdr' objects.
 #' 
 #' @inheritParams SESplot.tdr3D
+#' @param plt.args Other parameters to be passed to \code{plot}.
 #' @details With a \code{colorvar} of type 'integer', 'logical' or 'factor' color 
 #' the scale can be controled with \code{palette()} while type 'double' must be 
 #' handled with \code{colscale.args} argument.
 #' @S3method SESplot tdr
 SESplot.tdr <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
-						plt.args=list(), colscale.args=list(), implt.args=list()){
-	colorvarname <- deparse(substitute(colorvar))
-	if (!is.null(cond)) {
-		obj <- obj[cond, ]
-		colorvar <- colorvar[cond]
-	}
-	findDefaultVars(c("Time", "Depth"), obj, type.obj="tdr")
-	# Settings
-	defaults <- list(plt.args=list(pch=19, cex=.2), 
-					 colscale.args=list(),
-					 implt.args=list(side=3, legend.width=1, legend.mar=7.8, legend.shrink=.7,
-					 				legend.lab=colorvarname, legend.line=3.5))
-	chkArgs <- function(args, def) c(args, def[!names(def) %in% names(args)])
-	for (i in seq_along(defaults)) {
-		assign(names(defaults)[i], chkArgs(get(names(defaults)[i]), defaults[[i]]))
-	}
-	# Colors
-	if (!is.null(colorvar)){
-		if (is.integer(colorvar)){
-			if(any(colorvar == 0L) & !any(colorvar == 1L)){
-				colorvar[which(colorvar == 0L)] <- 1L
-			} else if (any(colorvar == 0L) & any(colorvar == 1L)) {
-				stop("0 is not a color.")
-			} else if (nval(colorvar) == 1){colorvar <- rep(1L, length(Depth))}
-		}
-		cols <- switch(typeof(colorvar),
-					   double = do.call('color.scale', c(list(z=colorvar), colscale.args)),
-					   logical  = colorvar + 1,
-					   character = as.numeric(as.factor(colorvar)),
-					   factor = as.numeric(colorvar),
-					   integer = colorvar)
-	} else {
-		cols <- rep(1, length(Depth))
-	}
-	if (sign(median(Depth)) == 1) Depth <- -1 * Depth
-	do.call('plot', c(list(Depth ~ Time, col=cols), plt.args))
-	if (!is.null(isobath)) {lines(h=isobath, lty=2)}
-	if (!is.null(colorvar) & is.double(colorvar)) {
-		opar <- par("mar") ; on.exit(par(opar))
-		par(mar=c(4.2,4.2,3.5,7.9))
-		do.call('image.plot', c(list(legend.only=TRUE, add=TRUE,
-									 z=colorvar, col=unique(cols[order(colorvar)])), implt.args))
-	}
+                        plt.args=list(), colscale.args=list(), implt.args=list()){
+  colorvarname <- deparse(substitute(colorvar))
+  if (!is.null(cond)) {
+    obj <- obj[cond, ]
+    colorvar <- colorvar[cond]
+  }
+  findDefaultVars(c("Time", "Depth"), obj, type.obj="tdr")
+  # Settings
+  defaults <- list(plt.args=list(pch=19, cex=.2), 
+                   colscale.args=list(),
+                   implt.args=list(side=3, legend.width=1, legend.mar=7.8, legend.shrink=.7,
+                                   legend.lab=colorvarname, legend.line=3.5))
+  chkArgs <- function(args, def) c(args, def[!names(def) %in% names(args)])
+  for (i in seq_along(defaults)) {
+    assign(names(defaults)[i], chkArgs(get(names(defaults)[i]), defaults[[i]]))
+  }
+  # Colors
+  if (!is.null(colorvar)){
+    if (is.integer(colorvar)){
+      if(any(colorvar == 0L) & !any(colorvar == 1L)){
+        colorvar[which(colorvar == 0L)] <- 1L
+      } else if (any(colorvar == 0L) & any(colorvar == 1L)) {
+        stop("0 is not a color.")
+      } else if (nval(colorvar) == 1){colorvar <- rep(1L, length(Depth))}
+    }
+    cols <- switch(typeof(colorvar),
+                   double = do.call('color.scale', c(list(z=colorvar), colscale.args)),
+                   logical  = colorvar + 1,
+                   character = as.numeric(as.factor(colorvar)),
+                   factor = as.numeric(colorvar),
+                   integer = colorvar)
+  } else {
+    cols <- rep(1, length(Depth))
+  }
+  if (sign(median(Depth)) == 1) Depth <- -1 * Depth
+  do.call('plot', c(list(Depth ~ Time, col=cols), plt.args))
+  if (!is.null(isobath)) {lines(h=isobath, lty=2)}
+  if (!is.null(colorvar) & is.double(colorvar)) {
+    opar <- par("mar") ; on.exit(par(opar))
+    par(mar=c(4.2,4.2,3.5,7.9))
+    do.call('image.plot', c(list(legend.only=TRUE, add=TRUE,
+                                 z=colorvar, col=unique(cols[order(colorvar)])), implt.args))
+  }
 }
