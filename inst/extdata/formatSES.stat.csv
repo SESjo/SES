@@ -12,7 +12,7 @@
 "desc_speed";"Desc.spd";"Desc.spd";FALSE;"Vertical speed during descent (m/s)";"as.double"
 "asc_speed";"Asc.spd";"Asc.spd";FALSE;"Vertical speed during ascent (m/s)";"as.double"
 "sinuosity";"Sinuosity";"Sinuosity";TRUE;"Sinuosity of vertical trajectory at bottom (deviation from straight lines between start/end of bottom and depth max)";"as.double"
-"dive_class";"Dive.type";"Dive.type";FALSE;"Result of dive classification (ref. Dragon PhD). 1 = Drift dives. Avoid using other categories.";"as.integer"
+"dive_class";"is.Drift";"is.Drift";TRUE;"Result of dive classification (ref. Dragon PhD). 1 = Drift dives. Avoid using other categories.";"class2logical"
 "rem";"Note";"Note";FALSE;"Comment about the dive";"as.character"
 "no_capture";"Catch.numb";"Catch.numb";TRUE;"Prey catch attempt number (0 = not catch). One or several records with even number = 1 catch.";"as.double"
 "no_bottom_capture";"BCatch.numb";"BCatch.numb";FALSE;"Prey catch attempt number relatively to the bottom of this dive.";"as.integer"
