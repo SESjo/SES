@@ -38,7 +38,7 @@
   \code{list(legend.width = 1, legend.mar = 7.8,
   legend.shrink = .7, legend.lab =
   deparse(substitute(colorvar)), legend.line = 3.5)} with
-  \code{par(mar = c(4.2,4.2,3.5,7.9))}. Notice the
+  \code{par(mar = c(4.5,4.5,3.5,8.5))}. Notice the
   possibility to set \code{zlim}, \code{col}, \code{breaks}
   arguments.}
 

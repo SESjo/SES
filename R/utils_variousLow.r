@@ -87,3 +87,15 @@ nstr <- function(x) {
 	}
 	return(unique(name.vec[!grepl('\\.$', name.vec)]))
 }
+
+#' class2logical
+#' 
+#' Convert the result of dive classification into a logical that differentiate 
+#' the drift dives from the other types.
+#' 
+#' @param x The object to convert.
+#' @export
+#' @keywords internal
+#' @examples
+#' str(class2logical(ses$stat$Dive.type))
+class2logical <- function(x) {x == 1}
