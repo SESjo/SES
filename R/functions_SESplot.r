@@ -42,15 +42,24 @@ SESplot <- function(obj, colorvar=NULL, isobath=NULL, ...){
 #' Method for 'ses' objects.
 #' 
 #' @inheritParams SESplot.statdives
+#' @param ... Other parameters to be passed to \code{SESplot.statdives}.
 #' @details Includes bathymetry taken from 
 #' \url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}. 
 #' @S3method SESplot ses
-SESplot.ses <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.args=list(), 
-                        map.args=list(), img.args=list(), implt.args=list(), plt.args=list()) {
+SESplot.ses <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, 
+                        pts.args=list(), map.args=list(), img.args=list(), 
+                        implt.args=list(), plt.args=list(), ...) {
   findVars(c("Ind.id", "stat"), obj)
-  SESplot.statdives(stat, colorvar, cond, isobath, pts.args, 
-                    map.args, img.args, implt.args, plt.args, 
-                    colorvarname=deparse(substitute(colorvar)))
+  legend <- try(findVars("colorvarname", list(...), type='check'))
+  if (inherits(legend, "try-error")) {
+    legend <- gsub('^.*\\$', '', deparse(substitute(colorvar)))
+    SESplot.statdives(stat, colorvar, cond, isobath, pts.args, 
+                      map.args, img.args, implt.args, plt.args, 
+                      colorvarname = legend, ...)
+  } else {
+    SESplot.statdives(stat, colorvar, cond, isobath, pts.args, 
+                      map.args, img.args, implt.args, plt.args, ...)
+  }
   title(main=paste(Ind.id, ": ", nrow(stat), "dives"), line=2)
 }
 
@@ -74,7 +83,7 @@ SESplot.ses <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.args=li
 #' @param implt.args Other parameters to be passed to \code{\link{image.plot}}.
 #' Defaults: \code{list(legend.width = 1, legend.mar = 7.8, legend.shrink = .7, 
 #' legend.lab = deparse(substitute(colorvar)), legend.line = 3.5)} with 
-#' \code{par(mar = c(4.2,4.2,3.5,7.9))}. Notice the possibility to set \code{zlim}, 
+#' \code{par(mar = c(4.5,4.5,3.5,8.5))}. Notice the possibility to set \code{zlim}, 
 #' \code{col}, \code{breaks} arguments.
 #' @param plt.args Other parameters to be passed to \code{\link{plot}}.
 #' Notice the possibility to set \code{xlim} and \code{ylim} arguments.
@@ -89,7 +98,10 @@ SESplot.ses <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.args=li
 SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.args=list(), 
                               map.args=list(), img.args=list(), implt.args=list(), plt.args=list(),
                               colorvarname) {
-  if (missing(colorvarname)) colorvarname <- deparse(substitute(colorvar))
+  if (missing(colorvarname)){
+    colorvarname <- deparse(substitute(colorvar))
+    colorvarname <- gsub('^.*\\$', '', colorvarname)
+  }
   # 	if (is.logical(colorvar)) colorvar <- as.numeric(colorvar)
   nas <- apply(is.na(obj), 1, any)
   obj <- obj[!nas, ] ; colorvar <- colorvar[!nas]
@@ -104,7 +116,7 @@ SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.a
   }
   # Settings
   opar <- par("mar") ; on.exit(par(opar))
-  par(mar=c(4.2,4.2,3.5,7.9))
+  par(mar=c(4.5,4.5,3.5,8.5))
   defaults <- list(pts.args=list(pch=19, cex=.1), map.args=list(fill=TRUE, col="gray"), 
                    img.args=list(na.rm=TRUE),
                    implt.args=list(legend.width=1, legend.mar=7.8, legend.shrink=.7,
