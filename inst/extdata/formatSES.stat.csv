@@ -36,3 +36,6 @@
 "effort_Ascent";"Asc.eff";"Asc.eff";TRUE;"Estimated swimming effort in the ascent step (m/s^3)";"as.numeric"
 "effort_Descent";"Desc.eff";"Desc.eff";TRUE;"Estimated swimming effort in the descent step (m/s^3)";"as.numeric"
 "time_spent_surface_before";"Surfi.dur";"Surfi.dur";FALSE;"Duration of the surface period just preceeding the dive (s)";"as.numeric"
+"str_gl";"Str.glob";"Str.glob";TRUE;"Bottom step 3D straightness index (see Benhamou S. 2004. J Theorical Biol.) (no unit)";"as.numeric"
+"str_hz";"Str.hz";"Str.hz";TRUE;"Bottom step 2D straightness index on the horizontal plane (no unit)";"as.numeric"
+"str_vt";"Str.vt";"Str.vt";TRUE;"Bottom step 1D straightness index on the vertical dimention (no unit)";"as.numeric"
