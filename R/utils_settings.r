@@ -15,13 +15,13 @@ renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt, conve
 	headers <- unlist(objtxt)
 	newHeaders <- unname(fmt[headers, "userAlias"])
 	if (ncol(obj) != length(newHeaders)){
-		warning("The number of variables differs between 'statdives' and 'statdivestxt'. The nth first variable names are assumed to be the good ones.")
+		warning("The number of variables differs between 'obj' and 'objtxt'. The nth first variable names are assumed to be the good ones.")
 	}
 	names(obj) <- newHeaders[1:ncol(obj)]
 	if (any(match(fmt$userAlias[fmt$keep], names(obj), nomatch=0) == 0)){
 		warning(paste0("The desired variable(s) ", 
 					   paste(fmt$userAlias[fmt$keep][is.na(match(fmt$userAlias[fmt$keep], names(obj)))], collapse=" & "), 
-					   " is(are) not available in statdives."))
+					   " is(are) not available in 'obj'."))
 	}
 	objVars <- intersect(fmt$userAlias[fmt$keep], names(obj))
 	obj <- obj[ , objVars]
