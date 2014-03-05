@@ -127,7 +127,7 @@ SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.a
     assign(names(defaults)[i], chkArgs(get(names(defaults)[i]), defaults[[i]]))
   }
   # Call plot functions
-  do.call('plot', c(list(Lat ~ Lon, type="n"), plt.args))
+  do.call('plot', c(list(Lat ~ Lon, type="n", xlab="Longitude", ylab="Latitude"), plt.args))
   if (!is.null(colorvar)) {
     im <- do.call('as.image', c(list(colorvar, x=data.frame(Lon, Lat)), img.args))
     do.call('image.plot', c(list(im, add=TRUE), implt.args))

@@ -88,7 +88,8 @@ summary.statdives <- function(object, na.rm=TRUE, digits=2){
 			x <- object[Dive.id != 0, cond, drop=FALSE]
 			ans[[type]] <- sapply(names(x), assign, value=NULL)
 			for (i in seq_len(sum(cond))){
-				ans[[type]][[names(x)[i]]] <- sapply(statFuns(type), function(f) f(x[[i]]))
+				ans[[type]][[names(x)[i]]] <- sapply(statFuns(type), 
+                                   function(f) do.call(f, c(list(x[[i]]), MoreArgs)))
 			}
 			ans[[type]] <- round(as.data.frame(ans[[type]]), digits)
 		}
