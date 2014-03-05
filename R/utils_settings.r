@@ -17,7 +17,7 @@ renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt, conve
 	if (ncol(obj) != length(newHeaders)){
 		warning("The number of variables differs between 'obj' and 'objtxt'. The nth first variable names are assumed to be the good ones.")
 	}
-	names(obj) <- newHeaders[1:ncol(obj)]
+  names(obj) <- newHeaders[1:ncol(obj)]
 	if (any(match(fmt$userAlias[fmt$keep], names(obj), nomatch=0) == 0)){
 		warning(paste0("The desired variable(s) ", 
 					   paste(fmt$userAlias[fmt$keep][is.na(match(fmt$userAlias[fmt$keep], names(obj)))], collapse=" & "), 
