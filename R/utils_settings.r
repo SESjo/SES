@@ -10,34 +10,33 @@
 #' @export
 #' @keywords internal
 renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt, convert=TRUE){
-	FMT <- get("formatSES", envir=SESsettings)
-	findVars(type, FMT, varnames="fmt", substring=FALSE)
-	headers <- unlist(objtxt)
-	newHeaders <- unname(fmt[headers, "userAlias"])
-	if (ncol(obj) != length(newHeaders)){
-		warning("The number of variables differs between 'obj' and 'objtxt'. The nth first variable names are assumed to be the good ones.")
-	}
+  FMT <- get("formatSES", envir=SESsettings)
+  findVars(type, FMT, varnames="fmt", substring=FALSE)
+  headers <- unlist(objtxt)
+  newHeaders <- unname(fmt[headers, "userAlias"])
+  if (ncol(obj) != length(newHeaders)){
+    warning("The number of variables differs between 'obj' and 'objtxt'. The nth first variable names are assumed to be the good ones.")
+  }
   names(obj) <- newHeaders[1:ncol(obj)]
-	if (any(match(fmt$userAlias[fmt$keep], names(obj), nomatch=0) == 0)){
-		warning(paste0("The desired variable(s) ", 
-					   paste(fmt$userAlias[fmt$keep][is.na(match(fmt$userAlias[fmt$keep], names(obj)))], collapse=" & "), 
-					   " is(are) not available in 'obj'."))
-	}
-	objVars <- intersect(fmt$userAlias[fmt$keep], names(obj))
-	obj <- obj[ , objVars]
-	if (convert){
-		# lapply function disposable function
-		applyConvFun <- function(i, funs, objects){
-			argList <- as.list(args(funs[[i]]))
-			names(objects)[i] <- names(argList)[1]
-			return(do.call(funs[[i]], objects[i]))
-		}
-		objVarsl <-  fmt$userAlias %in% names(obj)
-		obj[ , names(obj)] <- lapply(seq_along(objVars), applyConvFun, 
-									 funs=sapply(fmt$applyFun[objVarsl], match.fun), 
-									 objects=sapply(obj[ , objVars], list))
-	}
-	obj
+  if (any(match(fmt$userAlias[fmt$keep], names(obj), nomatch=0) == 0)){
+    warning(paste0("The desired variable(s) ", 
+                   paste(fmt$userAlias[fmt$keep][is.na(match(fmt$userAlias[fmt$keep], names(obj)))], collapse=" & "), 
+                   " is(are) not available in 'obj'."))
+  }
+  if (convert){
+    # lapply function disposable function
+    applyConvFun <- function(i, funs, objects){
+      argList <- as.list(args(funs[[i]]))
+      names(objects)[i] <- names(argList)[1]
+      return(do.call(funs[[i]], objects[i]))
+    }
+    obj[ , names(obj)] <- as.data.frame(lapply(seq_along(names(obj)), applyConvFun, 
+                                funs=sapply(fmt[headers[1:ncol(obj)], "applyFun"], match.fun), 
+                                objects=sapply(obj, list)))
+  }
+  objVars <- intersect(fmt$userAlias[fmt$keep], names(obj))
+  obj <- obj[ , objVars]
+  obj
 }
 
 #' print.fmtSES
