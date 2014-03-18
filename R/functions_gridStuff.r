@@ -53,6 +53,9 @@ idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 #' 
 #' @param ncfile The to read the grid from.
 #' @param connection An existing connexion with a file can be used instead of \code{ncfile} argument.
+#' @param latname The variable name of the meridional dimension of the grid.
+#' @param lonname The variable name of the zonal dimension of the grid.
+#' @param zname The optional name of a third dimension of the grid e.g. 'depthu'.
 #' @return Retuns a data frame with combinations of latitude and longitude grid breaks.
 #' @family SESspacial
 #' @export
@@ -62,14 +65,20 @@ idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 #' pathname <- file.path(path, "ker_0083x1d_catsat_vgpm_20111101_MTLPB.nc")
 #' expl <- ncgrid(ncfile=pathname)
 ncgrid <- function(ncfile, connection, 
-                   latname = 'latitude', lonname = 'longitude'){
+                   latname = 'latitude', lonname = 'longitude', zname = NULL){
   if (missing(connection)) {
   	con <- open.ncdf(ncfile)
   } else {
   	con <- connection
   }
+  if (missing(connection)) close.ncdf(con)
   lat <- con$dim[[latname]]$vals
   lon <- con$dim[[lonname]]$vals
-  if (missing(connection)) close.ncdf(con)
-  return(expand.grid(Lon=lon, Lat=lat))
+  if (is.null(zname)){
+    return(expand.grid(Lon=lon, Lat=lat))
+  } else {
+    args <- list(Lon=lon, Lat=lat)
+    args[[zname]] <- con$dim[[zname]]$vals
+    return(do.call(expand.grid, args))
+  }
 }
