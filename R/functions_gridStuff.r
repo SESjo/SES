@@ -61,14 +61,15 @@ idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 #' path <- system.file("extdata", package="SES")
 #' pathname <- file.path(path, "ker_0083x1d_catsat_vgpm_20111101_MTLPB.nc")
 #' expl <- ncgrid(ncfile=pathname)
-ncgrid <- function(ncfile, connection){
+ncgrid <- function(ncfile, connection, 
+                   latname = 'latitude', lonname = 'longitude'){
   if (missing(connection)) {
   	con <- open.ncdf(ncfile)
   } else {
   	con <- connection
   }
-  lat <- con$dim$latitude$vals
-  lon <- con$dim$longitude$vals
+  lat <- con$dim[[latname]]$vals
+  lon <- con$dim[[lonname]]$vals
   if (missing(connection)) close.ncdf(con)
   return(expand.grid(Lon=lon, Lat=lat))
 }
