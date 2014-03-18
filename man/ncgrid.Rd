@@ -34,6 +34,6 @@ expl <- ncgrid(ncfile=pathname)
 }
 \seealso{
 Other SESspacial: \code{\link{idPixel}};
-\code{\link{importSEAPOpred}}
+\code{\link{importMercator}}; \code{\link{importSEAPOpred}}
 }
 

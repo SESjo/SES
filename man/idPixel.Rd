@@ -31,7 +31,7 @@ ses$stat <- idPixel(ses$stat, expl[ , 1:2])
 # ses$tdr <- addVar("Pixel.id", from="stat", to="tdr", ses=ses)
 }
 \seealso{
-Other SESspacial: \code{\link{importSEAPOpred}};
-\code{\link{ncgrid}}
+Other SESspacial: \code{\link{importMercator}};
+\code{\link{importSEAPOpred}}; \code{\link{ncgrid}}
 }
 

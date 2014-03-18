@@ -67,18 +67,22 @@ idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 ncgrid <- function(ncfile, connection, 
                    latname = 'latitude', lonname = 'longitude', zname = NULL){
   if (missing(connection)) {
-  	con <- open.ncdf(ncfile)
+    con <- open.ncdf(ncfile)
   } else {
-  	con <- connection
+    con <- connection
   }
-  if (missing(connection)) close.ncdf(con)
   lat <- con$dim[[latname]]$vals
   lon <- con$dim[[lonname]]$vals
   if (is.null(zname)){
     return(expand.grid(Lon=lon, Lat=lat))
   } else {
-    args <- list(Lon=lon, Lat=lat)
-    args[[zname]] <- con$dim[[zname]]$vals
+    if (any(grepl('(lat|lon)', names(con$var), ignore.case=TRUE))){
+      lon <- unique(as.numeric(get.var.ncdf(con, varid = 'nav_lon')))
+      lat <- unique(as.numeric(get.var.ncdf(con, varid = 'nav_lat')))
+    }
+    args <- list(lon, lat, c(con$dim[[zname]]$vals))
+    names(args) <- c('Lon', 'Lat', zname)
+    if (missing(connection)) close.ncdf(con)
     return(do.call(expand.grid, args))
   }
 }

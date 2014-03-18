@@ -185,3 +185,45 @@ importChl <- function(date, dir, ncfile=NULL){
 	}
 	return(grid)
 }
+
+#' importMercator
+#' 
+#' Import velocity field of mecator currents from a NetCDF file.
+#' @inheritParams ncgrid
+#' @inheritParams importSEAPOpred
+#' @param type The list of variable to import: subset of 'UVST'. 'U' and 'V' 
+#' are the zonal and meridional velocity components of the current. 
+#' 'S' is salinity and 'T' stands for temperature.
+#' @family SESspacial
+#' @export
+#' @import ncdf
+importMercator <- function (date, dir, ncfile = NULL, 
+                            type = 'UV', latname = 'y', lonname = 'x') 
+{
+  if (is.null(ncfile)) {
+    types <- unlist(strsplit(type, ''))
+    regExp <- paste0('grid(', paste(types, collapse = '|'), ')')
+    ncfiles <- list.files(dir, "*.nc", full.names = TRUE)
+    ncfiles <- ncfiles[grep(regExp, ncfiles)]
+    ncres <- median(diff(unique(text2posx(ncfiles)), lag = 1, units = "day"))
+    if (ncres == 1) {
+      ncfile <- ncfiles[which(text2posx(ncfiles) == date)]
+    }
+    else if (ncres == 7) {
+      ncfile <- ncfiles[which.min(abs(as.numeric(text2posx(ncfiles) - date)))]
+    } else {
+      warning(paste0("Unusual time resolution of NetCDF files:", ncres))
+    }
+  }
+  grid <- ncgrid(ncfile[grep(paste0('grid', types[1]), ncfile)], 
+                 latname = latname, lonname = lonname, 
+                 zname = paste0('depth', tolower(types[1])))
+  names(grid) <- c("Lon", "Lat", "Depth")
+  for (intype in types){
+    infile <- ncfile[grep(paste0('grid', intype), ncfile)]
+    con <- open.ncdf(infile)
+    grid[, intype] <- as.numeric(get.var.ncdf(con, varid = names(con$var)[3]))
+    close.ncdf(con)
+  }
+  return(grid)
+}

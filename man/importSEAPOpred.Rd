@@ -32,6 +32,6 @@ image.plot(as.image(expl$Meso.b, x=expl[, 1:2], nx=750, ny=250), breaks=brk, nle
 }
 \seealso{
 Other SESspacial: \code{\link{idPixel}};
-\code{\link{ncgrid}}
+\code{\link{importMercator}}; \code{\link{ncgrid}}
 }
 
