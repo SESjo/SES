@@ -19,7 +19,7 @@ start, indice of period end, type of period, duration (s),
 the dive number.
 }
 \description{
-Method tranduced from Matlab.
+Method translated from Matlab.
 }
 \seealso{
 \code{\link{poly4delim}}, \code{\link{anaDives}}

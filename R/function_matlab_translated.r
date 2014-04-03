@@ -1,6 +1,6 @@
 #' Find the dives and delimitate their bottom from TDR data
 #' 
-#' Method tranduced from Matlab.
+#' Method translated from Matlab.
 #' 
 #' @param tdr The TDR dataset.
 #' @param dpthThres A depth threshold (m) (> 0) under which the animal is 
@@ -22,7 +22,7 @@
 #' 
 #' dvs <- anaDives(ses$tdr)
 #' 
-#' n <- 604
+#' n <- sample(setdiff(unique(dvs$dive), 0), 1)
 #' df <- ses$tdr[dvs$st.idx[dvs$dive == n]:dvs$ed.idx[dvs$dive == n], ]
 #' plot(-Depth ~ Time, df, type = 'l')
 #' df <- ses$tdr[c(dvs$btt.st.idx[dvs$dive == n], dvs$btt.ed.idx[dvs$dive == n]), ]
@@ -33,7 +33,7 @@ anaDives <- function(tdr, dpthThres = 15, durThres = 300,
 
 #' Find the dives from TDR data
 #' 
-#' Method tranduced from Matlab.
+#' Method translated from Matlab.
 #' 
 #' @inheritParams anaDives
 #' @return A data frame with the following variable: indice of period start, 
@@ -76,7 +76,7 @@ divesID <- function(tdr, durThres = 300, dpthThres = 15){
 
 #' Find the dives' bottom from TDR data
 #' 
-#' Method tranduced from Matlab.
+#' Method translated from Matlab.
 #' 
 #' @param dvs The dives indices as returned by \code{\link{diveID}}.
 #' @inheritParams anaDives
@@ -95,17 +95,17 @@ poly4delim <- function(tdr, dvs, spdThres = .75, w = 12) {
   spd <- rollapply(diff(Depth) / dTime, mean, w)
   
   # Delim bottom
-  bbtNames <- c("btt.st.idx", "btt.ed.idx", "btt.length")
+  bbtNames <- c("btt.st.idx", "btt.ed.idx", "btt.duration")
   dvs[ , bbtNames] <- rep(NA, nrow(dvs))
   for (ii in seq_along(dvs$dive)){
-    if (dvs$value[ii] == 'Surface') next
+    if (dvs$type[ii] == 'Surface') next
     y <- spd[dvs$st.idx[ii]:dvs$ed.idx[ii]]
     x <- Time[dvs$st.idx[ii]:dvs$ed.idx[ii]]
     spdMod <- lm(y ~ poly(x, degree=4))
     btt <- per(abs(predict(spdMod)) < spdThres, idx = TRUE)
     dvs[ii, bbtNames] <- unlist(btt[btt$value, -3]) + c(rep(dvs[ii, 1] - 1, 2), 0)
   }
-  dvs$btt.length <- dvs$btt.length * reso
+  dvs$btt.duration <- dvs$btt.duration * reso
   names(dvs) <- c("st.idx", "ed.idx", "type", "duration", "diveNumb", "btt.st.idx", 
                   "btt.ed.idx", "btt.duration")
   return(dvs)

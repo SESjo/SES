@@ -20,7 +20,7 @@ the dive number, indice of bottom start, indice of bottom
 end, bottom duration.
 }
 \description{
-Method tranduced from Matlab.
+Method translated from Matlab.
 }
 \details{
 See Yves Le Bras M1 report for details about the method.

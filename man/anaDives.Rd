@@ -23,7 +23,7 @@ the dive number, indice of bottom start, indice of bottom
 end, bottom duration.
 }
 \description{
-Method tranduced from Matlab.
+Method translated from Matlab.
 }
 \details{
 See Yves Le Bras M1 report for details about the method.
@@ -35,7 +35,7 @@ ses <- importSES(pathname)
 
 dvs <- anaDives(ses$tdr)
 
-n <- 604
+n <- sample(setdiff(unique(dvs$dive), 0), 1)
 df <- ses$tdr[dvs$st.idx[dvs$dive == n]:dvs$ed.idx[dvs$dive == n], ]
 plot(-Depth ~ Time, df, type = 'l')
 df <- ses$tdr[c(dvs$btt.st.idx[dvs$dive == n], dvs$btt.ed.idx[dvs$dive == n]), ]
