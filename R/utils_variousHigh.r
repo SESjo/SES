@@ -1,3 +1,39 @@
+#' Apply function along a vector
+#' 
+#' \code{rollapply} apply the given function along a vector.
+#' 
+#' @param An atomic vector.
+#' @param FUN the function to be applied. This function must return a single value 
+#' when applied to a an atomic vector.
+#' @param w The width of the window.
+#' @param wty The type of window. To choose in \code{c('m', 'f'))} where 'm' stands 
+#' for "moving" and 'f' for "fixed".
+#' @param ... Optional arguments to FUN.
+#' @export
+#' @examples
+#' x <- seq(1, 3, length = 100) + rt(100, df = 2) / 3
+#' plot(x)
+#' lines(rollapply(x, mean, 5)  , col = "red", lwd = 2)
+#' lines(rollapply(x, median, 5), col = "blue", lwd = 2)
+#' lines(rollapply(x, mean, 5, wty='f'), col = "green", lwd = 2)
+rollapply <- function(x, FUN, w = 10, wty = 'm', ...) {
+  out <- rep(NA, length(x))
+  offset <- trunc(w / 2)
+  if (wty == 'm'){
+    for (i in (offset + 1):(length(x) - w + offset + 1)) {
+      out[i] <- FUN(x[(i - offset):(i + offset)], ...)
+    }
+  } else if (wty == 'f'){
+    for (i in seq(offset + 1, length(x) - w + offset + 1, by = w)) {
+      out[(i - offset):(i + offset)] <- rep(FUN(x[(i - offset):(i + offset)], ...), 
+                                            2*offset + 1)
+    }
+  } else {
+    stop('Unknown window type specified.')
+  }
+  out
+}
+
 #' isDay
 #' 
 #' Use time and loc info to find if events occured during the day or the night. SEAPODYm criteria 
