@@ -39,6 +39,7 @@ anaDives <- function(tdr, dpthThres = 15, durThres = 300,
 #' @return A data frame with the following variable: indice of period start, 
 #' indice of period end, type of period, duration (s), the dive number.
 #' @seealso \code{\link{poly4delim}}, \code{\link{anaDives}}
+#' @export
 divesID <- function(tdr, durThres = 300, dpthThres = 15){
   
   findDefaultVars(c('Time', 'Depth'), tdr, type.obj='tdr')
@@ -85,6 +86,7 @@ divesID <- function(tdr, durThres = 300, dpthThres = 15){
 #' indice of bottom start, indice of bottom end, bottom duration.
 #' @details See Yves Le Bras M1 report for details about the method.
 #' @seealso \code{\link{divesID}}, \code{\link{anaDives}}
+#' @export
 poly4delim <- function(tdr, dvs, spdThres = .75, w = 12) {
   
   findDefaultVars(c('Time', 'Depth'), tdr, type.obj='tdr')
