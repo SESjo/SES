@@ -41,6 +41,48 @@ replaceMissing <- function(x, na.0=NaN, na.1=NA) {
 #' nval(rep(1:5, 5:1)) # 5
 nval <- function(x){sum(!duplicated(x))}
 
+#' nNA
+#' 
+#' Shortcut for \code{compose(sum, is.na, unlist)}
+#' @param x a vector to test the elements.
+#' @return Return the number of \code{NA} in \code{x}.
+#' @details As any number different from 0 return a \code{TRUE} when coerced to
+#' logical, this function can be used in \code{if} statements.
+#' @export
+#' @keywords internal
+#' @examples
+#' x <- c(rep(NA, 3), 1:3)
+#' nNA(x)
+#' if (nNA(x)) {TRUE} else {FALSE}
+#' if (nNA(1:3)) {TRUE} else {FALSE}
+nNA <- function(x)
+  compose(sum, is.na, unlist)(x) 
+
+#' nUN
+#' 
+#' Shortcut for \code{compose(length, unique)}
+#' @param x a vector to count the unique elements.
+#' @export
+#' @keywords internal
+nUN <- function(x)
+  compose(length, unique)(x)
+
+#' Else special operator
+#' 
+#' Discard first value if \code{FALSE}, \code{NULL} or empty.
+#' 
+#' @param a default output.
+#' @param b output if \code{a} is \code{FALSE}, \code{NULL} or empty.
+#' @export
+#' @keywords internal
+#' @examples
+#' x <- NULL %else% 1
+#' x
+`%else%` <- function (a, b){
+  if (identical(a, FALSE) || is.null(a) || length(a) == 0) b else a
+}
+
+
 #' depth
 #' 
 #' Depth of an R object. See plotrix::maxDepth().
@@ -97,5 +139,7 @@ nstr <- function(x) {
 #' @export
 #' @keywords internal
 #' @examples
+#' \dontrun{
 #' str(class2logical(ses$stat$Dive.type))
+#' }
 class2logical <- function(x) {x == 1}

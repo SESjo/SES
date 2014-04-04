@@ -1,12 +1,17 @@
-\name{poly4delim}
-\alias{poly4delim}
+\name{bottomDelim}
+\alias{bottomDelim}
 \title{Find the dives' bottom from TDR data}
 \usage{
-poly4delim(tdr, dvs, spdThres = 0.75, w = 12)
+bottomDelim(tdr, dvs, spdThres = 0.75, w = 12, bttDpth = 0.4)
 }
 \arguments{
   \item{dvs}{The dives indices as returned by
-  \code{\link{diveID}}.}
+  \code{\link{divesID}}.}
+
+  \item{bttDpth}{The minimun depth (percent of maximum
+  depth) allowed for the bottom limits.}
+
+  \item{w}{Window width for rolling mean.}
 
   \item{tdr}{The TDR dataset.}
 

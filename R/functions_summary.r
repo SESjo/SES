@@ -1,5 +1,5 @@
 #' summary.ses
-#' @aliases summary.ses
+#' 
 #' @description S3 method for 'ses' objects.
 #' @param object An object for which a summary is desired.
 #' @param na.rm A logical value indicating whether \code{NA} values should be 
@@ -26,8 +26,7 @@ summary.ses <- function(object, na.rm=TRUE, all=FALSE, digits=2){
 }
 
 #' summary.tdr
-#' @aliases summary.ses
-#' @description S3 method for 'tdr' objects.
+#' @rdname summary.ses
 #' @inheritParams summary.ses
 #' @param complete Should the function compute all statistics.
 #' @S3method summary tdr
@@ -68,8 +67,7 @@ summary.tdr <- function(object, na.rm=TRUE, complete=TRUE, digits=2){
 }
 
 #' summary.statdives
-#' @aliases summary.ses
-#' @description S3 method for 'statdives' objects.
+#' @rdname summary.ses
 #' @inheritParams summary.tdr
 #' @S3method summary statdives
 summary.statdives <- function(object, na.rm=TRUE, digits=2){

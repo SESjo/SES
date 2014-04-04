@@ -22,6 +22,6 @@ the dive number.
 Method translated from Matlab.
 }
 \seealso{
-\code{\link{poly4delim}}, \code{\link{anaDives}}
+\code{\link{bottomDelim}}, \code{\link{anaDives}}
 }
 

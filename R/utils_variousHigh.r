@@ -2,7 +2,7 @@
 #' 
 #' \code{rollapply} apply the given function along a vector.
 #' 
-#' @param An atomic vector.
+#' @param x An atomic vector.
 #' @param FUN the function to be applied. This function must return a single value 
 #' when applied to a an atomic vector.
 #' @param w The width of the window.

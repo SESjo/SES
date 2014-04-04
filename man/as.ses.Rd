@@ -1,8 +1,11 @@
 \name{as.ses}
 \alias{as.ses}
+\alias{as.ses.list}
 \title{as.ses}
 \usage{
 as.ses(x, type = c("classic", "3D"), ind, tdr, stat)
+
+\method{as.ses}{list}(x, type = c("classic", "3D"))
 }
 \arguments{
   \item{x}{The object to coerce to 'ses'}
@@ -19,6 +22,8 @@ as.ses(x, type = c("classic", "3D"), ind, tdr, stat)
 }
 \description{
 Coerce an object to a 'ses' if possible
+
+S3 method of \code{as.ses} for list objects.
 }
 \examples{
 new.ses <- list(Ind.id="Example", tdr=data.frame(), stat=data.frame())

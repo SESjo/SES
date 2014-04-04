@@ -12,7 +12,9 @@ Convert the result of dive classification into a logical
 that differentiate the drift dives from the other types.
 }
 \examples{
+\dontrun{
 str(class2logical(ses$stat$Dive.type))
+}
 }
 \keyword{internal}
 

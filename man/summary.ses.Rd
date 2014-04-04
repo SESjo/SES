@@ -1,8 +1,14 @@
 \name{summary.ses}
 \alias{summary.ses}
+\alias{summary.statdives}
+\alias{summary.tdr}
 \title{summary.ses}
 \usage{
 summary.ses(object, na.rm = TRUE, all = FALSE, digits = 2)
+
+summary.tdr(object, na.rm = TRUE, complete = TRUE, digits = 2)
+
+summary.statdives(object, na.rm = TRUE, digits = 2)
 }
 \arguments{
   \item{object}{An object for which a summary is desired.}
@@ -16,8 +22,15 @@ summary.ses(object, na.rm = TRUE, all = FALSE, digits = 2)
 
   \item{digits}{The number of digits to show in dive
   statistics.}
+
+  \item{complete}{Should the function compute all
+  statistics.}
 }
 \description{
 S3 method for 'ses' objects.
+
+summary.tdr
+
+summary.statdives
 }
 

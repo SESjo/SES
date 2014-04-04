@@ -15,6 +15,8 @@ anaDives(tdr, dpthThres = 15, durThres = 300, spdThres = 0.75, w = 12)
 
   \item{spdThres}{A vertical speed threshold (m/s) used to
   delimitate the dives' bootom.}
+
+  \item{w}{Window width for rolling mean.}
 }
 \value{
 A data frame with the following variable: indice of period
@@ -35,13 +37,18 @@ ses <- importSES(pathname)
 
 dvs <- anaDives(ses$tdr)
 
-n <- sample(setdiff(unique(dvs$dive), 0), 1)
-df <- ses$tdr[dvs$st.idx[dvs$dive == n]:dvs$ed.idx[dvs$dive == n], ]
+n <- sample(setdiff(unique(dvs$Dive.id), 0), 1)
+while (is.na(dvs$btt.st.idx[dvs$Dive.id == n])) {
+   n <- sample(setdiff(unique(dvs$Dive.id), 0), 1)
+}
+df <- ses$tdr[dvs$st.idx[dvs$Dive.id == n]:dvs$ed.idx[dvs$Dive.id == n], ]
 plot(-Depth ~ Time, df, type = 'l')
-df <- ses$tdr[c(dvs$btt.st.idx[dvs$dive == n], dvs$btt.ed.idx[dvs$dive == n]), ]
+df <- ses$tdr[c(dvs$btt.st.idx[dvs$Dive.id == n],
+                dvs$btt.ed.idx[dvs$Dive.id == n]), ]
 points(-Depth ~ Time, df, type = 'p', col='red', pch = 19)
 }
 \seealso{
-\code{\link{divesID}}, \code{\link{poly4delim}}
+\code{\link{divesID}}, \code{\link{bottomDelim}},
+\code{\link{anaBehav}}.
 }
 

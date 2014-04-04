@@ -5,7 +5,7 @@
 rollapply(x, FUN, w = 10, wty = "m", ...)
 }
 \arguments{
-  \item{An}{atomic vector.}
+  \item{x}{An atomic vector.}
 
   \item{FUN}{the function to be applied. This function must
   return a single value when applied to a an atomic
