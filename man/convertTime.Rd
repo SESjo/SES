@@ -30,8 +30,7 @@ convertTime(tm, to="text")          # "20111101", width = 3 when 'text' is invol
 }
 \seealso{
 Other generalUtils: \code{\link{SESname}};
-\code{\link{nval}}; \code{\link{per}};
-\code{\link{replaceMissing}}; \code{\link{sunPosition}};
-\code{\link{sunPos}}
+\code{\link{per}}; \code{\link{replaceMissing}};
+\code{\link{sunPosition}}; \code{\link{sunPos}}
 }
 

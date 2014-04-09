@@ -5,7 +5,7 @@
 nNA(x)
 }
 \arguments{
-  \item{x}{a vector to test the elements.}
+  \item{x}{a vector whose elements are to be tested.}
 }
 \value{
 Return the number of \code{NA} in \code{x}.

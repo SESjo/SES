@@ -60,7 +60,7 @@ summary.tdr <- function(object, na.rm=TRUE, complete=TRUE, digits=2){
 		}
 	}
 	findDefaultVars("Time", object, type.obj="tdr")
-	ans <- c(list(nDives=nval(dvs), Travel_Time=range(Time), 
+	ans <- c(list(nDives=nUN(dvs), Travel_Time=range(Time), 
 				  Reso=round(difftime(Time[length(Time)], object$Time[1], units="sec") / length(Time))),
 			 ans)
 	ans
@@ -115,7 +115,7 @@ statFuns <- function(type=c("double", "integer", "logical", "factor", "character
 						   
 	funs <- switch(match.arg(type),
 				   double  = list(Min=min, Mean=mean, Median=median, Max=max),
-				   integer = list(Number=nval, Seq_length=function(x) seq_length(x, type='integer')),
+				   integer = list(Number=nUN, Seq_length=function(x) seq_length(x, type='integer')),
 				   logical = list(Prop=mean, True_seq_length=seq_length),
 				   factor  = list(Table=table),
 				   character = list(Table=table))

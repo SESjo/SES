@@ -30,21 +30,10 @@ replaceMissing <- function(x, na.0=NaN, na.1=NA) {
   x
 }
 
-#' nval
-#'
-#' Count the number of distinct values in an atomic vector.
-#' 
-#' @param x The object to compute the number of distinct values.
-#' @family generalUtils
-#' @export
-#' @examples
-#' nval(rep(1:5, 5:1)) # 5
-nval <- function(x){sum(!duplicated(x))}
-
 #' nNA
 #' 
 #' Shortcut for \code{compose(sum, is.na, unlist)}
-#' @param x a vector to test the elements.
+#' @param x a vector whose elements are to be tested.
 #' @return Return the number of \code{NA} in \code{x}.
 #' @details As any number different from 0 return a \code{TRUE} when coerced to
 #' logical, this function can be used in \code{if} statements.
@@ -60,10 +49,14 @@ nNA <- function(x)
 
 #' nUN
 #' 
-#' Shortcut for \code{compose(length, unique)}
-#' @param x a vector to count the unique elements.
+#' Shortcut for \code{compose(length, unique)}. Count the number of distinct 
+#' values in an atomic vector.
+#' 
+#' @param x a vector whose unique elements are to be counted.
 #' @export
 #' @keywords internal
+#' @examples
+#' nUN(rep(1:5, 5:1)) # 5
 nUN <- function(x)
   compose(length, unique)(x)
 

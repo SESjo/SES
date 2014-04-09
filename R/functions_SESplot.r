@@ -197,7 +197,7 @@ SESplot.tdr3D <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
         colorvar[which(colorvar == 0L)] <- 1L
       } else if (any(colorvar == 0L) & any(colorvar == 1L)) {
         stop("0 is not a color.")
-      } else if (nval(colorvar) == 1){colorvar <- rep(1L, length(Depth))}
+      } else if (nUN(colorvar) == 1){colorvar <- rep(1L, length(Depth))}
     }
     cols <- switch(typeof(colorvar),
                    double = do.call('color.scale', c(list(z=colorvar), colscale.args)),
@@ -265,7 +265,7 @@ SESplot.tdr <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
         colorvar[which(colorvar == 0L)] <- 1L
       } else if (any(colorvar == 0L) & any(colorvar == 1L)) {
         stop("0 is not a color.")
-      } else if (nval(colorvar) == 1){colorvar <- rep(1L, length(Depth))}
+      } else if (nUN(colorvar) == 1){colorvar <- rep(1L, length(Depth))}
     }
     cols <- switch(typeof(colorvar),
                    double = do.call('color.scale', c(list(z=colorvar), colscale.args)),

@@ -31,9 +31,8 @@ Update version: Jan 6 '12 at 21:40 by "Josh O'Brien".
 \code{\link{sunPosition}}
 
 Other generalUtils: \code{\link{SESname}};
-\code{\link{convertTime}}; \code{\link{nval}};
-\code{\link{per}}; \code{\link{replaceMissing}};
-\code{\link{sunPosition}}
+\code{\link{convertTime}}; \code{\link{per}};
+\code{\link{replaceMissing}}; \code{\link{sunPosition}}
 }
 \keyword{internal}
 
