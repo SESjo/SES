@@ -1,10 +1,15 @@
 \name{SESplot.statdives}
+\alias{SESplot.ses}
 \alias{SESplot.statdives}
-\title{SESplot.statdives}
+\title{Plot the trajectory of a SES along with dive statistics.}
 \usage{
 \method{SESplot}{statdives}(obj, colorvar = NULL, cond = NULL,
   isobath = NULL, pts.args = list(), map.args = list(),
   img.args = list(), implt.args = list(), plt.args = list(), colorvarname)
+
+\method{SESplot}{ses}(obj, colorvar = NULL, cond = NULL, isobath = NULL,
+  pts.args = list(), map.args = list(), img.args = list(),
+  implt.args = list(), plt.args = list(), ...)
 }
 \arguments{
   \item{obj}{An object to plot}
@@ -48,14 +53,35 @@
 
   \item{colorvarname}{Name for the legend. For
   compatibility when called from \code{SESplot.ses()}}
+
+  \item{...}{Other arguments to be passed to
+  \code{SESplot.statdives}.}
 }
 \description{
-Method for 'statdives' objects.
+S3 methods for objects of class 'ses' and 'statdives'. The
+'ses' method is actually a call to the 'statdives' method
+but adds additional information such as the name of the
+individual in the title.
 }
 \details{
 Includes bathymetry taken from
 \url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}.
-If this error show up 'data set ‘worldMapEnv’ not
-found' try \code{require(maps)}.
+In the case where this error show up \code{"data set
+'worldMapEnv' not found"} try \code{require(maps)}.
+}
+\examples{
+\dontrun{
+require(maps)
+path <- system.file("extdata", package="SES")
+pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
+ses <- importSES(pathname)
+
+# Example: class 'ses' / 'statdives'
+SESplot(ses, isobath=-1000, colorvar=ses$stat$Catch.numb)
+library("RColorBrewer")
+mycol <- brewer.pal(n=10, name="BrBG")
+SESplot(ses, ses$stat$Dive.dur, pts.args=list(pch=""), implt.args=list(col=mycol),
+img.args=list(nx=150, ny=150))
+}
 }
 

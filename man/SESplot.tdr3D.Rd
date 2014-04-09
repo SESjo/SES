@@ -1,10 +1,14 @@
 \name{SESplot.tdr3D}
+\alias{SESplot.tdr}
 \alias{SESplot.tdr3D}
-\title{SESplot.tdr3D}
+\title{Plot dive profiles along with a TDR variable}
 \usage{
 \method{SESplot}{tdr3D}(obj, colorvar = NULL, cond = NULL, isobath = NULL,
   scatter.args = list(), colscale.args = list(), implt.args = list(),
   colorvarname, dev = c("rgl", "default"))
+
+\method{SESplot}{tdr}(obj, colorvar = NULL, cond = NULL, isobath = NULL,
+  plt.args = list(), colscale.args = list(), implt.args = list())
 }
 \arguments{
   \item{scatter.args}{Other parameters to be passed to
@@ -21,8 +25,11 @@
   legend.shrink = .7, legend.lab = colorvarname,
   legend.line = 3.5)}.}
 
-  \item{dev}{The device to use: to choose in c('rgl',
-  'default'). See consequences in details.}
+  \item{dev}{The device to use: to choose in \code{c('rgl',
+  'default')}. See consequences in details.}
+
+  \item{plt.args}{Other parameters to be passed to
+  \code{plot}.}
 
   \item{obj}{An object to plot}
 
@@ -42,7 +49,10 @@
   compatibility when called from \code{SESplot.ses()}}
 }
 \description{
-Method for 'tdr3D' objects.
+S3 methods for objects of class 'tdr' and 'tdr3d'. To plot
+dive profiles. Any TDR variable may be included to the
+graph using a color scale. 3D dives are drawn in a dynamic
+'rgl' device.
 }
 \details{
 With a \code{colorvar} of type 'integer', 'logical' or
@@ -54,11 +64,19 @@ interactively but no color legend can be added.
 }
 \examples{
 \dontrun{
-SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id==1015, colorvar=ses3d$tdr$Distance)
-# Use manipulate to change view angle
-require(manipulate)
- manipulate(SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id==2500,
-  scatter.args=list(angle=angle)), angle=slider(0, 360))
+path <- system.file("extdata", package="SES")
+pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
+ses <- importSES(pathname)
+
+# Example: class 'tdr'
+SESplot(ses$tdr, colorvar = ses$tdr$Light, cond = ses$tdr$Dive.id == 650)
+SESplot(ses$tdr, colorvar = ses$tdr$is.Catch, cond = ses$tdr$Dive.id == 650)
+
+# Example: class 'tdr3D'
+#    No data sample provided for 'ses3D': Syntax memo
+SESplot(ses3d) # Same as for classic 'ses' class
+3D-Scatterplot of the 1015th dive with colored variable.
+SESplot(ses3d$tdr, cond = ses3d$tdr$Dive.id == 1015, colorvar = ses3d$tdr$Distance)
 }
 }
 

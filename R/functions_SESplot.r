@@ -1,7 +1,7 @@
-#' SESplot
+#' Plots designed for SES objects.
 #' 
-#' To draw relevant chart of an object generated with \code{importSES()} 
-#' such as tdr', 'statdives', 'tdr3D' or 'ststdives3D'.
+#' \code{SESplot} is a generic function to draw relevant charts from the objects 
+#' returned by \code{importSES()}.
 #' 
 #' @inheritParams SESplot.statdives
 #' @param ... Other parameters to be passed to methods.
@@ -9,63 +9,20 @@
 #' \url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}. 
 #' Available isobaths range from -200 to -4400 meters by 200 m.
 #' @import maptools fields maps 
-#' @family SESplot
+#' @return The plot type depends on the class of the input object. The different
+#' types are described in the help of the correponding methods, please refer to 
+#' the "See also" section.
+#' @seealso \code{\link{SESplot.statdives}}, \code{\link{SESplot.tdr3D}}
 #' @export
-#' @examples
-#' \dontrun{
-#' require(maps)
-#' path <- system.file("extdata", package="SES")
-#' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
-#' ses <- importSES(pathname)
-#' 
-#' # Example: class 'ses' / 'statdives'
-#' SESplot(ses, isobath=-1000, colorvar=ses$stat$Catch.numb)
-#' library("RColorBrewer")
-#' mycol <- brewer.pal(n=10, name="BrBG")
-#' SESplot(ses, ses$stat$Dive.dur, pts.args=list(pch=""), implt.args=list(col=mycol), img.args=list(nx=150, ny=150))
-#' 
-#' # Example: class 'tdr'
-#' SESplot(ses$tdr, colorvar=ses$tdr$Light, cond=ses$tdr$Dive.id == 650)
-#' SESplot(ses$tdr, colorvar=ses$tdr$is.Catch, cond=ses$tdr$Dive.id == 650)
-#' 
-#' # No provided data for 'ses3D': Syntax memo
-#' # SESplot(ses3d) # Same as for classic 'ses' class
-#' # 3D-Scatterplot of the 1015th dive with colored variable.
-#' # SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id==1015, colorvar=ses3d$tdr$Distance)
-#' }
 SESplot <- function(obj, colorvar=NULL, isobath=NULL, ...){
   UseMethod("SESplot")
 }
 
-#' SESplot.ses
+#' Plot the trajectory of a SES along with dive statistics.
 #' 
-#' Method for 'ses' objects.
-#' 
-#' @inheritParams SESplot.statdives
-#' @param ... Other parameters to be passed to \code{SESplot.statdives}.
-#' @details Includes bathymetry taken from 
-#' \url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}. 
-#' @S3method SESplot ses
-SESplot.ses <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, 
-                        pts.args=list(), map.args=list(), img.args=list(), 
-                        implt.args=list(), plt.args=list(), ...) {
-  findVars(c("Ind.id", "stat"), obj)
-  legend <- try(findVars("colorvarname", list(...), type='check'))
-  if (inherits(legend, "try-error")) {
-    legend <- gsub('^.*\\$', '', deparse(substitute(colorvar)))
-    SESplot.statdives(stat, colorvar, cond, isobath, pts.args, 
-                      map.args, img.args, implt.args, plt.args, 
-                      colorvarname = legend, ...)
-  } else {
-    SESplot.statdives(stat, colorvar, cond, isobath, pts.args, 
-                      map.args, img.args, implt.args, plt.args, ...)
-  }
-  title(main=paste(Ind.id, ": ", nrow(stat), "dives"), line=2)
-}
-
-#' SESplot.statdives
-#' 
-#' Method for 'statdives' objects.
+#' S3 methods for objects of class 'ses' and 'statdives'. The 'ses' method is
+#' actually a call to the 'statdives' method but adds additional information such
+#' as the name of the individual in the title.
 #' 
 #' @param obj An object to plot
 #' @param colorvar Optionnal \code{obj} variable to plot with the color of symbols.
@@ -90,11 +47,24 @@ SESplot.ses <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
 #' @param colorvarname Name for the legend. For compatibility when called from 
 #' \code{SESplot.ses()}
 #' @details Includes bathymetry taken from 
-#' \url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}. 
-#' If this error show up 'data set ‘worldMapEnv’ not found' 
+#' \url{https://www.ga.gov.au/products/servlet/controller?event=GEOCAT_DETAILS&catno=71552}. In the case where this error show up \code{"data set 'worldMapEnv' not found"} 
 #' try \code{require(maps)}.
 #' @import maptools fields maps
-#' @S3method SESplot statdives
+#' @export
+#' @examples
+#' \dontrun{
+#' require(maps)
+#' path <- system.file("extdata", package="SES")
+#' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
+#' ses <- importSES(pathname)
+#' 
+#' # Example: class 'ses' / 'statdives'
+#' SESplot(ses, isobath=-1000, colorvar=ses$stat$Catch.numb)
+#' library("RColorBrewer")
+#' mycol <- brewer.pal(n=10, name="BrBG")
+#' SESplot(ses, ses$stat$Dive.dur, pts.args=list(pch=""), implt.args=list(col=mycol), 
+#' img.args=list(nx=150, ny=150))
+#' }
 SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.args=list(), 
                               map.args=list(), img.args=list(), implt.args=list(), plt.args=list(),
                               colorvarname) {
@@ -102,7 +72,7 @@ SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.a
     colorvarname <- deparse(substitute(colorvar))
     colorvarname <- gsub('^.*\\$', '', colorvarname)
   }
-  # 	if (is.logical(colorvar)) colorvar <- as.numeric(colorvar)
+  #   if (is.logical(colorvar)) colorvar <- as.numeric(colorvar)
   nas <- apply(is.na(obj), 1, any)
   obj <- obj[!nas, ] ; colorvar <- colorvar[!nas]
   if (!is.null(cond)){
@@ -143,9 +113,32 @@ SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.a
   }
 }
 
-#' SESplot.tdr3D
+#' @rdname SESplot.statdives
+#' @inheritParams SESplot.statdives
+#' @param ... Other arguments to be passed to \code{SESplot.statdives}.
+#' @export
+SESplot.ses <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, 
+                        pts.args=list(), map.args=list(), img.args=list(), 
+                        implt.args=list(), plt.args=list(), ...) {
+  findVars(c("Ind.id", "stat"), obj)
+  legend <- try(findVars("colorvarname", list(...), type='check'), silent = TRUE)
+  if (inherits(legend, "try-error")) {
+    legend <- gsub('^.*\\$', '', deparse(substitute(colorvar)))
+    SESplot.statdives(stat, colorvar, cond, isobath, pts.args, 
+                      map.args, img.args, implt.args, plt.args, 
+                      colorvarname = legend, ...)
+  } else {
+    SESplot.statdives(stat, colorvar, cond, isobath, pts.args, 
+                      map.args, img.args, implt.args, plt.args, ...)
+  }
+  title(main=paste(Ind.id, ": ", nrow(stat), "dives"), line=2)
+}
+
+#' Plot dive profiles along with a TDR variable
 #' 
-#'  Method for 'tdr3D' objects.
+#' S3 methods for objects of class 'tdr' and 'tdr3d'. To plot dive profiles. Any 
+#' TDR variable may be included to the graph using a color scale. 3D dives are 
+#' drawn in a dynamic 'rgl' device.
 #'  
 #' @inheritParams SESplot.statdives
 #' @param scatter.args Other parameters to be passed to \code{plot3d} if 
@@ -156,22 +149,31 @@ SESplot.statdives <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL, pts.a
 #' @param implt.args Other parameters to be passed to \code{\link{image.plot}}. 
 #' Defaults: \code{list(legend.width = 1, legend.mar = 7.8, legend.shrink = .7, 
 #' legend.lab = colorvarname, legend.line = 3.5)}.
-#' @param dev The device to use: to choose in c('rgl', 'default'). See 
+#' @param dev The device to use: to choose in \code{c('rgl', 'default')}. See 
 #' consequences in details.
+#' 
 #' @details With a \code{colorvar} of type 'integer', 'logical' or 'factor' color 
 #' the scale can be controled with \code{palette()} while type 'double' must be 
 #' handled with \code{colscale.args} argument. When \code{dev} is set \code{'rgl'}
 #' the figure can be rotated and zoomed interactively but no color legend can 
 #' be added.
 #' @import fields rgl
-#' @S3method SESplot tdr3D
+#' @export
 #' @examples
 #' \dontrun{
-#' SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id==1015, colorvar=ses3d$tdr$Distance)
-#' # Use manipulate to change view angle
-#' require(manipulate)
-#'  manipulate(SESplot(ses3d$tdr, cond=ses3d$tdr$Dive.id==2500,
-#'   scatter.args=list(angle=angle)), angle=slider(0, 360))
+#' path <- system.file("extdata", package="SES")
+#' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
+#' ses <- importSES(pathname)
+#' 
+#' # Example: class 'tdr'
+#' SESplot(ses$tdr, colorvar = ses$tdr$Light, cond = ses$tdr$Dive.id == 650)
+#' SESplot(ses$tdr, colorvar = ses$tdr$is.Catch, cond = ses$tdr$Dive.id == 650)
+#' 
+#' # Example: class 'tdr3D'
+#' #    No data sample provided for 'ses3D': Syntax memo
+#' SESplot(ses3d) # Same as for classic 'ses' class
+#' 3D-Scatterplot of the 1015th dive with colored variable.
+#' SESplot(ses3d$tdr, cond = ses3d$tdr$Dive.id == 1015, colorvar = ses3d$tdr$Distance)
 #' }
 SESplot.tdr3D <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
                           scatter.args=list(), colscale.args=list(), implt.args=list(), colorvarname, dev=c('rgl', 'default')){
@@ -231,16 +233,10 @@ SESplot.tdr3D <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
   }
 }
 
-#' SESplot.tdr
-#' 
-#' Method for with 'tdr' objects.
-#' 
+#' @rdname SESplot.tdr3D
 #' @inheritParams SESplot.tdr3D
 #' @param plt.args Other parameters to be passed to \code{plot}.
-#' @details With a \code{colorvar} of type 'integer', 'logical' or 'factor' color 
-#' the scale can be controled with \code{palette()} while type 'double' must be 
-#' handled with \code{colscale.args} argument.
-#' @S3method SESplot tdr
+#' @export
 SESplot.tdr <- function(obj, colorvar=NULL, cond=NULL, isobath=NULL,
                         plt.args=list(), colscale.args=list(), implt.args=list()){
   colorvarname <- deparse(substitute(colorvar))
