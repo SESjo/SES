@@ -1,6 +1,6 @@
 \name{nUN}
 \alias{nUN}
-\title{nUN}
+\title{Count the number of unique values in a vector}
 \usage{
 nUN(x)
 }

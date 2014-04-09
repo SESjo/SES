@@ -1,6 +1,6 @@
 \name{importChl}
 \alias{importChl}
-\title{importChl}
+\title{Import a CHL map from a NetCDF file.}
 \usage{
 importChl(date, dir, ncfile = NULL)
 }
@@ -17,7 +17,7 @@ Returns a data frame with latitude, longitude and the
 associate [Chl].
 }
 \description{
-Load a NetCDF file matching with a date and a directory.
+Import a CHL map from a NetCDF file.
 }
 \seealso{
 Other chl: \code{\link{extractChl}};

@@ -1,4 +1,4 @@
-#' findDefaultVars
+#' Search and/or get variables in an object using its default name
 #' 
 #' Search and/or get variables in an object using its default name as it is given in formatSES.
 #' To use for error handling and initial checking in functions.
@@ -16,7 +16,7 @@ findDefaultVars <- function(vars, object, type.obj, varnames=NULL,
 	findVars(VARS, object, varnames, type, mult, envir, ...)
 }
 
-#' findVars
+#' Search and/or get variables in an object using its name
 #' 
 #' Search and/or get variables in an object using its name. To use for error handling and initial 
 #' checking in functions.
@@ -95,7 +95,7 @@ findVars <- function(vars, object, varnames=NULL,
   }
 }
 
-#' checkVar
+#' Search for a variable in a list
 #' 
 #' Check if a variable exists anywhere in a 'list' object using its name. Print messages, 
 #' warning or errors according according to the gravity of ambiguous situations. Include various
@@ -166,7 +166,7 @@ checkVar <- function(var, object, mult=FALSE, substring=TRUE, ignore.case=TRUE, 
   return(ans)
 }
 
-#' findVar
+#' Recursively explore a list
 #' 
 #' Recursively explore a 'list' object until a variable name match with the given pattern.
 #' 

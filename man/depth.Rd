@@ -1,6 +1,6 @@
 \name{depth}
 \alias{depth}
-\title{depth}
+\title{Depth of an R object}
 \usage{
 depth(x)
 }
@@ -8,7 +8,7 @@ depth(x)
   \item{x}{The object to analyse.}
 }
 \description{
-Depth of an R object. See plotrix::maxDepth().
+See plotrix::maxDepth().
 }
 \keyword{internal}
 

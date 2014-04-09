@@ -1,4 +1,4 @@
-#' summary.ses
+#' Summarizing SES dataset
 #' 
 #' @description S3 method for 'ses' objects.
 #' @param object An object for which a summary is desired.
@@ -7,7 +7,7 @@
 #' @param all Should the function return results with both os 'statdives' ans 'tdr'
 #' objects
 #' @param digits The number of digits to show in dive statistics.
-#' @S3method summary ses
+#' @export
 summary.ses <- function(object, na.rm=TRUE, all=FALSE, digits=2){
 	ans <-  findVar(object, "Ind.id")$var
 	if (!all){
@@ -25,11 +25,10 @@ summary.ses <- function(object, na.rm=TRUE, all=FALSE, digits=2){
 	ans
 }
 
-#' summary.tdr
 #' @rdname summary.ses
 #' @inheritParams summary.ses
 #' @param complete Should the function compute all statistics.
-#' @S3method summary tdr
+#' @export
 summary.tdr <- function(object, na.rm=TRUE, complete=TRUE, digits=2){
 	findDefaultVars("Dive.id", object, type.obj="tdr", ignore.depth.error=TRUE)
 	dvs <-  Dive.id[Dive.id != 0]
@@ -66,10 +65,9 @@ summary.tdr <- function(object, na.rm=TRUE, complete=TRUE, digits=2){
 	ans
 }
 
-#' summary.statdives
 #' @rdname summary.ses
 #' @inheritParams summary.tdr
-#' @S3method summary statdives
+#' @export
 summary.statdives <- function(object, na.rm=TRUE, digits=2){
 	findDefaultVars("Dive.id", object, type.obj="tdr", ignore.depth.error=TRUE)
 	types <- sapply(object, typeof)
@@ -95,29 +93,21 @@ summary.statdives <- function(object, na.rm=TRUE, digits=2){
 	ans
 }
 
-#' statFuns
-#' 
-#' Functions to apply to compute summary statistics given a type of vector.
+#' Apply summary statistics functions given a type of vector
 #' 
 #' @param type The type of computation. To choose in 
 #' \code{c("double", "integer", "logical", "factor", "character")}.
+#' @param x Alternatively, the vector can be given instead.
+#' @return A list of functions to use in order to computre summary statistics.
 #' @export
 #' @keywords internal
-statFuns <- function(type=c("double", "integer", "logical", "factor", "character")){
-	seq_length <- function(x, type=c('integer', 'logical')){
-		seqs <- per(x)
-		seqs <- switch(match.arg(type), 
-						logical = seqs$length[seqs$value], 
-						integer = seqs$length[seqs$value != 0])
-		if (length(seqs) == 0) return(0)
-		else return(mean(seqs))
-	}
-						   
-	funs <- switch(match.arg(type),
+statFuns <- function(type, x){
+	funs <- switch(type %else% typeof(x),
 				   double  = list(Min=min, Mean=mean, Median=median, Max=max),
-				   integer = list(Number=nUN, Seq_length=function(x) seq_length(x, type='integer')),
-				   logical = list(Prop=mean, True_seq_length=seq_length),
+				   integer = list(Number=nUN, Seq_length = partial(meanL, ref = 0)),
+				   logical = list(Prop=mean, True_seq_length = partial(meanL, ref = FALSE)),
 				   factor  = list(Table=table),
-				   character = list(Table=table))
+				   character = list(Table=table),
+           stop('Unknown summary statistics functions for this type of data.'))
 	return(funs)
 }

@@ -1,6 +1,6 @@
 \name{nNA}
 \alias{nNA}
-\title{nNA}
+\title{Count the number of NAs in a vector}
 \usage{
 nNA(x)
 }

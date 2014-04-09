@@ -1,6 +1,6 @@
 \name{checkVar}
 \alias{checkVar}
-\title{checkVar}
+\title{Search for a variable in a list}
 \usage{
 checkVar(var, object, mult = FALSE, substring = TRUE, ignore.case = TRUE,
   ignore.depth.error = FALSE)

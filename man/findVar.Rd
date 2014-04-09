@@ -1,6 +1,6 @@
 \name{findVar}
 \alias{findVar}
-\title{findVar}
+\title{Recursively explore a list}
 \usage{
 findVar(object, pattern, ...)
 }

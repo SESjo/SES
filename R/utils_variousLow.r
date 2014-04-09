@@ -1,6 +1,7 @@
-#' SESname
+#' Extract the ID of an individual from a string
 #' 
-#' Extract the ID of an individual from a string that contains it.
+#' Extract the ID of an individual from a string that contains it. This function
+#' just apply a the following regular expression \code{'20+[0-9]{2}-[0-9]{2}'}
 #' 
 #' @param text Text containing the seal ID.
 #' @return TheiID as character
@@ -10,8 +11,6 @@
 #' SESname("Path/to/seal/file/2011-12_some_ses_file.txt")
 SESname <- function(text){regmatches(text, regexpr('20+[0-9]{2}-[0-9]{2}', text))}
 
-#' replaceMissing
-#' 
 #' Replace values in an atomic vector.
 #' 
 #' @param x The atomic vector
@@ -30,9 +29,10 @@ replaceMissing <- function(x, na.0=NaN, na.1=NA) {
   x
 }
 
-#' nNA
+#' Count the number of NAs in a vector
 #' 
 #' Shortcut for \code{compose(sum, is.na, unlist)}
+#' 
 #' @param x a vector whose elements are to be tested.
 #' @return Return the number of \code{NA} in \code{x}.
 #' @details As any number different from 0 return a \code{TRUE} when coerced to
@@ -47,7 +47,7 @@ replaceMissing <- function(x, na.0=NaN, na.1=NA) {
 nNA <- function(x)
   compose(sum, is.na, unlist)(x) 
 
-#' nUN
+#' Count the number of unique values in a vector
 #' 
 #' Shortcut for \code{compose(length, unique)}. Count the number of distinct 
 #' values in an atomic vector.
@@ -75,10 +75,57 @@ nUN <- function(x)
   if (identical(a, FALSE) || is.null(a) || length(a) == 0) b else a
 }
 
-
-#' depth
+#' Special options of unix grep
 #' 
-#' Depth of an R object. See plotrix::maxDepth().
+#' \code{grepo} is similar to bash's \code{grep -o pattern file} it returns the matches. 
+#'
+#' @inheritParams base::grep
+#' @param ... Other arguments to be passed to \code{regexpr}.
+#' @export
+#' @keywords internal
+grepo <- function(pattern, text, ...) 
+  regmatches(text, regexpr(pattern, text, ...))
+
+#' @rdname grepo
+#' @details \code{grepc} is similar to bash's \code{grep -c pattern file} it counts the number of matches.
+#' @export
+#' @keywords internal
+grepc <- function(pattern, text, ...) 
+  compose(lenght, grepo)(pattern, text, ...) 
+
+#' Compute the average length of a sequences of successively repeated values
+#' 
+#' @param x a vector in which to search for sequences of successively 
+#' repeated values.
+#' @param ref A reference value to use when counting a specific event only.
+#' @param cmp The comparison operator to use for comparison with the reference.
+#' @details The default is to return the overall average length. If \code{ref} 
+#' is given but not \code{cmp} then \code{cmp = '!='}. If \code{cmp} 
+#' is given but not \code{ref} then \code{ref} is chosen to \code{FALSE}, 
+#' \code{0L} or to the first value (decreasing order) of \code{x}.
+#' @export
+#' @keywords internal
+#' @examples
+#' meanL(rep(letters[1:2], 1:2))    # Average length of all sequences
+#' x <- rep(letters[sequence(c(2, 2))], c(1, 2, 9, 1))
+#' meanL(x, ref = 'a', cmp = '==')  # Average length of 'a' sequences, 5
+#' meanL(x, ref = 'b', cmp = '!=')  # Average length of 'a' sequences, 5
+#' meanL(, ref = 'b', cmp = '==')   # Average length of 'b' sequences, 1.5
+meanL <- function(x, ref = NULL, cmp = NULL){
+  seqs <- per(x)
+  if (!is.null(cmp) && is.null(ref))
+    ref <- switch(typeof(x), logical = FALSE, integer = 0, sort(seqs$value)[1])
+  if (!is.null(ref) && is.null(cmp)){cmp <- '!='}
+  cond <- if(is.null(cmp)){rep(TRUE,nrow(seqs))}else{match.fun(cmp)(seqs$value,ref)}
+  if (length(seqs$value[cond]) == 0) {
+    return(0)
+  } else {
+    return(mean(seqs$length[cond]) %else% NA)
+  }
+}
+#' Depth of an R object
+#' 
+#' See plotrix::maxDepth().
 #' 
 #' @param x The object to analyse.
 #' @export
@@ -123,7 +170,7 @@ nstr <- function(x) {
 	return(unique(name.vec[!grepl('\\.$', name.vec)]))
 }
 
-#' class2logical
+#' Convert the result of dive classification into a logical
 #' 
 #' Convert the result of dive classification into a logical that differentiate 
 #' the drift dives from the other types.

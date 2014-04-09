@@ -1,6 +1,6 @@
 \name{replaceMissing}
 \alias{replaceMissing}
-\title{replaceMissing}
+\title{Replace values in an atomic vector.}
 \usage{
 replaceMissing(x, na.0 = NaN, na.1 = NA)
 }

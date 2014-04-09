@@ -1,6 +1,6 @@
 \name{class2logical}
 \alias{class2logical}
-\title{class2logical}
+\title{Convert the result of dive classification into a logical}
 \usage{
 class2logical(x)
 }

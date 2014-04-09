@@ -1,6 +1,6 @@
 \name{importSEAPOpred}
 \alias{importSEAPOpred}
-\title{importSEAPOpred}
+\title{Import a SEAPODYM forage map from a NetCDF file.}
 \usage{
 importSEAPOpred(date, dir, ncfile = NULL)
 }

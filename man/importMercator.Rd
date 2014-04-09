@@ -1,6 +1,6 @@
 \name{importMercator}
 \alias{importMercator}
-\title{importMercator}
+\title{Import velocity field of mecator currents from a NetCDF file.}
 \usage{
 importMercator(date, dir, ncfile = NULL, type = "UV", latname = "y",
   lonname = "x")

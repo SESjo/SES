@@ -1,6 +1,6 @@
 \name{importSES}
 \alias{importSES}
-\title{ImportSES}
+\title{Import a SES individual from a .mat file to the R workspace}
 \usage{
 importSES(matfile, type = c("both", "tdr", "stat"), convert = TRUE)
 }
@@ -23,12 +23,12 @@ individual - TDR and/or dive statistics (according to the
 \code{type} argument).
 }
 \description{
-Import an individual from a .mat file to R workspace is a
-standart way. The .mat file must be of version v7 or older
-(last MATLAB version v7.3): \code{R.matlab} requirement.
-Edit \code{formatSES} object to modify the importation
-preferences. See \code{\link{print.fmtSES}} documentation
-to learn how.
+Import an individual from a .mat file to the R workspace in
+a standart way. The .mat file must be of version v7 or
+older (last MATLAB version v7.3): \code{R.matlab}
+requirement. Edit \code{formatSES} object to modify the
+importation preferences. See \code{\link{print.fmtSES}}
+documentation to learn how.
 }
 \examples{
 path <- system.file("extdata", package="SES")

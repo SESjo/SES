@@ -1,6 +1,6 @@
 \name{SESname}
 \alias{SESname}
-\title{SESname}
+\title{Extract the ID of an individual from a string}
 \usage{
 SESname(text)
 }
@@ -12,7 +12,8 @@ TheiID as character
 }
 \description{
 Extract the ID of an individual from a string that contains
-it.
+it. This function just apply a the following regular
+expression \code{'20+[0-9]{2}-[0-9]{2}'}
 }
 \examples{
 SESname("Path/to/seal/file/2011-12_some_ses_file.txt")

@@ -1,6 +1,6 @@
 \name{findDefaultVars}
 \alias{findDefaultVars}
-\title{findDefaultVars}
+\title{Search and/or get variables in an object using its default name}
 \usage{
 findDefaultVars(vars, object, type.obj, varnames = NULL, type = c("assign",
   "check"), mult = FALSE, envir = parent.frame(1), ...)

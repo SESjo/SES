@@ -2,7 +2,7 @@
 \alias{summary.ses}
 \alias{summary.statdives}
 \alias{summary.tdr}
-\title{summary.ses}
+\title{Summarizing SES dataset}
 \usage{
 summary.ses(object, na.rm = TRUE, all = FALSE, digits = 2)
 
@@ -28,9 +28,5 @@ summary.statdives(object, na.rm = TRUE, digits = 2)
 }
 \description{
 S3 method for 'ses' objects.
-
-summary.tdr
-
-summary.statdives
 }
 

@@ -1,6 +1,6 @@
-#' ImportSES
+#' Import a SES individual from a .mat file to the R workspace
 #' 
-#' Import an individual from a .mat file to R workspace is a standart way. The .mat file must be of 
+#' Import an individual from a .mat file to the R workspace in a standart way. The .mat file must be of 
 #' version v7 or older (last MATLAB version v7.3): \code{R.matlab} requirement. Edit 
 #' \code{formatSES} object to modify the importation preferences. See \code{\link{print.fmtSES}} 
 #' documentation to learn how.
@@ -103,7 +103,7 @@ importSES <- function (matfile, type=c("both", "tdr", "stat"), convert=TRUE){
 	}
 }
 
-#' importSEAPOpred
+#' Import a SEAPODYM forage map from a NetCDF file.
 #' 
 #' Load a NetCDF file matching with a date and a directory. When the time resolution of the biomass
 #' NetCDF files is > 1day, then file whose date is the closest from \code{date} argument is loaded.
@@ -154,9 +154,7 @@ importSEAPOpred <- function(date, dir, ncfile=NULL) {
 	
 }
 
-#' importChl
-#' 
-#' Load a NetCDF file matching with a date and a directory.
+#' Import a CHL map from a NetCDF file.
 #' 
 #' @param date The date (class POSIXct) to load.
 #' @param dir The directory to look into.
@@ -186,9 +184,8 @@ importChl <- function(date, dir, ncfile=NULL){
 	return(grid)
 }
 
-#' importMercator
-#' 
 #' Import velocity field of mecator currents from a NetCDF file.
+#' 
 #' @inheritParams ncgrid
 #' @inheritParams importSEAPOpred
 #' @param type The list of variable to import: subset of 'UVST'. 'U' and 'V' 

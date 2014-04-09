@@ -1,6 +1,6 @@
 \name{findVars}
 \alias{findVars}
-\title{findVars}
+\title{Search and/or get variables in an object using its name}
 \usage{
 findVars(vars, object, varnames = NULL, type = c("assign", "check"),
   mult = FALSE, envir = parent.frame(), ...)
