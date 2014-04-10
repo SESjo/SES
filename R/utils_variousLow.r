@@ -10,7 +10,7 @@
 #' @examples 
 #' SESname("Path/to/seal/file/2011-12_some_ses_file.txt")
 SESname <- function(text)
-  partial(grepo, pattern = '20+[0-9]{2}-[0-9]{2}')
+  grepo('20+[0-9]{2}-[0-9]{2}', text)
 
 #' Replace values in an atomic vector.
 #' 
