@@ -1,6 +1,6 @@
 \name{isDay}
 \alias{isDay}
-\title{isDay}
+\title{Use time and location to find if events occured during the day or the night}
 \usage{
 isDay(time, loc, stat = NULL, elevlim = c(-18, 18), append = TRUE)
 }

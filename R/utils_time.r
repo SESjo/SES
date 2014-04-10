@@ -1,6 +1,6 @@
-#' convertTime
+#' Convert a time object to another format...
 #' 
-#' Convert a time object to another format (among those used in the package and data files).
+#' ...among those commonly used in the package and data files.
 #' 
 #' @param x The object to convert
 #' @param to The output format. Choose in 'posx', 'ymd', 'text'.
@@ -26,8 +26,6 @@ convertTime <- function(x, to, width=6){
   else message("Requested conversion is not implemented")
 }
 
-#' posx2ymd
-#' 
 #' Convert a POSIX object to a data frame with the desired number of columns.
 #' 
 #' @param posx The POSIX object to convert
@@ -41,8 +39,6 @@ posx2ymd = function(posx, width=6){
   return(ymd)
 }
 
-#' text2posx
-#' 
 #' Convert a text date ('YYYYMMDD' formatting) to a POSIXct object.
 #' 
 #' @param text The text date(s) to convert
@@ -58,8 +54,6 @@ text2posx <- function(text){
   }
 }
 
-#' ymd2posx
-#' 
 #' Convert a date matrix or data frame (yyyy|mm|dd) to a POSIXct object.
 #' 
 #' @param ymd 
@@ -74,9 +68,7 @@ ymd2posx <- function(ymd, width=ncol(ymd)){
   ymd <- do.call(paste, ymd)
   return(as.POSIXct(ymd, format=fmt))
 }
-
-#' text2posx
-#' 
+ 
 #' Convert a POSIXct object to a text date ('YYYYMMDD' formatting).
 #' 
 #' @inheritParams posx2ymd
@@ -86,8 +78,6 @@ posx2date <- function(posx){
   ymd2posx(posx2ymd(posx, width=3))
 }
 
-#' datenum2posx
-#' 
 #' Utility to convert Matlab numeric detes to R's POSIXct format.
 #' 
 #' @param x The atomic vector of matlab dates.

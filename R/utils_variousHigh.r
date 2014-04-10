@@ -34,7 +34,7 @@ rollapply <- function(x, FUN, w = 10, wty = 'm', ...) {
   out
 }
 
-#' isDay
+#' Use time and location to find if events occured during the day or the night
 #' 
 #' Use time and loc info to find if events occured during the day or the night. SEAPODYm criteria 
 #' elevlim=c(-18, 18). Transition periods filled with NAs.
@@ -87,9 +87,7 @@ isDay <- function (time, loc, stat = NULL, elevlim = c(-18, 18), append = TRUE)
   }
 }
 
-#' addVar
-#' 
-#' Copy values of variable from an object to another within a ses.
+#' Copy values of a variable from an table to another within a 'ses' object.
 #' 
 #' @param var The name of the variable to be copied.
 #' @inheritParams addLoc
@@ -129,9 +127,7 @@ addVar <- function(var, from, to, ses=NULL, append=TRUE){
 	return(to)
 }
 
-#' addLoc
-#' 
-#' Copy locations (Latitude and Longitude) from onre table to another within a 'ses' object
+#' Copy locations from one table to another within a 'ses' object
 #' 
 #' @param from Source of location information ('tdr' or 'statdives' object).
 #' @param to Where to add location inforation (respectively a 'statdives' or 'tdr' object).
@@ -160,7 +156,7 @@ addLoc <- function(from, to, ses=NULL, append=TRUE){
 	return(to)
 }
 
-#' per
+#' Decompose an atomic vector to its successive values and their length.
 #' 
 #' The reverse of 'base::rep()' function: decompose an atomic vector to its successive 
 #' values and their length.

@@ -1,6 +1,6 @@
 \name{addVar}
 \alias{addVar}
-\title{addVar}
+\title{Copy values of a variable from an table to another within a 'ses' object.}
 \usage{
 addVar(var, from, to, ses = NULL, append = TRUE)
 }
@@ -25,8 +25,8 @@ Object given at the 'to' argument, updated with location
 information.
 }
 \description{
-Copy values of variable from an object to another within a
-ses.
+Copy values of a variable from an table to another within a
+'ses' object.
 }
 \details{
 Missing values (NAs) of the choosen variable are

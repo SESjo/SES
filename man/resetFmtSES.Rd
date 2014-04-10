@@ -1,6 +1,6 @@
 \name{resetFmtSES}
 \alias{resetFmtSES}
-\title{resetFmtSES}
+\title{Reset package to default settings (suggested alias column).}
 \usage{
 resetFmtSES(type = c("files", "vars"), ...)
 }
@@ -12,8 +12,7 @@ resetFmtSES(type = c("files", "vars"), ...)
   \item{...}{arguments to be passed to \code{saveFmtSES}.}
 }
 \description{
-Reset formatSES to defaults settings (suggested alias
-column).
+Reset package to default settings (suggested alias column).
 }
 \seealso{
 Other settings: \code{\link{importSES}};

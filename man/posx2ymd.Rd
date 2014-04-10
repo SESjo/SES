@@ -1,6 +1,6 @@
 \name{posx2ymd}
 \alias{posx2ymd}
-\title{posx2ymd}
+\title{Convert a POSIX object to a data frame with the desired number of columns.}
 \usage{
 posx2ymd(posx, width = 6)
 }

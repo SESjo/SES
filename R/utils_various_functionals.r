@@ -53,7 +53,7 @@ let <- function (.expr, ...){
   eval(substitute(.expr), list2env(list(...), parent = parent.frame()))
 }
 
-#' Set function arguments to new default
+#' Set function arguments to new defaults
 #' 
 #' @param FUN The function implied
 #' @param ... Arguments to set

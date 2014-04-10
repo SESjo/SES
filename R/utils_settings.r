@@ -1,6 +1,4 @@
-#' renames
-#' 
-#' Extract and rename tdr and statdives variables according to formatSES instructions.
+#' Extract and rename tdr and statdives variables according to formatSES settings
 #' 
 #' @param type The type of dataset
 #' @param obj The object to process.
@@ -39,8 +37,7 @@ renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt, conve
   obj
 }
 
-#' print.fmtSES
-#' 
+
 #' S3 method for formatSES object of SES package. Allow to view and edit \code{importSES()} settings.
 #' 
 #' @param x The object to print
@@ -48,6 +45,7 @@ renames <- function(type=c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt, conve
 #' @family settings
 #' @method print fmtSES
 #' @export
+#' @keywords internal
 #' @examples
 #' \dontrun{
 #' # First attach the Settings environement
@@ -77,7 +75,7 @@ print.fmtSES <- function(x, ...){
 	attach(SESsettings, warn.conflicts=FALSE)
 }
 
-#' saveFmtSES
+#' Backup importation settings to installation folder
 #' 
 #' A kind of \code{save} (S3) method designed for formatSES object of the SES package.
 #' Export formatSES settings to package files so that user preferences are automaticaly
@@ -106,9 +104,7 @@ saveFmtSES <- function(x, verbose=FALSE) {
 	}
 }
 
-#' resetFmtSES
-#' 
-#' Reset formatSES to defaults settings (suggested alias column).
+#' Reset package to default settings (suggested alias column).
 #' 
 #' @param type \code{files} restore original settings in the package folder. \code{vars} restore the settings in this session but leave the package files unchanged.
 #' @param ... arguments to be passed to \code{saveFmtSES}.
@@ -130,8 +126,7 @@ resetFmtSES <- function(type=c("files", "vars"), ...){
 	}
 }
 
-#' whichSESobj
-#' 
+
 #' Return the name of formatSES element matching x.
 #' 
 #' @param x
@@ -143,8 +138,6 @@ whichSESobj <- function(x){
 	obj <- names(obj)[obj]
 }
 
-#' userHeader
-#' 
 #' Get the user headers associated with default headers of one of a package object.
 #' 
 #' @param header The default header.

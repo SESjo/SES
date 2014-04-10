@@ -1,6 +1,6 @@
 \name{whichSESobj}
 \alias{whichSESobj}
-\title{whichSESobj}
+\title{Return the name of formatSES element matching x.}
 \usage{
 whichSESobj(x)
 }

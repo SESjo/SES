@@ -1,6 +1,6 @@
 \name{userHeader}
 \alias{userHeader}
-\title{userHeader}
+\title{Get the user headers associated with default headers of one of a package object.}
 \usage{
 userHeader(header, type)
 }

@@ -1,6 +1,6 @@
 \name{text2posx}
 \alias{text2posx}
-\title{text2posx}
+\title{Convert a text date ('YYYYMMDD' formatting) to a POSIXct object.}
 \usage{
 text2posx(text)
 }

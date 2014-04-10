@@ -1,6 +1,6 @@
 \name{sunPosition}
 \alias{sunPosition}
-\title{sunPosition}
+\title{Compute sun azimuth and elevation given a location and a date/time.}
 \usage{
 sunPosition(Year, Month, Day, Hour = 12, Minute = 0, Second = 0,
   time = NULL, Lat = 46.5, Lon = 6.5, loc = NULL)

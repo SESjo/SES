@@ -1,6 +1,6 @@
 \name{renames}
 \alias{renames}
-\title{renames}
+\title{Extract and rename tdr and statdives variables according to formatSES settings}
 \usage{
 renames(type = c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt,
   convert = TRUE)
@@ -18,7 +18,7 @@ renames(type = c("tdr", "stat", "stat3D", "tdr3D"), obj, objtxt,
 }
 \description{
 Extract and rename tdr and statdives variables according to
-formatSES instructions.
+formatSES settings
 }
 \seealso{
 Other settings: \code{\link{importSES}};

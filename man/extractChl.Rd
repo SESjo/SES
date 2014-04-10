@@ -1,6 +1,6 @@
 \name{extractChl}
 \alias{extractChl}
-\title{extractChl}
+\title{Create [Chl]_surf variable by extracting relevant values from NetCDF files.}
 \usage{
 extractChl(stat, chldir, append = TRUE)
 }

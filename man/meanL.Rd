@@ -30,7 +30,7 @@ meanL(rep(letters[1:2], 1:2))    # Average length of all sequences
 x <- rep(letters[sequence(c(2, 2))], c(1, 2, 9, 1))
 meanL(x, ref = 'a', cmp = '==')  # Average length of 'a' sequences, 5
 meanL(x, ref = 'b', cmp = '!=')  # Average length of 'a' sequences, 5
-meanL(, ref = 'b', cmp = '==')   # Average length of 'b' sequences, 1.5
+meanL(x, ref = 'b', cmp = '==')  # Average length of 'b' sequences, 1.5
 }
 \keyword{internal}
 

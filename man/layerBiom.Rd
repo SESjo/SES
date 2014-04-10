@@ -1,6 +1,6 @@
 \name{layerBiom}
 \alias{layerBiom}
-\title{layerBiom}
+\title{Compute the biomass in each layer during the day and night periods.}
 \usage{
 layerBiom(grp, all.col = FALSE, layers = NULL, is.day = NULL)
 }

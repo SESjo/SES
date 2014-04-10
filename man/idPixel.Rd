@@ -1,6 +1,6 @@
 \name{idPixel}
 \alias{idPixel}
-\title{idPixel}
+\title{Given a grig, attribute to the dives the pixel number they belong to.}
 \usage{
 idPixel(stat, grid, ses = NULL, append = TRUE)
 }

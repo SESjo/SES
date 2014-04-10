@@ -1,6 +1,6 @@
 \name{print.fmtSES}
 \alias{print.fmtSES}
-\title{print.fmtSES}
+\title{S3 method for formatSES object of SES package. Allow to view and edit \code{importSES()} settings.}
 \usage{
 \method{print}{fmtSES}(x, ...)
 }
@@ -32,4 +32,5 @@ Other settings: \code{\link{importSES}};
 \code{\link{saveFmtSES}}; \code{\link{userHeader}};
 \code{\link{whichSESobj}}
 }
+\keyword{internal}
 

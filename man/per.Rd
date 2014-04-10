@@ -1,6 +1,6 @@
 \name{per}
 \alias{per}
-\title{per}
+\title{Decompose an atomic vector to its successive values and their length.}
 \usage{
 per(x, idx = FALSE)
 }

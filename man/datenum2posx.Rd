@@ -1,6 +1,6 @@
 \name{datenum2posx}
 \alias{datenum2posx}
-\title{datenum2posx}
+\title{Utility to convert Matlab numeric detes to R's POSIXct format.}
 \usage{
 datenum2posx(x)
 }

@@ -9,7 +9,8 @@
 #' @export
 #' @examples 
 #' SESname("Path/to/seal/file/2011-12_some_ses_file.txt")
-SESname <- function(text){regmatches(text, regexpr('20+[0-9]{2}-[0-9]{2}', text))}
+SESname <- function(text)
+  partial(grepo, pattern = '20+[0-9]{2}-[0-9]{2}')
 
 #' Replace values in an atomic vector.
 #' 
@@ -110,7 +111,7 @@ grepc <- function(pattern, text, ...)
 #' x <- rep(letters[sequence(c(2, 2))], c(1, 2, 9, 1))
 #' meanL(x, ref = 'a', cmp = '==')  # Average length of 'a' sequences, 5
 #' meanL(x, ref = 'b', cmp = '!=')  # Average length of 'a' sequences, 5
-#' meanL(, ref = 'b', cmp = '==')   # Average length of 'b' sequences, 1.5
+#' meanL(x, ref = 'b', cmp = '==')  # Average length of 'b' sequences, 1.5
 meanL <- function(x, ref = NULL, cmp = NULL){
   seqs <- per(x)
   if (!is.null(cmp) && is.null(ref))
@@ -123,6 +124,7 @@ meanL <- function(x, ref = NULL, cmp = NULL){
     return(mean(seqs$length[cond]) %else% NA)
   }
 }
+
 #' Depth of an R object
 #' 
 #' See plotrix::maxDepth().

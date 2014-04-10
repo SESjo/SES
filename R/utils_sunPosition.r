@@ -1,5 +1,3 @@
-#' sunPosition
-#' 
 #' Compute sun azimuth and elevation given a location and a date/time.
 #' 
 #' @param Year Atomic numeric vector with year information.

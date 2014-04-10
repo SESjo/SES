@@ -1,5 +1,3 @@
-#' extractChl
-#' 
 #' Create [Chl]_surf variable by extracting relevant values from NetCDF files.
 #' 
 #' @param stat The 'statdives' object.
@@ -21,10 +19,9 @@ extractChl <- function(stat, chldir, append=TRUE) {
 	return(chl)
 }
 
-#' extractBiom
+#' Create Biomass variable by extracting relevant values from NetCDF files
 #' 
-#' Create Biomass variable by extracting relevant values from NetCDF files. When the time resolution
-#' of the biomass NetCDF files is > 1day, then the biomass is extracted in the pixel where the 
+#' When the time resolution of the biomass NetCDF files is > 1day, then the biomass is extracted in the pixel where the 
 #' averaged daily location of seal belongs (Beware, implies day/night same location).
 #' 
 #' @param stat  The 'statdives' object.
@@ -72,8 +69,6 @@ extractBiom <- function(stat, tdr, biomdir) {
 	return(unlist(biom))
 }
 
-#' layerBiom
-#' 
 #' Compute the biomass in each layer during the day and night periods.
 #' 
 #' @param grp Atomic vector giving the functional groups biomass in the following order:

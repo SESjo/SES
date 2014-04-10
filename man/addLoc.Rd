@@ -1,6 +1,6 @@
 \name{addLoc}
 \alias{addLoc}
-\title{addLoc}
+\title{Copy locations from one table to another within a 'ses' object}
 \usage{
 addLoc(from, to, ses = NULL, append = TRUE)
 }
@@ -23,8 +23,8 @@ Object given at the 'to' argument, updated with location
 information.
 }
 \description{
-Copy locations (Latitude and Longitude) from onre table to
-another within a 'ses' object
+Copy locations from one table to another within a 'ses'
+object
 }
 \examples{
 path <- system.file("extdata", package="SES")

@@ -1,6 +1,6 @@
 \name{convertTime}
 \alias{convertTime}
-\title{convertTime}
+\title{Convert a time object to another format...}
 \usage{
 convertTime(x, to, width = 6)
 }
@@ -14,8 +14,7 @@ convertTime(x, to, width = 6)
   data frame.}
 }
 \description{
-Convert a time object to another format (among those used
-in the package and data files).
+...among those commonly used in the package and data files.
 }
 \details{
 width = 3 when 'text' format is involved.

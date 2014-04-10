@@ -1,6 +1,6 @@
 \name{ncgrid}
 \alias{ncgrid}
-\title{ncgrid}
+\title{Extract the grid from a NetCDF file.}
 \usage{
 ncgrid(ncfile, connection, latname = "latitude", lonname = "longitude",
   zname = NULL)

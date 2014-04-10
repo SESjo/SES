@@ -1,6 +1,6 @@
 \name{extractBiom}
 \alias{extractBiom}
-\title{extractBiom}
+\title{Create Biomass variable by extracting relevant values from NetCDF files}
 \usage{
 extractBiom(stat, tdr, biomdir)
 }
@@ -13,10 +13,9 @@ extractBiom(stat, tdr, biomdir)
   files with biomass values.}
 }
 \description{
-Create Biomass variable by extracting relevant values from
-NetCDF files. When the time resolution of the biomass
-NetCDF files is > 1day, then the biomass is extracted in
-the pixel where the averaged daily location of seal belongs
-(Beware, implies day/night same location).
+When the time resolution of the biomass NetCDF files is >
+1day, then the biomass is extracted in the pixel where the
+averaged daily location of seal belongs (Beware, implies
+day/night same location).
 }
 

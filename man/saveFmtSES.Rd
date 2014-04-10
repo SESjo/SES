@@ -1,6 +1,6 @@
 \name{saveFmtSES}
 \alias{saveFmtSES}
-\title{saveFmtSES}
+\title{Backup importation settings to installation folder}
 \usage{
 saveFmtSES(x, verbose = FALSE)
 }

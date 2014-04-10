@@ -1,5 +1,3 @@
-#' idPixel
-#' 
 #' Given a grig, attribute to the dives the pixel number they belong to.
 #' 
 #' @param stat A statdives object.
@@ -47,8 +45,6 @@ idPixel <- function(stat, grid, ses=NULL, append=TRUE) {
 	return(stat)
 }
 
-#' ncgrid
-#' 
 #' Extract the grid from a NetCDF file.
 #' 
 #' @param ncfile The to read the grid from.

@@ -1,6 +1,6 @@
 \name{partial}
 \alias{partial}
-\title{Set function arguments to new default}
+\title{Set function arguments to new defaults}
 \usage{
 partial(FUN, ...)
 }
@@ -10,7 +10,7 @@ partial(FUN, ...)
   \item{...}{Arguments to set}
 }
 \description{
-Set function arguments to new default
+Set function arguments to new defaults
 }
 \examples{
 x <- c(1:3, NA, 3:1)
