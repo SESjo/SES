@@ -24,10 +24,7 @@ as.ses <- function(x, type=c("classic", "3D"), ind, tdr, stat){
   UseMethod("as.ses")
 }
 
-#' as.ses.list
-#' 
-#' S3 method of \code{as.ses} for list objects.
-#' 
+
 #' @rdname as.ses
 #' @inheritParams as.ses
 #' @export
@@ -51,43 +48,33 @@ as.ses.list <- function(x, type=c("classic", "3D")){
 }
 
 #' @rdname as.ses
-#' @param x The object
 #' @details \code{as.ses} tests if an object belong to the 'ses' class
 #' @export
 is.ses <- function(x){inherits(x, 'ses')}
 
-#' is.SES
-#' 
-#' 
-#' 
 #' @rdname as.ses
-#' @param x The object
 #' @details \code{as.SES} tests if an object belongs to the family of 
 #' SES package object.
 #' @export
 is.SES <- function(x){inherits(x, c('ses', 'tdr', 'stat', 'stat3D', 'tdr3D'))}
 
 #' @rdname as.ses
-#' @param x The object
 #' @details \code{is.tdr} Test if an object belong to the 'tdr' class
 #' @export
 is.tdr <- function(x){inherits(x, 'tdr')}
 
 #' @rdname as.ses
-#' @param x The object
 #' @details \code{is.tdr3D} tests if an object belong to the 'tdr3D' class.
 #' @export
 is.tdr3D <- function(x){inherits(x, 'tdr3D')}
 
 #' @rdname as.ses
-#' @param x The object
 #' @details \code{is.stat} tests if an object belong to the 'stat' class
 #' @export
 #' @family is.thing
 is.stat <- function(x){inherits(x, 'stat')}
 
 #' @rdname as.ses
-#' @param x The object
 #' @details \code{is.stat3D} tests if an object belong to the 'stat3D' class
 #' @export
 #' @family is.thing

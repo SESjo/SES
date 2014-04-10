@@ -37,25 +37,9 @@ is.stat3D(x)
   \item{tdr}{The TDR data. Ignored if x is given.}
 
   \item{stat}{The statdives data. Ignored if x is given.}
-
-  \item{x}{The object}
-
-  \item{x}{The object}
-
-  \item{x}{The object}
-
-  \item{x}{The object}
-
-  \item{x}{The object}
-
-  \item{x}{The object}
 }
 \description{
 Creates or tests for 'ses'.
-
-S3 method of \code{as.ses} for list objects.
-
-is.SES
 }
 \details{
 \code{as.ses} coerces an object to a 'ses'.

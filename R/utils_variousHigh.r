@@ -1,3 +1,39 @@
+#' Plot a random dive
+#' 
+#' \code{randomDv} Extract and optionally plots a random dive given TDR data 
+#' and dive delimitation info.
+#' @param obj A 'ses' or 'tdr' object
+#' @param dvs Dive (and bottom delimitation) info as returned by 
+#' \code{\link{anaDives}} or \code{\link{divesID}}.
+#' @param plt Should a plot be drawn ?
+#' @return Return a list of the dive number and the TDR data extracted along 
+#' the dive and the bottom.
+#' @seealso \code{\link{anaDives}}
+#' @export
+randomDv <- function(obj, dvs, plt = TRUE){
+  if (is.ses(obj)){
+    obj <- obj$tdr
+    if (missing(dvs)) dvs <- obj$stat
+  }
+  n <- sample(setdiff(unique(dvs$Dive.id), 0), 1)
+  has.Btt <- partial(any %.% grepl, pattern = '^b.*x$')
+  if (has.Btt(names(dvs))){
+    while (is.na(dvs$btt.st.idx[dvs$Dive.id == n]))
+      n <- sample(setdiff(unique(dvs$Dive.id), 0), 1)
+  }
+  df <- function(cols)
+    obj[do.call(seq, unname(dvs[dvs$Dive.id == n, grepl(cols, names(dvs))])), ]
+  if (plt){
+    plot(-Depth ~ Time, df('^[^b].*x$'), type = 'l', lwd = 2, main = paste('Dive number', n))
+    abline(h = 0, col = 'gray', lty = 2)
+    if (has.Btt(names(dvs)))
+      points(-Depth ~ Time, df('^b.*x$'), type = 'l', col='red', lwd = 2)
+  }
+  invisible(list(n = n, dv = df('^[^b].*x$'), btt = df('^b.*x$')))
+}
+
+
+
 #' Apply function along a vector
 #' 
 #' \code{rollapply} apply the given function along a vector.
@@ -97,34 +133,34 @@ isDay <- function (time, loc, stat = NULL, elevlim = c(-18, 18), append = TRUE)
 #' @seealso \code{\link{addLoc}}
 #' @export
 addVar <- function(var, from, to, ses=NULL, append=TRUE){
-	if (!is.null(ses)) {
-		from <- eval(parse(text=paste0(substitute(ses), '$', from)))
-		to <- eval(parse(text=paste0(substitute(ses), '$', to)))
-	}
-	argtdr <- match("tdr", setdiff(c(class(from), class(to)), "data.frame"), nomatch=0)
-	
-	dvidFrom <- userHeader("Dive.id", type=class(from)[1])
-	findVars(dvidFrom, from, type="check")
-	dvidTo <- userHeader("Dive.id", type=class(to)[1])
-	findVars(dvidTo, to, type="check")
-	
-	if (argtdr == 1){
-		to <- merge(to, unique(from[ , c(dvidFrom,  var)]), by.x=dvidTo, by.y=dvidFrom)
-		if (!append) return(to[, var])
-		class(to) <- c("statdives", "data.frame")
-	} else if (argtdr == 2){
-		if (any(is.na(from[ , var]))) {
-			message("Missing values (NAs) pasted as zeros")
-			from[ , var] <- replaceMissing(from[ , var], na.0=NA, na.1=0)
-		}
-		dvs <- per(to[ , dvidTo])
-		dvs$value[dvs$value != 0] <- from[ , var] 
-		if (!append) return(rep(dvs$value, dvs$length))
-		to[ , var] <- rep(dvs$value, dvs$length)
-	}else{
-		stop("Input objects must be of class 'tdr', and 'statdives'.")
-	}
-	return(to)
+  if (!is.null(ses)) {
+    from <- eval(parse(text=paste0(substitute(ses), '$', from)))
+    to <- eval(parse(text=paste0(substitute(ses), '$', to)))
+  }
+  argtdr <- match("tdr", setdiff(c(class(from), class(to)), "data.frame"), nomatch=0)
+  
+  dvidFrom <- userHeader("Dive.id", type=class(from)[1])
+  findVars(dvidFrom, from, type="check")
+  dvidTo <- userHeader("Dive.id", type=class(to)[1])
+  findVars(dvidTo, to, type="check")
+  
+  if (argtdr == 1){
+    to <- merge(to, unique(from[ , c(dvidFrom,  var)]), by.x=dvidTo, by.y=dvidFrom)
+    if (!append) return(to[, var])
+    class(to) <- c("statdives", "data.frame")
+  } else if (argtdr == 2){
+    if (any(is.na(from[ , var]))) {
+      message("Missing values (NAs) pasted as zeros")
+      from[ , var] <- replaceMissing(from[ , var], na.0=NA, na.1=0)
+    }
+    dvs <- per(to[ , dvidTo])
+    dvs$value[dvs$value != 0] <- from[ , var] 
+    if (!append) return(rep(dvs$value, dvs$length))
+    to[ , var] <- rep(dvs$value, dvs$length)
+  }else{
+    stop("Input objects must be of class 'tdr', and 'statdives'.")
+  }
+  return(to)
 }
 
 #' Copy locations from one table to another within a 'ses' object
@@ -144,16 +180,16 @@ addVar <- function(var, from, to, ses=NULL, append=TRUE){
 #' ses$tdr <- addLoc(ses$stat, ses$tdr)
 #' head(ses$tdr)
 addLoc <- function(from, to, ses=NULL, append=TRUE){
-	if (!is.null(ses)) {
-		from <- eval(parse(text=paste0(substitute(ses), '$', from)))
-		to <- eval(parse(text=paste0(substitute(ses), '$', to)))
-	}
-	
-	vars <- c("Lat", "Lon")
-	findDefaultVars(vars, from, type.obj=class(from)[1], type="check")
-	if (!append) return(lapply(vars, addVar, from, to, append=FALSE))
-	to[ , vars] <- lapply(vars, addVar, from, to, append=FALSE)
-	return(to)
+  if (!is.null(ses)) {
+    from <- eval(parse(text=paste0(substitute(ses), '$', from)))
+    to <- eval(parse(text=paste0(substitute(ses), '$', to)))
+  }
+  
+  vars <- c("Lat", "Lon")
+  findDefaultVars(vars, from, type.obj=class(from)[1], type="check")
+  if (!append) return(lapply(vars, addVar, from, to, append=FALSE))
+  to[ , vars] <- lapply(vars, addVar, from, to, append=FALSE)
+  return(to)
 }
 
 #' Decompose an atomic vector to its successive values and their length.
@@ -177,15 +213,15 @@ addLoc <- function(from, to, ses=NULL, append=TRUE){
 #' # Because characters are not converted to factors
 #' # inherits(y$value, class(x))            # TRUE
 per <- function(x, idx=FALSE) {
-	# Save original object
-	x.org <- x
-	# Concert x to numeric
-	if      (is.logical(x))   {x <- as.numeric(x)}
-	else if (is.factor(x))    {x <- as.numeric(x)}
-	else if (is.character(x)) {x <- as.numeric(as.factor(x))}
-	# Compute and return
-	chg <- diff(x, lag=1)
-	end <- c(which(chg != 0), length(x)) ; start <- c(1, end[-length(end)] + 1)
-	if (idx) return(data.frame(st.idx=start, ed.idx=end, value=x.org[start], length=end - start + 1, stringsAsFactors=FALSE))
-	else return(data.frame(value=x.org[start], length=end - start + 1, stringsAsFactors=FALSE))
+  # Save original object
+  x.org <- x
+  # Concert x to numeric
+  if      (is.logical(x))   {x <- as.numeric(x)}
+  else if (is.factor(x))    {x <- as.numeric(x)}
+  else if (is.character(x)) {x <- as.numeric(as.factor(x))}
+  # Compute and return
+  chg <- diff(x, lag=1)
+  end <- c(which(chg != 0), length(x)) ; start <- c(1, end[-length(end)] + 1)
+  if (idx) return(data.frame(st.idx=start, ed.idx=end, value=x.org[start], length=end - start + 1, stringsAsFactors=FALSE))
+  else return(data.frame(value=x.org[start], length=end - start + 1, stringsAsFactors=FALSE))
 }

@@ -22,16 +22,7 @@
 #' ses <- importSES(pathname)
 #' 
 #' dvs <- anaDives(ses$tdr)
-#' 
-#' n <- sample(setdiff(unique(dvs$Dive.id), 0), 1)
-#' while (is.na(dvs$btt.st.idx[dvs$Dive.id == n])) {
-#'    n <- sample(setdiff(unique(dvs$Dive.id), 0), 1)
-#' }
-#' df <- ses$tdr[dvs$st.idx[dvs$Dive.id == n]:dvs$ed.idx[dvs$Dive.id == n], ]
-#' plot(-Depth ~ Time, df, type = 'l')
-#' df <- ses$tdr[c(dvs$btt.st.idx[dvs$Dive.id == n], 
-#'                 dvs$btt.ed.idx[dvs$Dive.id == n]), ]
-#' points(-Depth ~ Time, df, type = 'p', col='red', pch = 19)
+#' randDive(ses$tdr, dvs)
 anaDives <- function(tdr, dpthThres = 15, durThres = 300, 
                      spdThres = .75, w = 12)
   bottomDelim(tdr, divesID(tdr))
