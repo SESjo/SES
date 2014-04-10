@@ -73,7 +73,7 @@ divesID <- function(tdr, durThres = 300, dpthThres = 15){
   dvs$length <- dvs$length * reso
   
   # Supress last line if not a surface
-  dvs <- if (dvs$value[nrow(dvs)] == 'Diving'){dvs[-nrow(dvs), ]}
+  if (dvs$value[nrow(dvs)] == 'Diving'){dvs <- dvs[-nrow(dvs), ]}
   names(dvs) <- c("st.idx", "ed.idx", "type", "Dive.dur", "Dive.id")
   dvs
 }
