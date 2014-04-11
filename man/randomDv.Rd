@@ -2,7 +2,7 @@
 \alias{randomDv}
 \title{Plot a random dive}
 \usage{
-randomDv(obj, dvs, plt = TRUE)
+randomDv(obj, dvs, plt = TRUE, n = NULL, btt = TRUE)
 }
 \arguments{
   \item{obj}{A 'ses' or 'tdr' object}
@@ -12,6 +12,9 @@ randomDv(obj, dvs, plt = TRUE)
   \code{\link{divesID}}.}
 
   \item{plt}{Should a plot be drawn ?}
+
+  \item{n}{A dive number in case the dive should not be
+  sampled randomly.}
 }
 \value{
 Return a list of the dive number and the TDR data extracted

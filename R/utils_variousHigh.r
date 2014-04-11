@@ -6,18 +6,19 @@
 #' @param dvs Dive (and bottom delimitation) info as returned by 
 #' \code{\link{anaDives}} or \code{\link{divesID}}.
 #' @param plt Should a plot be drawn ?
+#' @param n A dive number in case the dive should not be sampled randomly.
 #' @return Return a list of the dive number and the TDR data extracted along 
 #' the dive and the bottom.
 #' @seealso \code{\link{anaDives}}
 #' @export
-randomDv <- function(obj, dvs, plt = TRUE){
+randomDv <- function(obj, dvs, plt = TRUE, n = NULL, btt = TRUE){
   if (is.ses(obj)){
     obj <- obj$tdr
     if (missing(dvs)) dvs <- obj$stat
   }
-  n <- sample(setdiff(unique(dvs$Dive.id), 0), 1)
+  n <- n %else% sample(setdiff(unique(dvs$Dive.id), 0), 1)
   has.Btt <- partial(any %.% grepl, pattern = '^b.*x$')
-  if (has.Btt(names(dvs))){
+  if (btt && has.Btt(names(dvs))){
     while (is.na(dvs$btt.st.idx[dvs$Dive.id == n]))
       n <- sample(setdiff(unique(dvs$Dive.id), 0), 1)
   }

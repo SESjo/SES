@@ -2,10 +2,10 @@
 \alias{anaDives}
 \title{Find the dives and delimitate their bottom from TDR data}
 \usage{
-anaDives(tdr, dpthThres = 15, durThres = 300, spdThres = 0.75, w = 12)
+anaDives(obj, dpthThres = 15, durThres = 300, spdThres = 0.75, w = 12)
 }
 \arguments{
-  \item{tdr}{The TDR dataset.}
+  \item{obj}{A 'ses' or 'tdr' object.}
 
   \item{dpthThres}{A depth threshold (m) (> 0) under which
   the animal is considered at surface.}
@@ -35,7 +35,8 @@ path <- system.file("extdata", package="SES")
 pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 ses <- importSES(pathname)
 
-dvs <- anaDives(ses$tdr)
+dvs <- anaDives(ses)       # Use dive statistics information for dive delim
+dvs <- anaDives(ses$tdr)   # Recompute dive delim from TDR data.
 randDive(ses$tdr, dvs)
 }
 \seealso{
