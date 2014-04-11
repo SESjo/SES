@@ -1,4 +1,6 @@
 # SES (Southern Elephant Seal)
 
-Tools to manipulate efficiently the data related to SES.
+This is a R package to manipulate efficiently the Southern Elephant Seal data.
+
+
 
