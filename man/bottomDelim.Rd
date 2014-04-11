@@ -2,9 +2,11 @@
 \alias{bottomDelim}
 \title{Find the dives' bottom from TDR data}
 \usage{
-bottomDelim(tdr, dvs, spdThres = 0.75, w = 12, bttDpth = 0.4)
+bottomDelim(obj, dvs, spdThres = 0.75, w = 12, bttDpth = 0.4)
 }
 \arguments{
+  \item{obj}{A'tdr' object}
+
   \item{dvs}{The dives indices as returned by
   \code{\link{divesID}}.}
 
@@ -12,8 +14,6 @@ bottomDelim(tdr, dvs, spdThres = 0.75, w = 12, bttDpth = 0.4)
   depth) allowed for the bottom limits.}
 
   \item{w}{Window width for rolling mean.}
-
-  \item{tdr}{The TDR dataset.}
 
   \item{spdThres}{A vertical speed threshold (m/s) used to
   delimitate the dives' bootom.}

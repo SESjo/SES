@@ -1,11 +1,23 @@
 \name{divesID}
 \alias{divesID}
-\title{Find the dives from TDR data}
+\alias{divesID.ses}
+\alias{divesID.statdives}
+\alias{divesID.tdr}
+\title{Find the dives start and end indices}
 \usage{
-divesID(tdr, durThres = 300, dpthThres = 15)
+divesID(obj, ...)
+
+\method{divesID}{statdives}(obj, reso = 1)
+
+\method{divesID}{ses}(obj)
+
+\method{divesID}{tdr}(obj, durThres = 300, dpthThres = 15)
 }
 \arguments{
-  \item{tdr}{The TDR dataset.}
+  \item{reso}{Time resolution to use when converting the
+  dive duration into a number of sensor recordings.}
+
+  \item{obj}{A 'ses' or 'tdr' object.}
 
   \item{durThres}{A duration threshold (s) under which a
   dive is considered as a surface period.}
@@ -19,7 +31,7 @@ start, indice of period end, type of period, duration (s),
 the dive number.
 }
 \description{
-Method translated from Matlab.
+Find the dives start and end indices
 }
 \seealso{
 \code{\link{bottomDelim}}, \code{\link{anaDives}}

@@ -2,7 +2,7 @@
 #' 
 #' Method translated from Matlab.
 #' 
-#' @param tdr The TDR dataset.
+#' @param obj A 'ses' or 'tdr' object.
 #' @param dpthThres A depth threshold (m) (> 0) under which the animal is 
 #' considered at surface.
 #' @param durThres A duration threshold (s) under which a dive is considered as 
@@ -21,25 +21,64 @@
 #' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 #' ses <- importSES(pathname)
 #' 
-#' dvs <- anaDives(ses$tdr)
+#' dvs <- anaDives(ses)       # Use dive statistics information for dive delim
+#' dvs <- anaDives(ses$tdr)   # Recompute dive delim from TDR data.
 #' randDive(ses$tdr, dvs)
-anaDives <- function(tdr, dpthThres = 15, durThres = 300, 
-                     spdThres = .75, w = 12)
-  bottomDelim(tdr, divesID(tdr))
+anaDives <- function(obj, dpthThres = 15, durThres = 300, 
+                     spdThres = .75, w = 12) {
+  if (is.ses(obj)){
+    bottomDelim(obj$tdr, divesID(obj))
+  } else if (is.tdr(obj)) {
+    bottomDelim(obj, divesID(obj))
+  } else {
+    stop('Object class is inapropriate')
+  }
+}
 
 
-#' Find the dives from TDR data
-#' 
-#' Method translated from Matlab.
+#' Find the dives start and end indices
 #' 
 #' @inheritParams anaDives
 #' @return A data frame with the following variable: indice of period start, 
 #' indice of period end, type of period, duration (s), the dive number.
 #' @seealso \code{\link{bottomDelim}}, \code{\link{anaDives}}
 #' @export
-divesID <- function(tdr, durThres = 300, dpthThres = 15){
+divesID <- function(obj, ...){
+  UseMethod('divesID')
+}
+
+#' @rdname divesID
+#' @param reso Time resolution to use when converting the dive duration into a 
+#' number of sensor recordings.
+#' @export
+divesID.statdives <- function(obj, reso = 1){
+  n <- nrow(obj)
+  dives <- data.frame(st.idx = obj$Start.idx,
+                      ed.idx = obj$Start.idx + round(obj$Dive.dur), 
+                      type = rep('Diving', n), Dive.dur = round(obj$Dive.dur),
+                      Dive.id = obj$Dive.id, Period.id = seq(1, 2*n)[(seq(1, 2*n)%%2)!=0])
+  surfaces <- data.frame(st.idx = obj$Start.idx[-n] + round(obj$Dive.dur[-n]) + 1, 
+                         ed.idx = obj$Start.idx[-1] - 1, type = rep('Surface', n-1),
+                         Dive.dur = obj$Start.idx[-1] - obj$Start.idx[-n] - 
+                           round(obj$Dive.dur[-n]),
+                         Dive.id = rep(0, n-1), Period.id = seq(1, 2*n-1)[(seq(1, 2*n-1)%%2)==0])
+  dvs <- rbind(dives, surfaces)
+  dvs$type <- as.character(dvs$type)
+  rks <- order(dvs$Period.id)
+  as.data.frame(lapply(dvs[, -6], function(x) x[rks]))
+}
+
+#' @rdname divesID
+#' @export
+divesID.ses <- function(obj){
+  divesID(obj$stat, timeReso(obj))
+}
+
+#' @rdname divesID
+#' @export
+divesID.tdr <- function(obj, durThres = 300, dpthThres = 15){
   
-  findDefaultVars(c('Time', 'Depth'), tdr, type.obj='tdr')
+  findDefaultVars(c('Time', 'Depth'), obj, type.obj='tdr')
   reso <- as.numeric(median(round(diff(Time))))
   
   # ID diving/surface periods given a depth threshold
@@ -69,11 +108,34 @@ divesID <- function(tdr, durThres = 300, dpthThres = 15){
   dvs
 }
 
+#' Get the sampling rate of a TDR dataset
+#' 
+#' @param obj A 'ses' or 'tdr' object
+#' @param n the number of replicates to do.
+#' @param type Should the result be returned in seconds ('period') or hertz ('frequence') ?
+#' @export
+timeReso <- function(obj, n = 10, type = c('period', 'frequence')){
+  obj <- if (is.ses(obj)) {
+    obj$tdr$Time 
+  } else {
+    if (is.tdr(obj)) 
+      obj$Time 
+    else 
+      stop('Object class is inapropriate')
+  }
+  iis <- sample(1:length(obj), n, replace = FALSE)
+  dT <- (round %.% unlist %.% lapply)(Map(seq, iis, iis + 3), function(I) diff(obj[I]))
+  reso  <- median(dT)
+  if (is.na(reso) | !all(dT == reso))
+    warning('Some time jumps were found. Check the dataset !')
+  switch(match.arg(type), period = reso, frequence = 1 / reso)
+}
 
 #' Find the dives' bottom from TDR data
 #' 
 #' Method translated from Matlab.
 #' 
+#' @param obj A'tdr' object
 #' @param dvs The dives indices as returned by \code{\link{divesID}}.
 #' @inheritParams anaDives
 #' @param bttDpth The minimun depth (percent of maximum depth) allowed
@@ -85,11 +147,11 @@ divesID <- function(tdr, durThres = 300, dpthThres = 15){
 #' @details See Yves Le Bras M1 report for details about the method.
 #' @seealso \code{\link{divesID}}, \code{\link{anaDives}}
 #' @export
-bottomDelim <- function(tdr, dvs, spdThres = .75, w = 12, bttDpth = .4) {
+bottomDelim <- function(obj, dvs, spdThres = .75, w = 12, bttDpth = .4) {
   
-  findDefaultVars(c('Time', 'Depth'), tdr, type.obj='tdr')
+  findDefaultVars(c('Time', 'Depth'), obj, type.obj='tdr')
   dTime <- as.numeric(diff(Time))
-  reso <- median(round(dTime))
+  reso <- timeReso(obj)
   
   # Compute smoothed vertical speed
   spd <- rollapply(diff(Depth) / dTime, mean, w)
@@ -109,7 +171,7 @@ bottomDelim <- function(tdr, dvs, spdThres = .75, w = 12, bttDpth = .4) {
   # Checking: bottom limits must be deeper than 'bttDpth'% of dive Max depth
   chkFuns <- list(bttSt = function(x){x$Depth[1] >= bttDpth * max(x$Depth)},
                   bttEd = function(x){x$Depth[nrow(x)] >= bttDpth * max(x$Depth)})
-  chkDel <- lapply(chkFuns, dvapply, obj = tdr, dvs = dvs, type = 'bottom')
+  chkDel <- lapply(chkFuns, dvapply, obj = obj, dvs = dvs, type = 'bottom')
   chkDel <- Map(`|`, e1 = lapply(chkDel, `!`), e2 = lapply(chkDel, is.na))
   
   # Compute the old fashion delim: first and last depth >= bttDpth * Max depth
@@ -117,8 +179,8 @@ bottomDelim <- function(tdr, dvs, spdThres = .75, w = 12, bttDpth = .4) {
     per(x$Depth >= bttDpth*max(x$Depth), idx = TRUE)[2, switch(lt, s = 1, e = nrow(x))]
   }
   cond <- dvs$type == 'Diving'
-  bttSt <- dvapply(corDel, tdr, dvs, lt = 's') + dvs$st.idx[cond] - 1
-  bttEd <- dvapply(corDel, tdr, dvs) + dvs$st.idx[cond] - 1
+  bttSt <- dvapply(corDel, obj, dvs, lt = 's') + dvs$st.idx[cond] - 1
+  bttEd <- dvapply(corDel, obj, dvs) + dvs$st.idx[cond] - 1
   
   # Replace when it is needed (!chkDel$bttSt/Ed)
   dvs$btt.st.idx[cond][chkDel$bttSt] <- bttSt[chkDel$bttSt]
@@ -132,19 +194,23 @@ bottomDelim <- function(tdr, dvs, spdThres = .75, w = 12, bttDpth = .4) {
   return(dvs)
 }
 
-#' Apply a function to each dive/surface/bottom
+#' Apply a function to each dive/surface/bottom/... of a TDR dataset
 #' 
 #' \code{dvapply} is a utility to apply function to specific parts of a TDR dataset.
 #' 
 #' @param FUN Function to apply. The first argument has to be the TDR data 
 #' subset (all columns but only the rows indicated by the \code{type} argument). 
 #' See in the example section how it can be used to get Max depth.
-#' @param obj A TDR object
-#' @param dvs Optional. A table with dives/surfaces/bootoms indices as returned by 
+#' @param obj A 'tdr' object
+#' @param dvs Optional. A table with dives/surfaces/bottoms indices as returned by 
 #' \code{\link{divesID}} or \code{\link{anaDives}}.
 #' @param type The periods involved: to choose in \code{c('dive', 'surface', 
-#' 'any', 'bottom', 'ascent', 'descent')}. \code{any} means to apply the function
-#' to both surface and diving periods.
+#' 'any', 'both', 'bottom', 'ascent', 'descent')}. Choose \code{any} to apply the function
+#' to both surface and diving periods (1 result for each row of \code{dvs}) but 
+#' \code{both} to apply the function to the dives and their following surface period 
+#' grouped together (1 result for each couple dive+surface, \code{floor(norw(dvs)/2)} results).
+#' @param apply The prefix of the apply function to use (sapply, lapply, etc). 
+#' Use \code{type = 'l'} if \code{FUN} returns more than just one value per dive.
 #' @param ... Other arguments to be passed to \code{FUN}.
 #' @export
 #' @examples
@@ -152,23 +218,35 @@ bottomDelim <- function(tdr, dvs, spdThres = .75, w = 12, bttDpth = .4) {
 #' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 #' ses <- importSES(pathname)
 #' depth.max <- dvapply(function(tdr){max(tdr$Depth)}, ses$tdr)
-dvapply <- function(FUN, obj, dvs, 
-                    type = c('dive', 'surface', 'any', 'bottom', 'ascent', 'descent'), ...){
+dvapply <- function (FUN, obj, dvs, 
+                     type = c("dive", "surface", "any", "both", "bottom", "ascent", "descent"), 
+                     apply = c('s', 'l', 'v'), ...) {
   if (missing(dvs))
-    dvs <- switch(match.arg(type), bottom = anaDives(obj), ascent = anaDives(obj), 
-                  descent = anaDives(obj), divesID(obj))
-  .idx <- switch(match.arg(type), dive = dvs[dvs$type == 'Diving', 1:2],
-                 surface = dvs[dvs$type == 'Surface', 1:2], any = dvs[ , 1:2], 
-                 bottom = dvs[dvs$type == 'Diving', 6:7],
-                 ascent = dvs[dvs$type == 'Diving', c(7, 2)],
-                 descent = dvs[dvs$type == 'Diving', c(1, 6)])
-  .f <- function(ii, ...){
+    dvs <- switch(match.arg(type), bottom = anaDives(obj), 
+                  ascent = anaDives(obj), descent = anaDives(obj), 
+                  divesID(obj))
+  if (match.arg(type) == 'both' && (diff%.%table)(dvs$type)){
+    dvs <- if ((all%.%partial(`==`, e2 = 'Surface'))(dvs$type[c(1, nrow(dvs))])){
+      dvs[-1, ]
+    } else {
+      dvs[-nrow(dvs), ]
+    }
+  }
+  .idx <- switch(match.arg(type), 
+                 dive = dvs[dvs$type == "Diving", 1:2], 
+                 surface = dvs[dvs$type == "Surface", 1:2], 
+                 any = dvs[, 1:2], 
+                 both = data.frame(dvs[dvs$type == 'Diving', 1], dvs[dvs$type == 'Surface', 2]), 
+                 bottom = dvs[dvs$type == "Diving", 6:7], 
+                 ascent = dvs[dvs$type == "Diving", c(7, 2)], 
+                 descent = dvs[dvs$type == "Diving", c(1, 6)])
+  .f <- function(ii, ...) {
     out <- if (nNA(.idx[ii, ])) {NA} else {FUN(obj[.idx[ii, 1]:.idx[ii, 2], ], ...)}
     out %else% NA
   }
-  
-  sapply(seq_along(.idx[ , 1]), match.fun(.f), ...)
-}
+  do.call(switch(match.arg(apply), s = sapply, l = lapply, v = vapply),
+          list(seq_along(.idx[, 1]), match.fun(.f), ...))
+} 
 
 #' Compute some behavioral variables from TDR dataset
 #' 
