@@ -7,6 +7,7 @@
 #' \code{\link{anaDives}} or \code{\link{divesID}}.
 #' @param plt Should a plot be drawn ?
 #' @param n A dive number in case the dive should not be sampled randomly.
+#' @param btt Should the bottom step be ignored by teh function ?
 #' @return Return a list of the dive number and the TDR data extracted along 
 #' the dive and the bottom.
 #' @seealso \code{\link{anaDives}}

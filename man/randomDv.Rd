@@ -15,6 +15,9 @@ randomDv(obj, dvs, plt = TRUE, n = NULL, btt = TRUE)
 
   \item{n}{A dive number in case the dive should not be
   sampled randomly.}
+
+  \item{btt}{Should the bottom step be ignored by teh
+  function ?}
 }
 \value{
 Return a list of the dive number and the TDR data extracted
