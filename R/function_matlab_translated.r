@@ -23,7 +23,7 @@
 #' 
 #' dvs <- anaDives(ses)       # Use dive statistics information for dive delim
 #' dvs <- anaDives(ses$tdr)   # Recompute dive delim from TDR data.
-#' randDive(ses$tdr, dvs)
+#' randomDv(ses$tdr, dvs)
 anaDives <- function(obj, dpthThres = 15, durThres = 300, 
                      spdThres = .75, w = 12) {
   if (is.ses(obj)){

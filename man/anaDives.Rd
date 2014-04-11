@@ -37,7 +37,7 @@ ses <- importSES(pathname)
 
 dvs <- anaDives(ses)       # Use dive statistics information for dive delim
 dvs <- anaDives(ses$tdr)   # Recompute dive delim from TDR data.
-randDive(ses$tdr, dvs)
+randomDv(ses$tdr, dvs)
 }
 \seealso{
 \code{\link{divesID}}, \code{\link{bottomDelim}},
