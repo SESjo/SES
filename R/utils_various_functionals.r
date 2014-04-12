@@ -30,6 +30,88 @@ compose <- function (..., funs){
   out
 }
 
+#' Apply a function to each dive/surface/bottom/... of a TDR dataset
+#' 
+#' \code{dvapply} is a utility to apply function to specific parts of a TDR dataset.
+#' 
+#' @param FUN Function to apply. The first argument has to be the TDR data 
+#' subset (all columns but only the rows indicated by the \code{type} argument). 
+#' See in the example section how it can be used to get Max depth.
+#' @param OBJ A 'tdr' or 'ses' object
+#' @param DVS Optional. A table with dives/surfaces/bottoms indices as returned by 
+#' \code{\link{divesID}} or \code{\link{anaDives}}.
+#' @param .type The periods involved: to choose in : \code{'dv'}, dives; \code{'sf'}, surfaces. 
+#' \code{'all'}, both; \code{'dus'}, dives Union surfaces i.e. dives and their 
+#' following surface period; \code{'btt'}, bottoms; \code{'asc'}, ascents; 
+#' \code{'dsc'}, descents.
+#' @param .ply The apply function to use: \code{s = sapply, l = lapply}. 
+#' @param .numb Optional. The number(s) of the period(s) involved in case computing 
+#' on each one is not nessessary.
+#' @param ... Other arguments to be passed to \code{FUN}.
+#' @details The names of the argument in this function are in upper case (data) or 
+#' preceded by a dot (options) in order to avoid that the names of \code{dvapply} 
+#' arguments match with those of \code{FUN}. The output elements are named after 
+#' the \code{.type} argument and their number.
+#' @export
+#' @examples
+#' path <- system.file("extdata", package="SES")
+#' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
+#' ses <- importSES(pathname)
+#' 
+#' Dmax <- function(x) max(x$Depth)
+#' dvDmax <- dvapply(Dmax, ses)  # Get max. depth of each dive
+#' dvDmax2 <- dvapply(Dmax, ses, .n = 50:60) # dives #50 to #60 only
+#' # identical(dvDmax2, dvDmax[50:60])  # TRUE
+#' 
+#' # Compute "boxplot statitics" of each surface period
+#' # FUN returns several values so .ply = 'l'
+#' sfDstat <- dvapply(function(x) fivenum(x$Depth), ses, .type = 'sf', .ply = 'l')
+dvapply <- function (FUN, OBJ, DVS, 
+					 .type = c("dv", "sf", "all", "dus", "btt", "asc", "dsc"), 
+					 .ply = c('s', 'l'), .numb = NULL, ...) {
+	
+	if (missing(DVS))
+		DVS <- switch(match.arg(.type), btt = anaDives(OBJ), 
+					  asc = anaDives(OBJ), dsc = anaDives(OBJ), 
+					  divesID(OBJ))
+	if (is.ses(OBJ))
+		OBJ <- OBJ$tdr
+	
+	# .type = 'dus' implies additional precautions
+	del <- NULL
+	if (match.arg(.type) == 'dus'){
+		if (DVS$type[1] == 'Surface') DVS <- DVS[-1, ]
+		if (DVS$type[nrow(DVS)] == 'Diving') DVS <- DVS[-nrow(DVS), ] ; del <- 'end'
+	}
+	
+	# Get the list of indices
+	.idx <- switch(match.arg(.type), 
+				   dv = DVS[DVS$type == "Diving", 1:2], 
+				   sf = DVS[DVS$type == "Surface", 1:2], 
+				   all = DVS[, 1:2], 
+				   dus = data.frame(DVS[DVS$type == 'Diving', 1], DVS[DVS$type == 'Surface', 2]), 
+				   btt = DVS[DVS$type == "Diving", 6:7], 
+				   asc = DVS[DVS$type == "Diving", c(7, 2)], 
+				   dsc = DVS[DVS$type == "Diving", c(1, 6)])
+	.numb <- .numb %else% seq_along(.idx[ , 1]) ; .idx <- .idx[.numb, ]
+	
+	# Make the work
+	.f <- function(ii, ...) {
+		out <- if (nNA(.idx[ii, ])) {NA} else {FUN(OBJ[.idx[ii, 1]:.idx[ii, 2], ], ...)}
+		out %else% NA
+	}
+	out <- do.call(switch(match.arg(.ply), s = sapply, l = lapply),
+				   list(seq_along(.idx[, 1]), match.fun(.f), ...))
+	
+	# Final formatting
+	if (!is.null(del)) { # .type ='dus', set result to NA when last dive is missing a surface period
+		out <- c(out, do.call(switch(match.arg(.ply), l = list, c), list(NA)))
+		.numb <- c(.numb, max(.numb) + 1)
+	}
+	names(out) <- paste0(match.arg(.type), .numb) 
+	out
+} 
+
 #' @rdname compose
 #' @param f,g Two functions to compose for the infix form
 #' @return \%.\% is a binary operator version of the compose function.

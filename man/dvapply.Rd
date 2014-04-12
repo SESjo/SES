@@ -2,8 +2,8 @@
 \alias{dvapply}
 \title{Apply a function to each dive/surface/bottom/... of a TDR dataset}
 \usage{
-dvapply(FUN, obj, dvs, type = c("dive", "surface", "any", "both", "bottom",
-  "ascent", "descent"), apply = c("s", "l"), ...)
+dvapply(FUN, OBJ, DVS, .type = c("dv", "sf", "all", "dus", "btt", "asc",
+  "dsc"), .ply = c("s", "l"), .numb = NULL, ...)
 }
 \arguments{
   \item{FUN}{Function to apply. The first argument has to
@@ -11,25 +11,24 @@ dvapply(FUN, obj, dvs, type = c("dive", "surface", "any", "both", "bottom",
   indicated by the \code{type} argument). See in the
   example section how it can be used to get Max depth.}
 
-  \item{obj}{A 'tdr' or 'ses' object}
+  \item{OBJ}{A 'tdr' or 'ses' object}
 
-  \item{dvs}{Optional. A table with dives/surfaces/bottoms
+  \item{DVS}{Optional. A table with dives/surfaces/bottoms
   indices as returned by \code{\link{divesID}} or
   \code{\link{anaDives}}.}
 
-  \item{type}{The periods involved: to choose in
-  \code{c('dive', 'surface', 'any', 'both', 'bottom',
-  'ascent', 'descent')}. Choose \code{any} to apply the
-  function to both surface and diving periods (1 result for
-  each row of \code{dvs}) but \code{both} to apply the
-  function to the dives and their following surface period
-  grouped together (1 result for each couple dive+surface,
-  \code{floor(norw(dvs)/2)} results).}
+  \item{.type}{The periods involved: to choose in :
+  \code{'dv'}, dives; \code{'sf'}, surfaces. \code{'all'},
+  both; \code{'dus'}, dives Union surfaces i.e. dives and
+  their following surface period; \code{'btt'}, bottoms;
+  \code{'asc'}, ascents; \code{'dsc'}, descents.}
 
-  \item{apply}{The prefix of the apply function to use
-  (sapply, lapply, etc). Use \code{type = 'l'} if
-  \code{FUN} returns more than just one value per dive (as
-  in example).}
+  \item{.ply}{The apply function to use: \code{s = sapply,
+  l = lapply}.}
+
+  \item{.numb}{Optional. The number(s) of the period(s)
+  involved in case computing on each one is not
+  nessessary.}
 
   \item{...}{Other arguments to be passed to \code{FUN}.}
 }
@@ -37,16 +36,25 @@ dvapply(FUN, obj, dvs, type = c("dive", "surface", "any", "both", "bottom",
 \code{dvapply} is a utility to apply function to specific
 parts of a TDR dataset.
 }
+\details{
+The names of the argument in this function are in upper
+case (data) or preceded by a dot (options) in order to
+avoid that the names of \code{dvapply} arguments match with
+those of \code{FUN}. The output elements are named after
+the \code{.type} argument and their number.
+}
 \examples{
 path <- system.file("extdata", package="SES")
 pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 ses <- importSES(pathname)
 
-DivesDepthMax <- dvapply(function(tdr){max(tdr$Depth)}, ses)
-SurfDepthStat <- dvapply(function(tdr){fivenum(tdr$Depth)}, ses,
-							apply = 'l', type = 'surface')
-par(mfrow = c(2, 1))
-plot(DivesDepthMax, ylab = 'Max. depth of dives')
-plot(sapply(SurfDepthStat, function(x) x[1]), ylab = 'Min. depth of surfaces')
+Dmax <- function(x) max(x$Depth)
+dvDmax <- dvapply(Dmax, ses)  # Get max. depth of each dive
+dvDmax2 <- dvapply(Dmax, ses, .n = 50:60) # dives #50 to #60 only
+# identical(dvDmax2, dvDmax[50:60])  # TRUE
+
+# Compute "boxplot statitics" of each surface period
+# FUN returns several values so .ply = 'l'
+sfDstat <- dvapply(function(x) fivenum(x$Depth), ses, .type = 'sf', .ply = 'l')
 }
 

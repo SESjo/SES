@@ -171,7 +171,7 @@ bottomDelim <- function(obj, dvs, spdThres = .75, w = 12, bttDpth = .4) {
   # Checking: bottom limits must be deeper than 'bttDpth'% of dive Max depth
   chkFuns <- list(bttSt = function(x){x$Depth[1] >= bttDpth * max(x$Depth)},
                   bttEd = function(x){x$Depth[nrow(x)] >= bttDpth * max(x$Depth)})
-  chkDel <- lapply(chkFuns, dvapply, obj = obj, dvs = dvs, type = 'bottom')
+  chkDel <- lapply(chkFuns, dvapply, OBJ = obj, DVS = dvs, .type = 'btt')
   chkDel <- Map(`|`, e1 = lapply(chkDel, `!`), e2 = lapply(chkDel, is.na))
   
   # Compute the old fashion delim: first and last depth >= bttDpth * Max depth
@@ -194,67 +194,6 @@ bottomDelim <- function(obj, dvs, spdThres = .75, w = 12, bttDpth = .4) {
   return(dvs)
 }
 
-#' Apply a function to each dive/surface/bottom/... of a TDR dataset
-#' 
-#' \code{dvapply} is a utility to apply function to specific parts of a TDR dataset.
-#' 
-#' @param FUN Function to apply. The first argument has to be the TDR data 
-#' subset (all columns but only the rows indicated by the \code{type} argument). 
-#' See in the example section how it can be used to get Max depth.
-#' @param obj A 'tdr' or 'ses' object
-#' @param dvs Optional. A table with dives/surfaces/bottoms indices as returned by 
-#' \code{\link{divesID}} or \code{\link{anaDives}}.
-#' @param type The periods involved: to choose in \code{c('dive', 'surface', 
-#' 'any', 'both', 'bottom', 'ascent', 'descent')}. Choose \code{any} to apply the function
-#' to both surface and diving periods (1 result for each row of \code{dvs}) but 
-#' \code{both} to apply the function to the dives and their following surface period 
-#' grouped together (1 result for each couple dive+surface, \code{floor(norw(dvs)/2)} results).
-#' @param apply The prefix of the apply function to use (sapply, lapply, etc). 
-#' Use \code{type = 'l'} if \code{FUN} returns more than just one value per dive (as in example).
-#' @param ... Other arguments to be passed to \code{FUN}.
-#' @export
-#' @examples
-#' path <- system.file("extdata", package="SES")
-#' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
-#' ses <- importSES(pathname)
-#' 
-#' DivesDepthMax <- dvapply(function(tdr){max(tdr$Depth)}, ses)
-#' SurfDepthStat <- dvapply(function(tdr){fivenum(tdr$Depth)}, ses, apply = 'l', type = 'surface')
-#' par(mfrow = c(2, 1))
-#' plot(DivesDepthMax, ylab = 'Max. depth of dives')
-#' plot(sapply(SurfDepthStat, function(x) x[1]), ylab = 'Min. depth of surfaces')
-dvapply <- function (FUN, obj, dvs, 
-                     type = c("dive", "surface", "any", "both", "bottom", "ascent", "descent"), 
-                     apply = c('s', 'l'), ...) {
-  if (missing(dvs))
-    dvs <- switch(match.arg(type), bottom = anaDives(obj), 
-                  ascent = anaDives(obj), descent = anaDives(obj), 
-                  divesID(obj))
-  if (is.ses(obj))
-  	obj <- obj$tdr
-  del <- NULL
-  if (match.arg(type) == 'both'){
-  	if (dvs$type[1] == 'Surface') dvs <- dvs[-1, ]
-  	if (dvs$type[nrow(dvs)] == 'Diving') dvs <- dvs[-nrow(dvs), ] ; del <- 'end'
-  }
-  .idx <- switch(match.arg(type), 
-                 dive = dvs[dvs$type == "Diving", 1:2], 
-                 surface = dvs[dvs$type == "Surface", 1:2], 
-                 any = dvs[, 1:2], 
-                 both = data.frame(dvs[dvs$type == 'Diving', 1], dvs[dvs$type == 'Surface', 2]), 
-                 bottom = dvs[dvs$type == "Diving", 6:7], 
-                 ascent = dvs[dvs$type == "Diving", c(7, 2)], 
-                 descent = dvs[dvs$type == "Diving", c(1, 6)])
-  .f <- function(ii, ...) {
-    out <- if (nNA(.idx[ii, ])) {NA} else {FUN(obj[.idx[ii, 1]:.idx[ii, 2], ], ...)}
-    out %else% NA
-  }
-  out <- do.call(switch(match.arg(apply), s = sapply, l = lapply),
-          list(seq_along(.idx[, 1]), match.fun(.f), ...))
-  if (!is.null(del))
-  	out <- c(out, do.call(switch(match.arg(apply), l = list, c), list(NA)))
-  out
-} 
 
 #' Compute some behavioral variables from TDR dataset
 #' 
@@ -292,10 +231,10 @@ anaBehav <- function(tdr, dvs){
   
   stats <- c(lapply(dvs$Diving[ , dvsVars[1:3]], as.integer), 
              dvs$Diving[ , dvsVars[4:5]], 
-             lapply(funsDv, dvapply, obj = tdr, dvs = dvs$Diving),
-             lapply(funsAsc, dvapply, obj = tdr, dvs = dvs$Diving, type = 'ascent'),
-             lapply(funsBtt, dvapply, obj = tdr, dvs = dvs$Diving, type = 'bottom'),
-             lapply(funsDsc, dvapply, obj = tdr, dvs = dvs$Diving, type = 'descent'))
+             lapply(funsDv, dvapply, OBJ = tdr, DVS = dvs$Diving),
+             lapply(funsAsc, dvapply, OBJ = tdr, DVS = dvs$Diving, .type = 'asc'),
+             lapply(funsBtt, dvapply, OBJ = tdr, DVS = dvs$Diving, .type = 'btt'),
+             lapply(funsDsc, dvapply, OBJ = tdr, DVS = dvs$Diving, .type = 'dsc'))
   stats$Surf.dur.aft <- dvs$Surface$Dive.dur[-1]
   stats$Time.start <- as.POSIXct(stats$Time.start, origin = '1970-01-01', tz = 'UTC')
   out <- as.data.frame(lapply(stats, replaceMissing))
