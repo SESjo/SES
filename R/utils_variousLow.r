@@ -63,17 +63,18 @@ nUN <- function(x)
 
 #' Else special operator
 #' 
-#' Discard first value if \code{FALSE}, \code{NULL} or empty.
+#' Discard first value if \code{FALSE}, \code{NULL}, empty or \code{"try-error"}
 #' 
 #' @param a default output.
 #' @param b output if \code{a} is \code{FALSE}, \code{NULL} or empty.
 #' @export
 #' @keywords internal
 #' @examples
-#' x <- NULL %else% 1
-#' x
+#' "abc" %else% "Another value is returned"
+#' NULL %else% "Another value is returned"
+#' try(log("abc"), silent = TRUE) %else% "Another value is returned"
 `%else%` <- function (a, b){
-  if (identical(a, FALSE) || is.null(a) || length(a) == 0) b else a
+  if (identical(a, FALSE) || is.null(a) || length(a) == 0 || inherits(a, "try-error")) b else a
 }
 
 #' Special options of unix grep

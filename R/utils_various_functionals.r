@@ -1,38 +1,7 @@
-#' Function composition
-#' 
-#' @param ... The functions to compose.
-#' @param funs A list of the functions to compose to use instead of the list 
-#' of arguments.
-#' @return \code{compose} returns the composed of the functions listed in/as arguments.
-#' @details The order of arguments is important. \code{compose(h, g, f)}; \code{function(...) h(g(f(...)))} and \code{h \%.\% g \%.\% f} are equivalent.
-#' @export
-#' @keywords internal
-#' @examples
-#' x <- c(1:3, NA, 3:1)
-#' compose(any, is.na)(x) 
-#' # compose(funs = list(any, is.na))(x)      # The same
-#' # compose(`!`, all, `!`, is.na)(x)         # The same
-#' # (any %.% is.na)(x)                       # The same
-#' compose(length, unique)(x)
-#' compose(mean, na.omit)(x)        # mean(x= , na.rm=T) or partial(mean, na.rm=T)
-#' compose(round, rnorm)(1000, 0, 1) -> x -> y
-#' compose(all, `==`)(x, y)
-#' (rep %.% per)(c(1:3, 3:2, 2)) 
-compose <- function (..., funs){
-  if (missing(funs)) funs <- list(...)
-  funs <- lapply(funs, match.fun) ; n <- length(funs)
-  out <- if (n == 1) {
-    function(...) funs[[n]](...)
-  } else {
-    function(...) funs[[n - 1]](funs[[n]](...))
-  }
-  if (n > 2) out <- do.call(compose, c(funs[1:(n - 2)], list(out)))
-  out
-}
-
 #' Apply a function to each dive/surface/bottom/... of a TDR dataset
 #' 
-#' \code{dvapply} is a utility to apply function to specific parts of a TDR dataset.
+#' \code{dvapply} is a utility to apply functions to specific parts of a TDR dataset. 
+#' This is faster than a loop and it helps to make readable code.
 #' 
 #' @param FUN Function to apply. The first argument has to be the TDR data 
 #' subset (all columns but only the rows indicated by the \code{type} argument). 
@@ -78,10 +47,10 @@ dvapply <- function (FUN, OBJ, DVS,
 		OBJ <- OBJ$tdr
 	
 	# .type = 'dus' implies additional precautions
-	del <- NULL
+	deletedDv <- FALSE
 	if (match.arg(.type) == 'dus'){
 		if (DVS$type[1] == 'Surface') DVS <- DVS[-1, ]
-		if (DVS$type[nrow(DVS)] == 'Diving') DVS <- DVS[-nrow(DVS), ] ; del <- 'end'
+		if (DVS$type[nrow(DVS)] == 'Diving') DVS <- DVS[-nrow(DVS), ] ; deletedDv <- TRUE
 	}
 	
 	# Get the list of indices
@@ -93,7 +62,8 @@ dvapply <- function (FUN, OBJ, DVS,
 				   btt = DVS[DVS$type == "Diving", 6:7], 
 				   asc = DVS[DVS$type == "Diving", c(7, 2)], 
 				   dsc = DVS[DVS$type == "Diving", c(1, 6)])
-	.numb <- .numb %else% seq_along(.idx[ , 1]) ; .idx <- .idx[.numb, ]
+	numbers <- .numb %else% seq_along(.idx[ , 1])
+	.idx <- .idx[numbers, ]
 	
 	# Make the work
 	.f <- function(ii, ...) {
@@ -104,13 +74,48 @@ dvapply <- function (FUN, OBJ, DVS,
 				   list(seq_along(.idx[, 1]), match.fun(.f), ...))
 	
 	# Final formatting
-	if (!is.null(del)) { # .type ='dus', set result to NA when last dive is missing a surface period
+	if (deletedDv & is.null(.numb)) {
+		# Set result to NA when last dive is missing a surface period
 		out <- c(out, do.call(switch(match.arg(.ply), l = list, c), list(NA)))
-		.numb <- c(.numb, max(.numb) + 1)
+		numbers <- c(numbers, max(DVS$Dive.id) + 1)
 	}
-	names(out) <- paste0(match.arg(.type), .numb) 
+	
+	names(out) <- paste0(match.arg(.type), numbers) 
 	out
 } 
+
+
+#' Function composition
+#' 
+#' @param ... The functions to compose.
+#' @param funs A list of the functions to compose to use instead of the list 
+#' of arguments.
+#' @return \code{compose} returns the composed of the functions listed in/as arguments.
+#' @details The order of arguments is important. \code{compose(h, g, f)}; \code{function(...) h(g(f(...)))} and \code{h \%.\% g \%.\% f} are equivalent.
+#' @export
+#' @keywords internal
+#' @examples
+#' x <- c(1:3, NA, 3:1)
+#' compose(any, is.na)(x) 
+#' # compose(funs = list(any, is.na))(x)      # The same
+#' # compose(`!`, all, `!`, is.na)(x)         # The same
+#' # (any %.% is.na)(x)                       # The same
+#' compose(length, unique)(x)
+#' compose(mean, na.omit)(x)        # mean(x= , na.rm=T) or partial(mean, na.rm=T)
+#' compose(round, rnorm)(1000, 0, 1) -> x -> y
+#' compose(all, `==`)(x, y)
+#' (rep %.% per)(c(1:3, 3:2, 2)) 
+compose <- function (..., funs){
+	if (missing(funs)) funs <- list(...)
+	funs <- lapply(funs, match.fun) ; n <- length(funs)
+	out <- if (n == 1) {
+		function(...) funs[[n]](...)
+	} else {
+		function(...) funs[[n - 1]](funs[[n]](...))
+	}
+	if (n > 2) out <- do.call(compose, c(funs[1:(n - 2)], list(out)))
+	out
+}
 
 #' @rdname compose
 #' @param f,g Two functions to compose for the infix form

@@ -4,11 +4,11 @@
 \alias{summary.tdr}
 \title{Summarizing SES dataset}
 \usage{
-\method{summary}{ses}(object, na.rm = TRUE, all = FALSE, digits = 2)
+summary.ses(object, na.rm = TRUE, all = FALSE, digits = 2)
 
-\method{summary}{tdr}(object, na.rm = TRUE, complete = TRUE, digits = 2)
+summary.tdr(object, na.rm = TRUE, complete = TRUE, digits = 2)
 
-\method{summary}{statdives}(object, na.rm = TRUE, digits = 2)
+summary.statdives(object, na.rm = TRUE, digits = 2)
 }
 \arguments{
   \item{object}{An object for which a summary is desired.}

@@ -11,11 +11,13 @@ a \%else\% b
   or empty.}
 }
 \description{
-Discard first value if \code{FALSE}, \code{NULL} or empty.
+Discard first value if \code{FALSE}, \code{NULL}, empty or
+\code{"try-error"}
 }
 \examples{
-x <- NULL \%else\% 1
-x
+"abc" \%else\% "Another value is returned"
+NULL \%else\% "Another value is returned"
+try(log("abc"), silent = TRUE) \%else\% "Another value is returned"
 }
 \keyword{internal}
 

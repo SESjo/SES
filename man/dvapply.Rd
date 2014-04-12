@@ -33,8 +33,9 @@ dvapply(FUN, OBJ, DVS, .type = c("dv", "sf", "all", "dus", "btt", "asc",
   \item{...}{Other arguments to be passed to \code{FUN}.}
 }
 \description{
-\code{dvapply} is a utility to apply function to specific
-parts of a TDR dataset.
+\code{dvapply} is a utility to apply functions to specific
+parts of a TDR dataset. This is faster than a loop and it
+helps to make readable code.
 }
 \details{
 The names of the argument in this function are in upper
