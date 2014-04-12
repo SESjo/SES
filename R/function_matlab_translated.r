@@ -201,7 +201,7 @@ bottomDelim <- function(obj, dvs, spdThres = .75, w = 12, bttDpth = .4) {
 #' @param FUN Function to apply. The first argument has to be the TDR data 
 #' subset (all columns but only the rows indicated by the \code{type} argument). 
 #' See in the example section how it can be used to get Max depth.
-#' @param obj A 'tdr' object
+#' @param obj A 'tdr' or 'ses' object
 #' @param dvs Optional. A table with dives/surfaces/bottoms indices as returned by 
 #' \code{\link{divesID}} or \code{\link{anaDives}}.
 #' @param type The periods involved: to choose in \code{c('dive', 'surface', 
@@ -210,27 +210,33 @@ bottomDelim <- function(obj, dvs, spdThres = .75, w = 12, bttDpth = .4) {
 #' \code{both} to apply the function to the dives and their following surface period 
 #' grouped together (1 result for each couple dive+surface, \code{floor(norw(dvs)/2)} results).
 #' @param apply The prefix of the apply function to use (sapply, lapply, etc). 
-#' Use \code{type = 'l'} if \code{FUN} returns more than just one value per dive.
+#' Use \code{type = 'l'} if \code{FUN} returns more than just one value per dive (as in example).
 #' @param ... Other arguments to be passed to \code{FUN}.
 #' @export
 #' @examples
 #' path <- system.file("extdata", package="SES")
 #' pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 #' ses <- importSES(pathname)
-#' depth.max <- dvapply(function(tdr){max(tdr$Depth)}, ses$tdr)
+#' 
+#' DivesDepthMax <- dvapply(function(tdr){max(tdr$Depth)}, ses)
+#' SurfDepthStat <- dvapply(function(tdr){fivenum(tdr$Depth)}, ses, 
+#' 							apply = 'l', type = 'surface')
+#' par(mfrow = c(2, 1))
+#' plot(DivesDepthMax, ylab = 'Max. depth of dives')
+#' plot(sapply(SurfDepthStat, function(x) x[1]), ylab = 'Min. depth of surfaces')
 dvapply <- function (FUN, obj, dvs, 
                      type = c("dive", "surface", "any", "both", "bottom", "ascent", "descent"), 
-                     apply = c('s', 'l', 'v'), ...) {
+                     apply = c('s', 'l'), ...) {
   if (missing(dvs))
     dvs <- switch(match.arg(type), bottom = anaDives(obj), 
                   ascent = anaDives(obj), descent = anaDives(obj), 
                   divesID(obj))
-  if (match.arg(type) == 'both' && (diff%.%table)(dvs$type)){
-    dvs <- if ((all%.%partial(`==`, e2 = 'Surface'))(dvs$type[c(1, nrow(dvs))])){
-      dvs[-1, ]
-    } else {
-      dvs[-nrow(dvs), ]
-    }
+  if (is.ses(obj))
+  	obj <- obj$tdr
+  del <- NULL
+  if (match.arg(type) == 'both'){
+  	if (dvs$type[1] == 'Surface') dvs <- dvs[-1, ]
+  	if (dvs$type[nrow(dvs)] == 'Diving') dvs <- dvs[-nrow(dvs), ] ; del <- 'end'
   }
   .idx <- switch(match.arg(type), 
                  dive = dvs[dvs$type == "Diving", 1:2], 
@@ -244,8 +250,11 @@ dvapply <- function (FUN, obj, dvs,
     out <- if (nNA(.idx[ii, ])) {NA} else {FUN(obj[.idx[ii, 1]:.idx[ii, 2], ], ...)}
     out %else% NA
   }
-  do.call(switch(match.arg(apply), s = sapply, l = lapply, v = vapply),
+  out <- do.call(switch(match.arg(apply), s = sapply, l = lapply),
           list(seq_along(.idx[, 1]), match.fun(.f), ...))
+  if (!is.null(del))
+  	out <- c(out, do.call(switch(match.arg(apply), l = list, c), list(NA)))
+  out
 } 
 
 #' Compute some behavioral variables from TDR dataset

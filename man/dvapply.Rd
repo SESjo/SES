@@ -3,7 +3,7 @@
 \title{Apply a function to each dive/surface/bottom/... of a TDR dataset}
 \usage{
 dvapply(FUN, obj, dvs, type = c("dive", "surface", "any", "both", "bottom",
-  "ascent", "descent"), apply = c("s", "l", "v"), ...)
+  "ascent", "descent"), apply = c("s", "l"), ...)
 }
 \arguments{
   \item{FUN}{Function to apply. The first argument has to
@@ -11,7 +11,7 @@ dvapply(FUN, obj, dvs, type = c("dive", "surface", "any", "both", "bottom",
   indicated by the \code{type} argument). See in the
   example section how it can be used to get Max depth.}
 
-  \item{obj}{A 'tdr' object}
+  \item{obj}{A 'tdr' or 'ses' object}
 
   \item{dvs}{Optional. A table with dives/surfaces/bottoms
   indices as returned by \code{\link{divesID}} or
@@ -28,7 +28,8 @@ dvapply(FUN, obj, dvs, type = c("dive", "surface", "any", "both", "bottom",
 
   \item{apply}{The prefix of the apply function to use
   (sapply, lapply, etc). Use \code{type = 'l'} if
-  \code{FUN} returns more than just one value per dive.}
+  \code{FUN} returns more than just one value per dive (as
+  in example).}
 
   \item{...}{Other arguments to be passed to \code{FUN}.}
 }
@@ -40,6 +41,12 @@ parts of a TDR dataset.
 path <- system.file("extdata", package="SES")
 pathname <- file.path(path, "2011-16_SES_example_accelero.mat")
 ses <- importSES(pathname)
-depth.max <- dvapply(function(tdr){max(tdr$Depth)}, ses$tdr)
+
+DivesDepthMax <- dvapply(function(tdr){max(tdr$Depth)}, ses)
+SurfDepthStat <- dvapply(function(tdr){fivenum(tdr$Depth)}, ses,
+							apply = 'l', type = 'surface')
+par(mfrow = c(2, 1))
+plot(DivesDepthMax, ylab = 'Max. depth of dives')
+plot(sapply(SurfDepthStat, function(x) x[1]), ylab = 'Min. depth of surfaces')
 }
 
