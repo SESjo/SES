@@ -219,8 +219,7 @@ bottomDelim <- function(obj, dvs, spdThres = .75, w = 12, bttDpth = .4) {
 #' ses <- importSES(pathname)
 #' 
 #' DivesDepthMax <- dvapply(function(tdr){max(tdr$Depth)}, ses)
-#' SurfDepthStat <- dvapply(function(tdr){fivenum(tdr$Depth)}, ses, 
-#' 							apply = 'l', type = 'surface')
+#' SurfDepthStat <- dvapply(function(tdr){fivenum(tdr$Depth)}, ses, apply = 'l', type = 'surface')
 #' par(mfrow = c(2, 1))
 #' plot(DivesDepthMax, ylab = 'Max. depth of dives')
 #' plot(sapply(SurfDepthStat, function(x) x[1]), ylab = 'Min. depth of surfaces')
