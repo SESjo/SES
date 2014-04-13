@@ -14,13 +14,17 @@
 #' following surface period; \code{'btt'}, bottoms; \code{'asc'}, ascents; 
 #' \code{'dsc'}, descents.
 #' @param .ply The apply function to use: \code{s = sapply, l = lapply}. 
-#' @param .numb Optional. The number(s) of the period(s) involved in case computing 
+#' @param .numb Optional. The number(s) of the period(s) involved in when applying \code{FUN} 
 #' on each one is not nessessary.
+#' @param .idx Optional. In the case where none of the \code{.type} options matches your needs 
+#' you may provide your own subset indices by using this argument. \code{.idx} must be a 
+#' data frame with start indices in the first column and end indices in the second.
 #' @param ... Other arguments to be passed to \code{FUN}.
 #' @details The names of the argument in this function are in upper case (data) or 
 #' preceded by a dot (options) in order to avoid that the names of \code{dvapply} 
 #' arguments match with those of \code{FUN}. The output elements are named after 
-#' the \code{.type} argument and their number.
+#' the \code{.type} argument and their number (if \code{.idx} is given in input then 
+#' \code{"cst"} (custom) is used).
 #' @export
 #' @examples
 #' path <- system.file("extdata", package="SES")
@@ -35,14 +39,19 @@
 #' # Compute "boxplot statitics" of each surface period
 #' # FUN returns several values so .ply = 'l'
 #' sfDstat <- dvapply(function(x) fivenum(x$Depth), ses, .type = 'sf', .ply = 'l')
+#' 
+#' # Provide your own indices
+#' dvapply(Dmax, ses, .idx = data.frame(c(1,10000), c(10, 20000)))
+#' dvapply(Dmax, ses, .idx = data.frame(c(1,10000), c(10, 20000)), .n = 2)
 dvapply <- function (FUN, OBJ, DVS, 
 					 .type = c("dv", "sf", "all", "dus", "btt", "asc", "dsc"), 
-					 .ply = c('s', 'l'), .numb = NULL, ...) {
+					 .ply = c('s', 'l'), .numb = NULL, .idx = NULL, ...) {
 	
 	if (missing(DVS))
 		DVS <- switch(match.arg(.type), btt = anaDives(OBJ), 
 					  asc = anaDives(OBJ), dsc = anaDives(OBJ), 
 					  divesID(OBJ))
+	DVS$type <- DVS$type == "Diving"
 	if (is.ses(OBJ))
 		OBJ <- OBJ$tdr
 	
@@ -54,14 +63,11 @@ dvapply <- function (FUN, OBJ, DVS,
 	}
 	
 	# Get the list of indices
-	.idx <- switch(match.arg(.type), 
-				   dv = DVS[DVS$type == "Diving", 1:2], 
-				   sf = DVS[DVS$type == "Surface", 1:2], 
-				   all = DVS[, 1:2], 
-				   dus = data.frame(DVS[DVS$type == 'Diving', 1], DVS[DVS$type == 'Surface', 2]), 
-				   btt = DVS[DVS$type == "Diving", 6:7], 
-				   asc = DVS[DVS$type == "Diving", c(7, 2)], 
-				   dsc = DVS[DVS$type == "Diving", c(1, 6)])
+	.type <- ifelse(is.null(.idx), match.arg(.type), "cst")
+	.idx <- switch(.type, cst = .idx, btt = DVS[DVS$type, 6:7], 
+				   dv = DVS[DVS$type, 1:2], sf = DVS[!DVS$type, 1:2], all = DVS[, 1:2], 
+				   asc = DVS[DVS$type, c(7, 2)], dsc = DVS[DVS$type, c(1, 6)],
+				   dus = data.frame(DVS[DVS$type, 1], DVS[!DVS$type, 2]))
 	numbers <- .numb %else% seq_along(.idx[ , 1])
 	.idx <- .idx[numbers, ]
 	
@@ -80,7 +86,7 @@ dvapply <- function (FUN, OBJ, DVS,
 		numbers <- c(numbers, max(DVS$Dive.id) + 1)
 	}
 	
-	names(out) <- paste0(match.arg(.type), numbers) 
+	names(out) <- paste0(.type, numbers) 
 	out
 } 
 

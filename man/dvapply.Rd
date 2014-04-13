@@ -3,7 +3,7 @@
 \title{Apply a function to each dive/surface/bottom/... of a TDR dataset}
 \usage{
 dvapply(FUN, OBJ, DVS, .type = c("dv", "sf", "all", "dus", "btt", "asc",
-  "dsc"), .ply = c("s", "l"), .numb = NULL, ...)
+  "dsc"), .ply = c("s", "l"), .numb = NULL, .idx = NULL, ...)
 }
 \arguments{
   \item{FUN}{Function to apply. The first argument has to
@@ -27,8 +27,14 @@ dvapply(FUN, OBJ, DVS, .type = c("dv", "sf", "all", "dus", "btt", "asc",
   l = lapply}.}
 
   \item{.numb}{Optional. The number(s) of the period(s)
-  involved in case computing on each one is not
+  involved in when applying \code{FUN} on each one is not
   nessessary.}
+
+  \item{.idx}{Optional. In the case where none of the
+  \code{.type} options matches your needs you may provide
+  your own subset indices by using this argument.
+  \code{.idx} must be a data frame with start indices in
+  the first column and end indices in the second.}
 
   \item{...}{Other arguments to be passed to \code{FUN}.}
 }
@@ -42,7 +48,8 @@ The names of the argument in this function are in upper
 case (data) or preceded by a dot (options) in order to
 avoid that the names of \code{dvapply} arguments match with
 those of \code{FUN}. The output elements are named after
-the \code{.type} argument and their number.
+the \code{.type} argument and their number (if \code{.idx}
+is given in input then \code{"cst"} (custom) is used).
 }
 \examples{
 path <- system.file("extdata", package="SES")
@@ -57,5 +64,9 @@ dvDmax2 <- dvapply(Dmax, ses, .n = 50:60) # dives #50 to #60 only
 # Compute "boxplot statitics" of each surface period
 # FUN returns several values so .ply = 'l'
 sfDstat <- dvapply(function(x) fivenum(x$Depth), ses, .type = 'sf', .ply = 'l')
+
+# Provide your own indices
+dvapply(Dmax, ses, .idx = data.frame(c(1,10000), c(10, 20000)))
+dvapply(Dmax, ses, .idx = data.frame(c(1,10000), c(10, 20000)), .n = 2)
 }
 
