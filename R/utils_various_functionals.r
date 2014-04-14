@@ -58,8 +58,8 @@ dvapply <- function (FUN, OBJ, DVS,
 	# .type = 'dus' implies additional precautions
 	deletedDv <- FALSE
 	if (match.arg(.type) == 'dus'){
-		if (DVS$type[1] == 'Surface') DVS <- DVS[-1, ]
-		if (DVS$type[nrow(DVS)] == 'Diving') DVS <- DVS[-nrow(DVS), ] ; deletedDv <- TRUE
+		if (!DVS$type[1]) DVS <- DVS[-1, ]
+		if (DVS$type[nrow(DVS)]) DVS <- DVS[-nrow(DVS), ] ; deletedDv <- TRUE
 	}
 	
 	# Get the list of indices
