@@ -171,7 +171,7 @@ bottomDelim <- function(obj, dvs, spdThres = .75, w = 12, bttDpth = .4) {
   # Checking: bottom limits must be deeper than 'bttDpth'% of dive Max depth
   chkFuns <- list(bttSt = function(x){x$Depth[1] >= bttDpth * max(x$Depth)},
                   bttEd = function(x){x$Depth[nrow(x)] >= bttDpth * max(x$Depth)})
-  chkDel <- lapply(chkFuns, dvapply, OBJ = obj, DVS = dvs, .type = 'btt')
+  chkDel <- lapply(chkFuns, dvapply, OBJ = obj, DVS = dvs, TYPE = 'btt')
   chkDel <- Map(`|`, e1 = lapply(chkDel, `!`), e2 = lapply(chkDel, is.na))
   
   # Compute the old fashion delim: first and last depth >= bttDpth * Max depth
@@ -232,9 +232,9 @@ anaBehav <- function(tdr, dvs){
   stats <- c(lapply(dvs$Diving[ , dvsVars[1:3]], as.integer), 
              dvs$Diving[ , dvsVars[4:5]], 
              lapply(funsDv, dvapply, OBJ = tdr, DVS = dvs$Diving),
-             lapply(funsAsc, dvapply, OBJ = tdr, DVS = dvs$Diving, .type = 'asc'),
-             lapply(funsBtt, dvapply, OBJ = tdr, DVS = dvs$Diving, .type = 'btt'),
-             lapply(funsDsc, dvapply, OBJ = tdr, DVS = dvs$Diving, .type = 'dsc'))
+             lapply(funsAsc, dvapply, OBJ = tdr, DVS = dvs$Diving, TYPE = 'asc'),
+             lapply(funsBtt, dvapply, OBJ = tdr, DVS = dvs$Diving, TYPE = 'btt'),
+             lapply(funsDsc, dvapply, OBJ = tdr, DVS = dvs$Diving, TYPE = 'dsc'))
   stats$Surf.dur.aft <- dvs$Surface$Dive.dur[-1]
   stats$Time.start <- as.POSIXct(stats$Time.start, origin = '1970-01-01', tz = 'UTC')
   out <- as.data.frame(lapply(stats, replaceMissing))
