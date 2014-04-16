@@ -185,4 +185,11 @@ nstr <- function(x) {
 #' \dontrun{
 #' str(class2logical(ses$stat$Dive.type))
 #' }
-class2logical <- function(x) {x == 1}
+class2logical <- function(x) x == 1
+
+#' Paste operator
+#'
+#' @param a,b Elements to paste
+#' @export
+#' @keywords internal
+%+% <- function(a, b) paste0(a, b)
