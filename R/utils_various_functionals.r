@@ -25,7 +25,9 @@
 #' you may provide your own subset indices by using this argument. \code{IDX} must be a 
 #' data frame or a matrix with start indices in the first column and end indices in the second.
 #' @param ALONG Optional. A list of arguments of \code{FUN} whose values depend 
-#' on the period involved. Arguments are recycled if necessary. See the last examples.
+#' on the period involved. Arguments are recycled when their length is smaller than 
+#' the number of periods but truncated when longer. This is different from the 
+#' behaviour of \code{\link{mapply}}. See the last examples.
 #' @param ... Other arguments to be passed to \code{FUN} shared by all the periods.
 #' 
 #' @details The names of the argument in this function are in upper case in order 
@@ -71,6 +73,10 @@
 #' all(dvapply(function(x, y, z) max(x$Depth) / y * z, ses, ALONG = list(y = dvDmax, z = 2)) == 2)
 #' # Throw a warning because length(IDX) %% length(z) != 0 but still works.
 #' table(dvapply(function(x, y, z) max(x$Depth) / y * z, ses, ALONG = list(y = dvDmax, z = 2:3)))
+#' # length(IDX) %% length(z) != 0 & length(IDX) < length(z) is a special case:
+#' # z is truncated rather than recycled.
+#' table(dvapply(function(x, z) z, ses, ALONG = list(z = c(rep(2, length(dvDmax)), 3))))
+#' mapply(paste0, LETTERS[1:3], letters[1:3], 1:4) # For comparison with mapply behaviour
 dvapply <- function (FUN, OBJ, DVS, SIMPLIFY = TRUE,
                      TYPE = c("dv", "sf", "all", "dus", "btt", "asc", "dsc"),
                      N = NULL, IDX = NULL, ALONG = NULL, ...) {
@@ -85,9 +91,9 @@ dvapply <- function (FUN, OBJ, DVS, SIMPLIFY = TRUE,
   
   # TYPE = 'dus' implies additional precautions
   deletedDv <- FALSE
-  if (match.arg(TYPE) == 'dus'){
-    if (DVS$type[1] == 'Surface') DVS <- DVS[-1, ]
-    if (DVS$type[nrow(DVS)] == 'Diving') DVS <- DVS[-nrow(DVS), ] ; deletedDv <- TRUE
+  if (match.arg(TYPE) == "dus"){
+    if (!DVS$type[1]) DVS <- DVS[-1, ]
+    if (DVS$type[nrow(DVS)]) DVS <- DVS[-nrow(DVS), ] ; deletedDv <- TRUE
   }
   
   # Get the list of indices
@@ -99,6 +105,12 @@ dvapply <- function (FUN, OBJ, DVS, SIMPLIFY = TRUE,
   numbers <- N %else% seq_along(IDX[ , 1])
   IDX <- IDX[numbers, ]
   
+  # Check ALONG length compared to the number of periods
+  if (!is.null(ALONG) & any((LENGTH <- lapply(ALONG, length)) > nrow(IDX))) {
+    ALONG <- Map(function(arg, l) arg[1:min(nrow(IDX), l)], ALONG, LENGTH)
+    warning("At least one argument passed through ALONG has more elements than the number of rows of IDX (", nrow(IDX), "). The first ones are assumed to be the correct ones.")
+  }
+
   # Make the work
   .f <- function(st, ed, ...) 
     FUN(OBJ[st:ed, ], ...)
