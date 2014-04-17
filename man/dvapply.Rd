@@ -44,7 +44,10 @@ dvapply(FUN, OBJ, DVS, SIMPLIFY = TRUE, TYPE = c("dv", "sf", "all", "dus",
 
   \item{ALONG}{Optional. A list of arguments of \code{FUN}
   whose values depend on the period involved. Arguments are
-  recycled if necessary. See the last examples.}
+  recycled when their length is smaller than the number of
+  periods but truncated when longer. This is different from
+  the behaviour of \code{\link{mapply}}. See the last
+  examples.}
 
   \item{...}{Other arguments to be passed to \code{FUN}
   shared by all the periods.}
@@ -105,5 +108,9 @@ all(dvapply(function(x, y, z) max(x$Depth) / y * z, ses, ALONG = list(y = dvDmax
 all(dvapply(function(x, y, z) max(x$Depth) / y * z, ses, ALONG = list(y = dvDmax, z = 2)) == 2)
 # Throw a warning because length(IDX) \%\% length(z) != 0 but still works.
 table(dvapply(function(x, y, z) max(x$Depth) / y * z, ses, ALONG = list(y = dvDmax, z = 2:3)))
+# length(IDX) \%\% length(z) != 0 & length(IDX) < length(z) is a special case:
+# z is truncated rather than recycled.
+table(dvapply(function(x, z) z, ses, ALONG = list(z = c(rep(2, length(dvDmax)), 3))))
+mapply(paste0, LETTERS[1:3], letters[1:3], 1:4) # For comparison with mapply behaviour
 }
 
