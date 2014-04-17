@@ -192,4 +192,4 @@ class2logical <- function(x) x == 1
 #' @param a,b Elements to paste
 #' @export
 #' @keywords internal
-%+% <- function(a, b) paste0(a, b)
+"%+%" <- function(a, b) paste0(a, b)
